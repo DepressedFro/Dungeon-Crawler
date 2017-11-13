@@ -4,7 +4,7 @@ export default class Map {
 	}
 	
 	getEmptyMap(size) {
-		for(x = 0; x < size; x++) {
+		for(var x = 0; x < size; x++) {
 			
 		}
 	}
