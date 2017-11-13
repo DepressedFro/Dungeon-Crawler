@@ -1,5 +1,5 @@
 export default class Map {
-	constructor(size) {
+	constructor(size, type) {
 		this.rooms = [[]];
 	}
 }
