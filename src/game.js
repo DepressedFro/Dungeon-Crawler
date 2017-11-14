@@ -10,7 +10,7 @@ export default class Game {
 		this.height = screenHeight;
 		this.ctx = context;
 		
-		this.player = new Player();
+		this.player = new Player(this);
 		this.playerhealth = 100;
 		this.playergold = 0;
 		this.playerlocx = 5;
@@ -18,7 +18,7 @@ export default class Game {
 		
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this.map.rooms[this.playerlocx, this.playerlocy]);
+		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
 		this.monsters = [];
 		this.things = [];
 		
@@ -38,6 +38,8 @@ export default class Game {
 	}
 	
 	update() {
+		this.room.update();		
+
 		this.player.update();
 		
 		if(this.monsters.length > 0){
@@ -54,6 +56,8 @@ export default class Game {
 	}
 	
 	render() {
+		this.room.render(this.ctx);
+
 		this.player.render(this.ctx);
 		
 		if(this.monsters.length > 0){

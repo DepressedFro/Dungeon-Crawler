@@ -1,5 +1,5 @@
 // base class of all renderable objects, handles collisions
-export class GameObject {
+export default class GameObject {
     constructor(game) {
         this.game = game;
     }
