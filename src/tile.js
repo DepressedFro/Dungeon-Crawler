@@ -1,9 +1,5 @@
 import GameObject from './gameobject.js';
 import Constants from './constants.js';
-import tilesetPath from './tileset.png';
-
-let tileset = new Image();
-tileset.src = tilesetPath;
 
 export class Tile extends GameObject {
     passable = true;
@@ -15,8 +11,8 @@ export class Tile extends GameObject {
 
     get BBox() {
         return {
-            x: this.pos.x,
-            y: this.pos.y,
+            x: this.pos.x*Constants.tileSize,
+            y: this.pos.y*Constants.tileSize,
             width: Constants.tileSize,
             height: Constants.tileSize,
         }
@@ -24,11 +20,11 @@ export class Tile extends GameObject {
 
     render(ctx) {
         // check that the tileset is loaded
-        if (!tileset.complete)
+        if (!Constants.tileset.complete)
             return;
 
         ctx.drawImage(
-            tileset,
+            Constants.tileset,
             this.sourcePos.x * Constants.tileSize, // source BBox
             this.sourcePos.y * Constants.tileSize,
             Constants.tileSize,
