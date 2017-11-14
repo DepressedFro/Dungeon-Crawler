@@ -1,8 +1,8 @@
 import './index.css';
 import Game from './game.js';
 
-var screenwidth = 512;
-var screenheight = 512;
+var screenwidth = 256;
+var screenheight = 256;
 
 var canvas = document.createElement('canvas');
 canvas.width = screenwidth;
