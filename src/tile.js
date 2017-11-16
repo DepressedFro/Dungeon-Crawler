@@ -3,16 +3,17 @@ import Constants from './constants.js';
 
 export class Tile extends GameObject {
     passable = true;
-    
+    zindex = -10;
+
     constructor(game, x, y) {
         super(game);
-        this.pos = {x, y};
+        this.pos = { x, y };
     }
 
     get BBox() {
         return {
-            x: this.pos.x*Constants.tileSize,
-            y: this.pos.y*Constants.tileSize,
+            x: this.pos.x * Constants.tileSize,
+            y: this.pos.y * Constants.tileSize,
             width: Constants.tileSize,
             height: Constants.tileSize,
         }
@@ -38,10 +39,10 @@ export class Tile extends GameObject {
 }
 
 export class FloorTile extends Tile {
-    sourcePos = {x: 2, y: 3};
+    sourcePos = { x: 2, y: 3 };
 }
 
 export class WallTile extends Tile {
     passable = false;
-    sourcePos = {x: 1, y: 1};
+    sourcePos = { x: 1, y: 1 };
 }

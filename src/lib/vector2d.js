@@ -124,6 +124,7 @@ export default class Vector {
 	
 	static multiply (a, b) {
 		if (b instanceof Vector) return new Vector(a.x * b.x, a.y * b.y);
+		else return new Vector(a.x * b, a.y * b);
 	};
 	
 	static divide (a, b) {

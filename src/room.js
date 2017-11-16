@@ -20,43 +20,29 @@ import { Tile, FloorTile, WallTile } from './tile.js';
 export default class Room {
 	constructor(game, roomcode) {
 		this.monsters = [];
-		this.things = [];
 		this.width = 16;
 		this.height = 16;
 		this.tiles = [[]];
 
 		// test room
 		for (var i = 0; i < this.width; i++) {
-			this.tiles[0].push(new WallTile(this.game, i, 0));
+			this.tiles[0].push(new WallTile(game, i, 0));
 		}
 
-		for (var j = 1; j < this.height-1; j++) {
-			this.tiles.push([new WallTile(this.game, 0, j)]);
-			for (var i = 1; i < this.width-1; i++) {
-				this.tiles[j].push(new FloorTile(this.game, i, j));
+		for (var j = 1; j < this.height - 1; j++) {
+			this.tiles.push([new WallTile(game, 0, j)]);
+			for (var i = 1; i < this.width - 1; i++) {
+				this.tiles[j].push(new FloorTile(game, i, j));
 			}
-			this.tiles[j].push(new WallTile(this.game, this.width-1, j));
+			this.tiles[j].push(new WallTile(game, this.width - 1, j));
 		}
 
 		this.tiles.push([]);
 		for (var i = 0; i < this.width; i++) {
-			this.tiles[15].push(new WallTile(this.game, i, this.height-1));
+			this.tiles[15].push(new WallTile(game, i, this.height - 1));
 		}
-	}
-	
-	update() {
-		for (let row of this.tiles) {
-			for (let tile of row) {
-				tile.update();
-			}
-		}
-	}	
 
-	render(ctx) {
-		for (let row of this.tiles) {
-			for (let tile of row) {
-				tile.render(ctx);
-			}
-		}
+		this.tiles[7][7].destroy();
+		this.tiles[7][7] = new WallTile(game, 7, 7);
 	}
 }

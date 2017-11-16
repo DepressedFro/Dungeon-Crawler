@@ -2,70 +2,74 @@ import Map from './map.js';
 import Room from './room.js';
 import Player from './player.js';
 import Monster from './monster.js';
-import Thing from './thing.js';
 import Blob from './blob.js';
+import * as _ from 'lodash';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context) {
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
-		
+
+		this.gameObjects = [];
+
 		this.player = new Player(this);
-				
+
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
-		this.monsters = [new Blob(this,100,100)];
-		this.things = [];
-		
-		this.update = this.update.bind(this);
-		this.render = this.render.bind(this);
-		this.loop = this.loop.bind(this);
-		
-		this.intervalrate = 1000/60.0;
-		this.interval = setInterval(this.loop, this.intervalrate);
+		this.monsters = [new Blob(this, 100, 100)];
+
+		// handle key presses
+		this.pressed = {};
+		window.onkeydown = (event) => { this.pressed[event.key] = true; };
+		window.onkeyup = (event) => { this.pressed[event.key] = false; };
+
+		this.lastTime = +new Date();
+		window.requestAnimationFrame(() => { this.loop() });
 	}
-	
+
 	movetoroom(locx, locy, dir) {
 		this.room = new Room(this.map.rooms[locx, locy]);
-		this.monsters = this.room.monsters;
-		this.things = this.room.things;
 		this.room.render(this.ctx);
 	}
-	
+
+	add(obj) {
+		this.gameObjects.push(obj);
+		this.zindexChanged = true;
+	}
+
+	remove(obj) {
+		this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);
+	}
+
 	update() {
-		this.room.update();		
+		let delta = +new Date() - this.lastTime;
+		this.lastTime = +new Date();
 
-		this.player.update();
-
-		this.monsters.forEach((monster) => {
-			monster.update();
-		});	
-		
-		this.things.forEach((thing) => {
-			thing.update();
-		});
-	
+		// loop backwards to handle object removal
+		for (let i = this.gameObjects.length - 1; i > 0; i--) {
+			this.gameObjects[i].update(delta);
+		}
 	}
-	
+
 	render() {
-		this.room.render(this.ctx);
+		// reorder if zindex changed on some object
+		if (this.zindexChanged) {
+			this.gameObjects = _.sortBy(this.gameObjects, (obj) => { return obj.zindex });
+			this.zindexChanged = false;
+		}
 
-		this.player.render(this.ctx);
-		
-		this.monsters.forEach((monster) => {
-			monster.render(this.ctx);
-		});
-	
-		this.things.forEach((thing) => {
-			thing.render(this.ctx);
-		});
-	
+		for (let obj of this.gameObjects) {
+			this.ctx.save();
+			obj.render(this.ctx);
+			this.ctx.restore();
+		}
 	}
-	
+
 	loop() {
 		this.update();
 		this.render();
+		window.requestAnimationFrame(() => { this.loop() });
 	}
 }
