@@ -4,15 +4,15 @@ import Player from './player.js';
 import Monster from './monster.js';
 import Blob from './blob.js';
 import * as _ from 'lodash';
+import Riddles from './riddle';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context) {
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
-
 		this.gameObjects = [];
-
+		this.riddles = new Riddles();
 		this.player = new Player(this);
 
 		this.level = 1;
