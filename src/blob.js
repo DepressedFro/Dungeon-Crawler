@@ -26,23 +26,24 @@ export default class Blob extends Monster {
 		var xx = Math.floor(this.pos.x / Constants.tileSize);
 		var yy = Math.floor(this.pos.y / Constants.tileSize);
 
-		for (var i = -1; i <= 1; ++i) {
-			for (var ii = -1; ii <= 1; ++ii) {
-				if (xx + i >= this.game.room.width ||
-					yy + ii >= this.game.room.height ||
-					xx + i < 0 ||
-					yy + ii < 0)
-					continue;
+		// prioritize non-diagonal tiles
+		for (let offset of [[0, 0], [-1, 0], [0, 1], [1, 0], [0, -1], [-1, 1], [-1, -1], [1, -1], [1, 1]]) {
+			let i = offset[0];
+			let ii = offset[1];		
+			if (xx + i >= this.game.room.width ||
+				yy + ii >= this.game.room.height ||
+				xx + i < 0 ||
+				yy + ii < 0)
+				continue;
 
-				var tile = this.game.room.tiles[yy + ii][xx + i];
+			var tile = this.game.room.tiles[yy + ii][xx + i];
 
-				var col = tile.collides(this);
-				if (!tile.passable && col !== null) {
-					// tile.debugDrawBBox(this.game.ctx);
-					// var now = new Date().getTime();
-					// while(new Date().getTime() < now + 500){ /* do nothing */ } 
-					return col;
-				}
+			var col = this.collides(tile);
+			if (!tile.passable && col !== null) {
+				// tile.debugDrawBBox(this.game.ctx);
+				// var now = new Date().getTime();
+				// while(new Date().getTime() < now + 500){ /* do nothing */ } 
+				return col;
 			}
 		}
 
@@ -64,8 +65,8 @@ export default class Blob extends Monster {
 		var col = this.inTileCollision();
 		if (col !== null) {
 			this.pos = previous_pos.clone();
-			this.speed.negative();
-			//this.speed[col] *= -1;
+			// this.speed.negative();
+			this.speed[col] *= -1;
 		}
 
 		this.timer -= delta;
