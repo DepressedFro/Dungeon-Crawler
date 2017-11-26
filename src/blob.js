@@ -28,15 +28,9 @@ export default class Blob extends Monster {
 
 		// prioritize non-diagonal tiles
 		for (let offset of [[0, 0], [-1, 0], [0, 1], [1, 0], [0, -1], [-1, 1], [-1, -1], [1, -1], [1, 1]]) {
-			let i = offset[0];
-			let ii = offset[1];		
-			if (xx + i >= this.game.room.width ||
-				yy + ii >= this.game.room.height ||
-				xx + i < 0 ||
-				yy + ii < 0)
+			let tile = this.game.room.getTile(xx + offset[0], yy + offset[1]);
+			if (tile === null)
 				continue;
-
-			var tile = this.game.room.tiles[yy + ii][xx + i];
 
 			var col = this.collides(tile);
 			if (!tile.passable && col !== null) {
@@ -74,7 +68,7 @@ export default class Blob extends Monster {
 		switch (this.currentState) {
 			case "wait":
 				if (this.timer <= 0) {
-					this.speed = this.getRandomDirVector(this.burstSpeed);
+					this.speed = this.getRandomDirVector(this.burstSpeed * (Math.random() + 0.5));
 					this.currentState = "move";
 				}
 				break;
