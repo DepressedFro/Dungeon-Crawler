@@ -40,7 +40,7 @@ export default class Blob extends Monster {
 				if (!tile.passable && col !== null) {
 					// tile.debugDrawBBox(this.game.ctx);
 					// var now = new Date().getTime();
-					// while(new Date().getTime() < now + 500){ /* do nothing */ } 
+					// while(new Date().getTime() < now + 500){ /* do nothing */ }
 					return col;
 				}
 			}
@@ -99,7 +99,7 @@ export default class Blob extends Monster {
 			Constants.tileSize,
 			Constants.tileSize
 		);
-		this.debugDrawBBox(ctx);
+		//this.debugDrawBBox(ctx);
 	}
 
 }
