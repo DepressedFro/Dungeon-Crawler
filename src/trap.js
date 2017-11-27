@@ -1,6 +1,7 @@
 export default class Trap {
-	constructor(type) {
-      this.type;
+	constructor(index) {
+      this.index = index;
+			this.type;
       this.height;
       this.width;
       this.locx;
@@ -8,24 +9,27 @@ export default class Trap {
       this.damage;
 			this.cd;
 
-      //Generate a trap based on type.
-			//Assign (Puzzle/Riddle Index) to 300s.
-			//Flame = 301, Spike = 302, Blade = 303;
-      switch(type) {
-        case 301:
-          this.flame();
-          break;
-        case 302:
-          this.spike();
-          break;
-        case 303:
-          this.blade();
-          break;
-      }
+      this.determineTrap();
 	}
   getPosition() {
     return {x: this.locx, y: this.locy, height: this.height, width: this.width};
   }
+	determineTrap() {
+		//Generate a trap based on type.
+		//Assign (Puzzle/Riddle Index) to 200s.
+		//Flame = 201, Spike = 202, Blade = 203;
+		switch(this.index) {
+			case 201:
+				this.flame();
+				break;
+			case 202:
+				this.spike();
+				break;
+			case 203:
+				this.blade();
+				break;
+		}
+	}
   flame() {
     this.height = 1;
     this.width = 4;
@@ -46,7 +50,7 @@ export default class Trap {
   }
   update() {
     //Deal damage, and any other interactions.
-		if(cd !== 0) cd--;
+		if(this.cd !== 0) this.cd--;
 		else {
 			this.cd = 5;
 			return this.damage;

@@ -12,7 +12,6 @@ export default class Game {
 		this.height = screenHeight;
 		this.ctx = context;
 		this.gameObjects = [];
-		this.riddles = new Riddles();
 		this.player = new Player(this);
 
 		this.level = 1;
@@ -51,6 +50,8 @@ export default class Game {
 		for (let i = this.gameObjects.length - 1; i > 0; i--) {
 			this.gameObjects[i].update(delta);
 		}
+
+		this.room.update(this.pressed);
 	}
 
 	render() {
