@@ -1,4 +1,5 @@
 import GameObject from './gameobject.js'
+import Constants from './constants.js';
 
 export default class Player extends GameObject {
 	constructor(game, health, x, y) {
@@ -67,7 +68,7 @@ export default class Player extends GameObject {
 	update(delta){
 		var previous_pos = this.pos.clone();
 
-		thix.pos.x += this.velocity.x;
+		this.pos.x += this.velocity.x;
 		this.pos.y += this.velocity.y;
 	}
 

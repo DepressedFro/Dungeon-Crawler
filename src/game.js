@@ -12,7 +12,7 @@ export default class Game {
 		this.height = screenHeight;
 		this.ctx = context;
 		this.gameObjects = [];
-		this.player = new Player(this);
+		// this.player = new Player(this);
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
