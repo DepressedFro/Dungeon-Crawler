@@ -16,16 +16,16 @@ export default class Trap {
   }
 	determineTrap() {
 		//Generate a trap based on type.
-		//Assign (Puzzle/Riddle Index) to 300s.
-		//Flame = 301, Spike = 302, Blade = 303;
+		//Assign (Puzzle/Riddle Index) to 200s.
+		//Flame = 201, Spike = 202, Blade = 203;
 		switch(this.index) {
-			case 301:
+			case 201:
 				this.flame();
 				break;
-			case 302:
+			case 202:
 				this.spike();
 				break;
-			case 303:
+			case 203:
 				this.blade();
 				break;
 		}

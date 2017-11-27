@@ -53,7 +53,7 @@ export default class Room {
 		this.tiles[7][7] = new WallTile(game, 7, 7);
 	}
 	riddleTrap(index) {
-		if(index >= 300) {
+		if(index >= 200) {
 			this.trap = new Trap(index);
 		} else {
 			this.riddle = new Riddles(index);
