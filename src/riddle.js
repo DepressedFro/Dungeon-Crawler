@@ -96,7 +96,7 @@ export default class Riddle {
 
 		var temp = ['textbox', 'cA', 'cB', 'cC'];
 		var count = 0;
-		var content = [this.question, "A: " + this.cA, "B: " + this.cB, "C: " + this.cC];
+		var content = [this.question, "1. " + this.cA, "2. " + this.cB, "3. " + this.cC];
 
 		//Loop to add in text.
 		temp.forEach(function(i){
