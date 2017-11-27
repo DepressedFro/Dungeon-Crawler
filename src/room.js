@@ -63,11 +63,11 @@ export default class Room {
 		if(this.riddle) {
 			var choices = this.riddle.getChoices();
 			var result;
-			if(pressed['a']){
+			if(pressed['1']){
 				result = this.riddle.update(choices.a);
-			} else if (pressed['b']) {
+			} else if (pressed['2']) {
 				result = this.riddle.update(choices.b);
-			} else if (pressed['c']) {
+			} else if (pressed['3']) {
 				result = this.riddle.update(choices.c);
 			}
 			if(result >= 0) this.riddle = undefined;
