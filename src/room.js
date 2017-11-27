@@ -21,6 +21,7 @@ import Trap from './trap';
  */
 export default class Room {
 	constructor(game, roomcode) {
+		this.game = game;
 		this.monsters = [];
 		this.width = 16;
 		this.height = 16;
@@ -33,24 +34,55 @@ export default class Room {
 
 		// test room
 		for (var i = 0; i < this.width; i++) {
-			this.tiles[0].push(new WallTile(game, i, 0));
+			this.tiles[0].push(null);
 		}
 
-		for (var j = 1; j < this.height - 1; j++) {
-			this.tiles.push([new WallTile(game, 0, j)]);
+		this.tiles.push([]);		
+		for (var i = 0; i < this.width; i++) {
+			this.tiles[1].push(new WallTile(this));
+		}
+
+		for (var j = 2; j < this.height - 1; j++) {
+			this.tiles.push([new WallTile(this)]);
 			for (var i = 1; i < this.width - 1; i++) {
-				this.tiles[j].push(new FloorTile(game, i, j));
+				this.tiles[j].push(new FloorTile(this));
 			}
-			this.tiles[j].push(new WallTile(game, this.width - 1, j));
+			this.tiles[j].push(new WallTile(this));
 		}
 
 		this.tiles.push([]);
 		for (var i = 0; i < this.width; i++) {
-			this.tiles[15].push(new WallTile(game, i, this.height - 1));
+			this.tiles[15].push(new WallTile(this));
 		}
 
 		this.tiles[7][7].destroy();
-		this.tiles[7][7] = new WallTile(game, 7, 7);
+		this.tiles[7][7] = new WallTile(this);
+		this.tiles[7][12].destroy();
+		this.tiles[7][12] = new WallTile(this);
+
+		this.tiles[7][0].destroy();
+		this.tiles[7][0] = new FloorTile(this);
+		this.tiles[8][0].destroy();
+		this.tiles[8][0] = new FloorTile(this);
+
+		this.tiles[7][15].destroy();
+		this.tiles[7][15] = new FloorTile(this);
+		this.tiles[8][15].destroy();
+		this.tiles[8][15] = new FloorTile(this);
+
+		// init all tiles after the map has been created
+		for (var x = 0; x < this.width; x++) {
+			for (var y = 0; y < this.width; y++) {
+				if (this.tiles[y][x] !== null)
+					this.tiles[y][x].init(x, y);
+			}
+		}
+	}
+
+	getTile(x, y) {
+		if (x < 0 || x >= this.width || y < 0 || y >= this.height)
+			return null;
+		return this.tiles[y][x];
 	}
 	riddleTrap(index) {
 		if(index >= 200) {

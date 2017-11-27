@@ -17,7 +17,7 @@ export default class Game {
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
-		this.monsters = [new Blob(this, 100, 100)];
+		this.monsters = [new Blob(this, 100, 100), new Blob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 100, 200)];
 
 		// handle key presses
 		this.pressed = {};
@@ -55,6 +55,10 @@ export default class Game {
 	}
 
 	render() {
+		// clear the screen
+		this.ctx.fillStyle = '#1c1117';
+        this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
+
 		// reorder if zindex changed on some object
 		if (this.zindexChanged) {
 			this.gameObjects = _.sortBy(this.gameObjects, (obj) => { return obj.zindex });
