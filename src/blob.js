@@ -1,16 +1,25 @@
 import Constants from './constants.js';
 import Vector from './lib/vector2d.js';
 import Monster from './monster.js';
+import * as _ from 'lodash';
 
 export default class Blob extends Monster {
+
+	setTilePosition(xtile,ytile){
+		this.xTile = xtile;
+		this.yTile = ytile;
+	}
+
 	constructor(game, x, y) {
 		super(game, x, y);
 
-		this.friction = 0.95;
-		this.burstSpeed = 200;
+		this.helpAngle = 0;
+		this.setTilePosition(1,13);
+		this.friction = 0.91;
+		this.burstSpeed = 150;
 		this.currentState = "wait";
-		this.timer = 0;
-		this.waitTime = 5;
+		this.waitTime = 300;
+		this.timer = this.waitTime;
 	}
 
 	get BBox() {
@@ -52,9 +61,12 @@ export default class Blob extends Monster {
 	}
 
 	update(delta) {
+
 		var previous_pos = this.pos.clone();
 		this.pos.add(Vector.multiply(this.speed, delta / 1000));
 		this.speed.multiply(this.friction);
+
+		this.helpAngle += this.speed.length()/400;
 
 		var col = this.inTileCollision();
 		if (col !== null) {
@@ -83,18 +95,25 @@ export default class Blob extends Monster {
 	}
 
 	render(ctx) {
+		var tmpYTileSizeChanger = Constants.tileSize - Constants.tileSize*0.6;
+
 		ctx.drawImage(
 			Constants.tileset,
-			1 * Constants.tileSize,
-			13 * Constants.tileSize,
+			this.xTile * Constants.tileSize,
+			this.yTile * Constants.tileSize,
 			Constants.tileSize,
 			Constants.tileSize,
 			Math.floor(this.pos.x - 8),
 			Math.floor(this.pos.y - 8),
 			Constants.tileSize,
-			Constants.tileSize
+			Math.floor(Constants.tileSize+tmpYTileSizeChanger*Math.sin(this.helpAngle)*this.speed.length()/this.burstSpeed)
 		);
 		//this.debugDrawBBox(ctx);
+	}
+
+	onDeath(){
+		this.destroy();
+		_.remove(this.game.monsters,this);		
 	}
 
 }

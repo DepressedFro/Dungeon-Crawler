@@ -4,12 +4,15 @@ import Monster from './monster.js';
 import Blob from './blob.js';
 
 export default class BigBlob extends Blob {
+
+	zindex = 5;
+
 	constructor(game, x, y) {
 		super(game, x, y);
-
+		this.setTilePosition(1,12);
 		this.friction = 0.97;
-		this.burstSpeed = 100;
-		this.waitTime = 20;
+		this.burstSpeed = 300;
+		this.waitTime = 2000;
 	}
 
 	get BBox() {
@@ -21,24 +24,15 @@ export default class BigBlob extends Blob {
 		}
 	}
 
-	
 	update(delta) {
 		super.update(delta);
-		
 	}
 
-	render(ctx) {
-		ctx.drawImage(
-			Constants.tileset,
-			1 * Constants.tileSize,
-			12 * Constants.tileSize,
-			Constants.tileSize,
-			Constants.tileSize,
-			Math.floor(this.pos.x - 8),
-			Math.floor(this.pos.y - 8),
-			Constants.tileSize,
-			Constants.tileSize
-		);
-		this.debugDrawBBox(ctx);
+	onDeath(){
+		super.onDeath();
+		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
+		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
+		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
 	}
+
 }
