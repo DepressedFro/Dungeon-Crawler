@@ -3,6 +3,7 @@ import Room from './room.js';
 import Player from './player.js';
 import Monster from './monster.js';
 import Blob from './blob.js';
+import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
 import Riddles from './riddle';
 
@@ -17,7 +18,7 @@ export default class Game {
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
-		this.monsters = [new Blob(this, 100, 100), new Blob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 100, 200)];
+		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200),new Blob(this, 100, 150),new Blob(this, 150, 150),new Blob(this, 200, 150)];
 
 		// handle key presses
 		this.pressed = {};

@@ -37,7 +37,6 @@ textbox {
 cA {
   position: absolute;
   text-align: left;
-  word-wrap: break-word;
   top: 150px;
   left: 5px;
   font: arial;
@@ -48,7 +47,6 @@ cA {
 cB {
   position: absolute;
   text-align: left;
-  word-wrap: break-word;
   top: 180px;
   left: 5px;
   font: arial;
@@ -59,7 +57,6 @@ cB {
 cC {
   position: absolute;
   text-align: left;
-  word-wrap: break-word;
   top: 210px;
   left: 5px;
   font: arial;
