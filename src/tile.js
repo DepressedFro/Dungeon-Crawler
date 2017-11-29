@@ -105,14 +105,14 @@ export class WallTile extends Tile {
         }
 
         // top left wall
-        if (this.room.getTile(x - 2, y) === null) {
+        if (this.room.getTile(x - 2, y) === null && this.room.getTile(x - 1, y + 1) instanceof WallTile) {
             this.sourcePos = { x: 0, y: 1 };
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 0, y: 0 }, 6));
             return;
         }
 
         // top right wall
-        if (this.room.getTile(x + 2, y) === null) {
+        if (this.room.getTile(x + 2, y) === null && this.room.getTile(x + 1, y + 1) instanceof WallTile) {
             this.sourcePos = { x: 2, y: 1 };
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 2, y: 0 }, 6));
             return;
@@ -153,6 +153,18 @@ export class ExitTile extends FloorTile {
         if (this.room.getTile(x + 1, y) === null) {
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 13, y: _.random(7, 8) }, -5));
             this.decorations.push(new Tile(this.room, this.pos.x - 1, this.pos.y, { x: 12, y: _.random(7, 8) }, -5));
+        }
+
+        // top
+        if (this.room.getTile(x, y - 1) === null) {
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: _.random(8, 9), y: 7 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y + 1, { x: _.random(8, 9), y: 8 }, -5));
+        }
+
+        // bottom
+        if (this.room.getTile(x, y + 1) === null) {
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: _.random(14, 15), y: 8 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: _.random(14, 15), y: 7 }, -5));
         }
     }
 }
