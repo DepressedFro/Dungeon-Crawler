@@ -1,4 +1,4 @@
-import { Tile, FloorTile, WallTile } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 
@@ -61,14 +61,14 @@ export default class Room {
 		this.tiles[7][12] = new WallTile(this);
 
 		this.tiles[7][0].destroy();
-		this.tiles[7][0] = new FloorTile(this);
+		this.tiles[7][0] = new ExitTile(this);
 		this.tiles[8][0].destroy();
-		this.tiles[8][0] = new FloorTile(this);
+		this.tiles[8][0] = new ExitTile(this);
 
 		this.tiles[7][15].destroy();
-		this.tiles[7][15] = new FloorTile(this);
+		this.tiles[7][15] = new ExitTile(this);
 		this.tiles[8][15].destroy();
-		this.tiles[8][15] = new FloorTile(this);
+		this.tiles[8][15] = new ExitTile(this);
 
 		// init all tiles after the map has been created
 		for (var x = 0; x < this.width; x++) {
@@ -103,7 +103,7 @@ export default class Room {
 				result = this.riddle.update(choices.c);
 			}
 			if(result >= 0) this.riddle = undefined;
-			console.log(result);
+			// console.log(result);
 		}
 	}
 }
