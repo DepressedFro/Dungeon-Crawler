@@ -18,3 +18,4 @@ temp.forEach(function(i){
 });
 
 var game = new Game(screenwidth, screenheight, context);
+window.game = game; // for access from console
