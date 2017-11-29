@@ -87,7 +87,7 @@ export class WallTile extends Tile {
     init(x, y) {
         super.init(x, y);
 
-        // back wall
+        // bottom wall
         if (!(this.room.getTile(x, y + 1) instanceof FloorTile) &&
             this.room.getTile(this.pos.x, this.pos.y - 1) instanceof FloorTile) {
             this.sourcePos = [
