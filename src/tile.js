@@ -70,10 +70,10 @@ export class FloorTile extends Tile {
 
         // add random shadow if floor next to a wall
         if (this.room.getTile(x, y - 1) instanceof WallTile)
-            this.sourcePos = { x: _.random(0, 2), y: 2 };
+            this.sourcePos = { x: this.room._.random(2), y: 2 };
 
         // add randomly skull on the ground
-        if (_.random(100) == 0) {
+        if (this.room._.random(100) == 0) {
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 1, y: 3 }, -8));            
         }
     }
@@ -94,7 +94,7 @@ export class WallTile extends Tile {
                 { x: 8, y: 0 },
                 { x: 7, y: 1 },
                 { x: 8, y: 1 },
-            ][_.random(2)];
+            ][this.room._.random(2)];
             return;
         }
 
@@ -121,7 +121,7 @@ export class WallTile extends Tile {
         this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 6));
 
         // random types of walls for variety
-        switch (_.random(30)) {
+        switch (this.room._.random(30)) {
             case 0:
             case 1:
             case 2:
@@ -145,26 +145,26 @@ export class ExitTile extends FloorTile {
         // add exit shadows
         // left
         if (this.room.getTile(x - 1, y) === null) {
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 10, y: _.random(7, 8) }, -5));
-            this.decorations.push(new Tile(this.room, this.pos.x + 1, this.pos.y, { x: 11, y: _.random(7, 8) }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 10, y: this.room._.random(7, 8) }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x + 1, this.pos.y, { x: 11, y: this.room._.random(7, 8) }, -5));
         }
 
         // right
         if (this.room.getTile(x + 1, y) === null) {
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 13, y: _.random(7, 8) }, -5));
-            this.decorations.push(new Tile(this.room, this.pos.x - 1, this.pos.y, { x: 12, y: _.random(7, 8) }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 13, y: this.room._.random(7, 8) }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x - 1, this.pos.y, { x: 12, y: this.room._.random(7, 8) }, -5));
         }
 
         // top
         if (this.room.getTile(x, y - 1) === null) {
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: _.random(8, 9), y: 7 }, -5));
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y + 1, { x: _.random(8, 9), y: 8 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: this.room._.random(8, 9), y: 7 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y + 1, { x: this.room._.random(8, 9), y: 8 }, -5));
         }
 
         // bottom
         if (this.room.getTile(x, y + 1) === null) {
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: _.random(14, 15), y: 8 }, -5));
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: _.random(14, 15), y: 7 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: this.room._.random(14, 15), y: 8 }, -5));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: this.room._.random(14, 15), y: 7 }, -5));
         }
     }
 }

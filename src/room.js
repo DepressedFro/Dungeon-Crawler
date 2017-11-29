@@ -1,3 +1,4 @@
+import seedrandom from 'seedrandom';
 import { Tile, FloorTile, WallTile, ExitTile } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
@@ -68,6 +69,10 @@ export default class Room extends GameObject {
 		this.pos = pos;
 		this.roomcode = this.game.map.rooms[pos.y][pos.x];
 
+		// seed the rng
+		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
+		this._ = _.runInContext();
+
 		this.monsters = [];
 		this.tiles = [];
 
@@ -95,7 +100,7 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
-		this.shape = shapeNames[_.random(0, 1)];//shapeNames[this.roomcode[1]];
+		this.shape = shapeNames[this._.random(0, 1)];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
 			'>': this.roomcode[3],
