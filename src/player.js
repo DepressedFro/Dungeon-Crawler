@@ -8,7 +8,7 @@ export default class Player extends GameObject {
 		this.health = health;
 		this.pos = {x: x, y: y};
 		this.velocity = {x: 0, y: 0};
-		this.speed = 100;
+		this.speed = 3;
 		this.gold = 0;
 		this.class = 0;
 		this.className = "Warrior";
@@ -35,65 +35,42 @@ export default class Player extends GameObject {
 		}
 	}
 
-	onkeydown(event){
-		//Add Keys to Interact and Pause
-		switch(event.key) {
-			//Move Up with W or Up Keys
-			case 'ArrowUp':
-			case 'w':
-				this.velocity.y = this.speed;
-			 	break;
-			//Move Left with A or Left Keys
-			case 'ArrowLeft':
-			case 'a':
-				this.velocity.x = -this.speed;
-				break;
-			//Move Right with D or Right Keys
-			case 'ArrowRight':
-			case 'd':
-				this.velocity.x = this.speed;
-				break;
-			//Move Down with S or Down Keys
-			case 'ArrowDown':
-			case 's':
-				this.velocity.y = -this.speed;
-				break;
-
+	get BBox() {
+		return {
+			x: this.pos.x - 6,
+			y: this.pos.y - 8,
+			width: 12,
+			height: 17,
 		}
-	}
-
-	onkeyup(event){
-		//Add Keys to Interact and Pause
-		switch(event.key) {
-			//Move Up with W or Up Keys
-			case 'ArrowUp':
-			case 'w':
-				this.velocity.y = 0;
-			 	break;
-			//Move Left with A or Left Keys
-			case 'ArrowLeft':
-			case 'a':
-				this.velocity.x = 0;
-				break;
-			//Move Right with D or Right Keys
-			case 'ArrowRight':
-			case 'd':
-				this.velocity.x = 0;
-				break;
-			//Move Down with S or Down Keys
-			case 'ArrowDown':
-			case 's':
-				this.velocity.y = 0;
-				break;
-		}
-	}
-
-	attack(){
-
 	}
 
 	update(delta){
-		
+
+		if(this.game.pressed['a']){
+			if(this.game.pressed['s']){
+				this.pos.x += -this.speed;
+				this.pos.y += this.speed;
+			} else if (this.game.pressed['w']){
+				this.pos.x += -this.speed;
+				this.pos.y += -this.speed;
+			} else{
+				this.pos.x += -this.speed;
+			}
+		} else if (this.game.pressed['d']) {
+			if(this.game.pressed['s']){
+				this.pos.x += this.speed;
+				this.pos.y += this.speed;
+			} else if (this.game.pressed['w']){
+				this.pos.x += this.speed;
+				this.pos.y += -this.speed;
+			} else{
+				this.pos.x += this.speed;
+			}
+		} else if (this.game.pressed['s']) {
+			this.pos.y += this.speed;
+		} else if (this.game.pressed['w']){
+			this.pos.y += -this.speed;
+		}
 	}
 
 	render(ctx) {
@@ -108,5 +85,6 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4
 		);
+		this.debugDrawBBox(ctx);
 	}
 }
