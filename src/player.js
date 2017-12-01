@@ -1,3 +1,5 @@
+import Constants from './constants.js';
+import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 
 export default class Player extends GameObject {
@@ -65,9 +67,7 @@ export default class Player extends GameObject {
 	}
 
 	update(delta){
-		var previous_pos = this.pos.clone();
-
-		thix.pos.x += this.velocity.x;
+		this.pos.x += this.velocity.x;
 		this.pos.y += this.velocity.y;
 	}
 
