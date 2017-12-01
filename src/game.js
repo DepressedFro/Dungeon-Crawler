@@ -29,6 +29,8 @@ export default class Game {
 		window.requestAnimationFrame(() => { this.loop() });
 	}
 
+
+
 	movetoroom(locx, locy, dir) {
 		this.room = new Room(this.map.rooms[locx, locy]);
 		this.room.render(this.ctx);

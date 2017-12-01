@@ -93,8 +93,7 @@ export default class Player extends GameObject {
 	}
 
 	update(delta){
-		this.pos.x += this.velocity.x;
-		this.pos.y += this.velocity.y;
+		
 	}
 
 	render(ctx) {
