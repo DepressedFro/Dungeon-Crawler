@@ -17,4 +17,5 @@ temp.forEach(function(i){
   document.body.appendChild(temp2);
 });
 
-var game = new Game(screenwidth, screenheight, context);
+var game = new Game(screenwidth, screenheight, context, canvas);
+window.game = game; // for access from console
