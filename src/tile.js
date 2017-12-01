@@ -168,3 +168,14 @@ export class ExitTile extends FloorTile {
         }
     }
 }
+
+export let tileTypes = {
+    ' ': null,
+    '#': WallTile,
+    '.': FloorTile,
+    'E': ExitTile,
+    '>': ExitTile,
+    '<': ExitTile,
+    'v': ExitTile,
+    '^': ExitTile,
+}

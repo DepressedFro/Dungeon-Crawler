@@ -1,61 +1,10 @@
 import seedrandom from 'seedrandom';
-import { Tile, FloorTile, WallTile, ExitTile } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile, tileTypes } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 import GameObject from './gameobject';
 import * as _ from 'lodash';
-
-let tileTypes = {
-	' ': null,
-	'#': WallTile,
-	'.': FloorTile,
-	'E': ExitTile,
-	'>': ExitTile,
-	'<': ExitTile,
-	'v': ExitTile,
-	'^': ExitTile,
-}
-
-let shapeNames = ['square', 'cross'];
-
-let shapes = {
-	'square': [
-		'                ',
-		'#######^^#######',
-		'#..............#',
-		'#..............#',
-		'#..............#',
-		'#..............#',
-		'#..............#',
-		'<..............>',
-		'<.......#......>',
-		'#..............#',
-		'#..............#',
-		'#..............#',
-		'#..........#...#',
-		'#..............#',
-		'#..............#',
-		'#######vv#######',
-	],
-	'cross': [
-		'                ',
-		'      #^^#      ',
-		'      #..#      ',
-		'      #..#      ',
-		'   ####..####   ',
-		'   #........#   ',
-		'####........####',
-		'<..............>',
-		'<.......#......>',
-		'####........####',
-		'   #........#   ',
-		'   ####..####   ',
-		'      #..#      ',
-		'      #..#      ',
-		'      #vv#      ',
-		'                ',
-	],
-};
+import Constants from './constants.js';
 
 let riddles = new Riddles();
 
@@ -100,7 +49,7 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
-		this.shape = shapeNames[this._.random(0, 1)];//shapeNames[this.roomcode[1]];
+		this.shape = Constants.shapeNames[this._.random(0, 1)];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
 			'>': this.roomcode[3],
@@ -133,10 +82,11 @@ export default class Room extends GameObject {
 	createByShape(shape) {
 		this.tiles = [];
 		
-		for (let row of shapes[shape]) {
+		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
 
 			for (let l of row) {
+				console.log(Constants);
 				let tile = tileTypes[l];
 
 				if (tile === null) {
