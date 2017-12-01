@@ -1,4 +1,3 @@
-import Constants from './constants.js';
 import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
@@ -113,6 +112,5 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4
 		);
-		this.debugDrawBBox(ctx);
 	}
 }

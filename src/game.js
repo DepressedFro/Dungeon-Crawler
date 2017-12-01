@@ -8,11 +8,12 @@ import * as _ from 'lodash';
 import Riddles from './riddle';
 
 export default class Game {
-	constructor(screenWidth, screenHeight, context) {
+	constructor(screenWidth, screenHeight, context, canvas) {
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
 		this.gameObjects = [];
+		this.canvas = canvas;
 		// this.player = new Player(this);
 
 		this.level = 1;
@@ -25,6 +26,9 @@ export default class Game {
 		this.pressed = {};
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
 		window.onkeyup = (event) => { this.pressed[event.key] = false; };
+
+		this.canvas.onmousedown = (event) => {this.pressed['mouse' + event.which] = true};
+		this.canvas.onmouseup = (event) => {this.pressed['mouse' + event.which] = false};
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
