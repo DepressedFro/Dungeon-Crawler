@@ -35,7 +35,7 @@ export default class Player extends GameObject {
 		}
 	}
 
-	buttonDown(event){
+	onkeydown(event){
 		//Add Keys to Interact and Pause
 		switch(event.key) {
 			//Move Up with W or Up Keys
@@ -59,6 +59,32 @@ export default class Player extends GameObject {
 				this.velocity.y = -this.speed;
 				break;
 
+		}
+	}
+
+	onkeyup(event){
+		//Add Keys to Interact and Pause
+		switch(event.key) {
+			//Move Up with W or Up Keys
+			case 'ArrowUp':
+			case 'w':
+				this.velocity.y = 0;
+			 	break;
+			//Move Left with A or Left Keys
+			case 'ArrowLeft':
+			case 'a':
+				this.velocity.x = 0;
+				break;
+			//Move Right with D or Right Keys
+			case 'ArrowRight':
+			case 'd':
+				this.velocity.x = 0;
+				break;
+			//Move Down with S or Down Keys
+			case 'ArrowDown':
+			case 's':
+				this.velocity.y = 0;
+				break;
 		}
 	}
 

@@ -51,7 +51,6 @@ export default class Game {
 		for (let i = this.gameObjects.length - 1; i > 0; i--) {
 			this.gameObjects[i].update(delta);
 		}
-		this.player.update();
 	}
 
 	render() {
