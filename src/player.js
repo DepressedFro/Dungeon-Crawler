@@ -6,8 +6,8 @@ export default class Player extends GameObject {
 	constructor(game, health, x, y) {
 		super(game);
 		this.health = health;
-		this.pos = {x: x, y: y};
-		this.velocity = {x: 0, y: 0};
+		this.pos = new Vector(x, y);
+		this.velocity = new Vector(0,0);
 		this.speed = 3;
 		this.gold = 0;
 		this.class = 0;
@@ -34,6 +34,27 @@ export default class Player extends GameObject {
 				break;
 		}
 	}
+	inTileCollision() {
+		var xx = Math.floor(this.pos.x / Constants.tileSize);
+		var yy = Math.floor(this.pos.y / Constants.tileSize);
+
+		// prioritize non-diagonal tiles
+		for (let offset of [[0, 0], [-1, 0], [0, 1], [1, 0], [0, -1], [-1, 1], [-1, -1], [1, -1], [1, 1]]) {
+			let tile = this.game.room.getTile(xx + offset[0], yy + offset[1]);
+			if (tile === null)
+				continue;
+
+			var col = this.collides(tile);
+			if (!tile.passable && col !== null) {
+				// tile.debugDrawBBox(this.game.ctx);
+				// var now = new Date().getTime();
+				// while(new Date().getTime() < now + 500){ /* do nothing */ }
+				return col;
+			}
+		}
+
+		return null;
+	}
 
 	get BBox() {
 		return {
@@ -45,6 +66,7 @@ export default class Player extends GameObject {
 	}
 
 	update(delta){
+		var previous_pos = this.pos.clone();
 
 		if(this.game.pressed['a']){
 			if(this.game.pressed['s']){
@@ -70,6 +92,11 @@ export default class Player extends GameObject {
 			this.pos.y += this.speed;
 		} else if (this.game.pressed['w']){
 			this.pos.y += -this.speed;
+		}
+
+		var col = this.inTileCollision();
+		if (col !== null) {
+			this.pos = previous_pos.clone();
 		}
 	}
 

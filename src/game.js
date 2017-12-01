@@ -13,11 +13,12 @@ export default class Game {
 
 		this.gameObjects = [];
 
-		this.player = new Player(this, 100, 50, 50);
+
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
+		this.player = new Player(this, 100, 50, 50);
 		this.monsters = [];
 
 		// handle key presses
