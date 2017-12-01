@@ -29,10 +29,19 @@ export default class Game {
 
 		this.canvas.onmousedown = (event) => {this.pressed['mouse' + event.which] = true};
 		this.canvas.onmouseup = (event) => {this.pressed['mouse' + event.which] = false};
+		this.canvas.onmousemove = (event) => {this.mousemove(event)};
+		this.mousePos = {x: 0, y: 0};		
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
 	}
+
+	mousemove(event) {
+        let rect = this.canvas.getBoundingClientRect();
+        let x = Math.floor((event.clientX - rect.left) / this.canvas.offsetWidth * this.canvas.width);
+        let y = Math.floor((event.clientY - rect.top) / this.canvas.offsetHeight * this.canvas.height);
+        this.mousePos = {x, y};
+    }
 
 	movetoroom(locx, locy) {
 		this.room.destroy();

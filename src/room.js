@@ -86,7 +86,6 @@ export default class Room extends GameObject {
 			let new_row = [];
 
 			for (let l of row) {
-				console.log(Constants);
 				let tile = tileTypes[l];
 
 				if (tile === null) {
