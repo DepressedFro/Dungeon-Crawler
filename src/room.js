@@ -94,7 +94,7 @@ export default class Room extends GameObject {
 					if (this.doors[l] == 0) // check if there should be exit
 						new_row.push(new WallTile(this));
 					else
-						new_row.push(new ExitTile(this));
+						new_row.push(new ExitTile(this, l));
 				} else {
 					new_row.push(new tile(this)); // instantiate
 				}
