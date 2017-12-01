@@ -75,13 +75,13 @@ export default class Player extends GameObject {
 		ctx.drawImage(
 			Constants.tileset,
 			14 * Constants.tileSize,
-			16 * Constants.tileSize,
+			15 * Constants.tileSize - 4,
 			Constants.tileSize,
-			Constants.tileSize,
+			Constants.tileSize + 4,
 			Math.floor(this.pos.x - 8),
-			Math.floor(this.pos.y - 8),
+			Math.floor(this.pos.y - 12),
 			Constants.tileSize,
-			Constants.tileSize
+			Constants.tileSize + 4
 		);
 	}
 }

@@ -13,12 +13,12 @@ export default class Game {
 
 		this.gameObjects = [];
 
-		this.player = new Player(this);
+		this.player = new Player(this, 100, 50, 50);
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
-		this.monsters = [new Blob(this, 100, 100)];
+		this.monsters = [];
 
 		// handle key presses
 		this.pressed = {};
@@ -51,6 +51,7 @@ export default class Game {
 		for (let i = this.gameObjects.length - 1; i > 0; i--) {
 			this.gameObjects[i].update(delta);
 		}
+		this.player.update();
 	}
 
 	render() {
