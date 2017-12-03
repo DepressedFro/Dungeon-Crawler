@@ -60,6 +60,8 @@ export class Tile extends GameObject {
             this.tileSize.height,
         )
     }
+
+    playerCollision(player) {}
 }
 
 export class FloorTile extends Tile {
@@ -118,7 +120,7 @@ export class WallTile extends Tile {
             return;
         }
 
-        this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 6));
+        this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
 
         // random types of walls for variety
         switch (this.room._.random(30)) {
@@ -138,6 +140,11 @@ export class WallTile extends Tile {
 
 export class ExitTile extends FloorTile {
     passable = false;
+
+    constructor(room, letter) {
+        super(room);
+        this.letter = letter;
+    }
     
     init(x, y) {
         super.init(x, y);
@@ -166,6 +173,30 @@ export class ExitTile extends FloorTile {
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: this.room._.random(14, 15), y: 8 }, -5));
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: this.room._.random(14, 15), y: 7 }, -5));
         }
+    }
+
+    playerCollision(player) {
+        if (this.game.movecd > 0)
+            return;
+
+        let dir = {
+            '<': {x: -1, y: 0},
+            '^': {x: 0, y: -1},
+            '>': {x: 1, y: 0},
+            'v': {x: 0, y: 1},
+        }[this.letter];
+
+
+        if (dir.x != 0) {
+            this.game.player.pos.x = 256 - this.game.player.pos.x + dir.x * 16;
+            this.game.player.pos.y = this.pos.y * Constants.tileSize + 8;
+        } if (dir.y != 0) {
+            this.game.player.pos.x = this.pos.x * Constants.tileSize + 8;
+            this.game.player.pos.y = 256 - this.game.player.pos.y + dir.y * 16;
+        }
+
+        this.game.movetoroom(this.game.room.pos.x + dir.x, this.game.room.pos.y + dir.y);
+        console.log(this.game.room.pos, this.game.player.pos);
     }
 }
 

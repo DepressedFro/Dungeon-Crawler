@@ -3,6 +3,8 @@ import GameObject from './gameobject.js'
 import Constants from './constants.js';
 
 export default class Player extends GameObject {
+	zindex = 10;
+
 	constructor(game, health, x, y) {
 		super(game);
 		this.health = health;
@@ -44,11 +46,9 @@ export default class Player extends GameObject {
 			if (tile === null)
 				continue;
 
+			tile.playerCollision(this);
 			var col = this.collides(tile);
 			if (!tile.passable && col !== null) {
-				// tile.debugDrawBBox(this.game.ctx);
-				// var now = new Date().getTime();
-				// while(new Date().getTime() < now + 500){ /* do nothing */ }
 				return col;
 			}
 		}
@@ -58,10 +58,10 @@ export default class Player extends GameObject {
 
 	get BBox() {
 		return {
-			x: this.pos.x - 6,
-			y: this.pos.y - 8,
-			width: 12,
-			height: 17,
+			x: this.pos.x - 4,
+			y: this.pos.y,
+			width: 8,
+			height: 7,
 		}
 	}
 
@@ -112,5 +112,6 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4
 		);
+		// this.debugDrawBBox(ctx);
 	}
 }
