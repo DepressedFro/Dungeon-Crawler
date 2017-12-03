@@ -3,21 +3,24 @@ import Room from './room.js';
 import Player from './player.js';
 import Monster from './monster.js';
 import Blob from './blob.js';
+import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
 import Riddles from './riddle';
 
 export default class Game {
-	constructor(screenWidth, screenHeight, context) {
+	constructor(screenWidth, screenHeight, context, canvas) {
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
 		this.gameObjects = [];
-		this.player = new Player(this);
+		this.canvas = canvas;
+		// this.player = new Player(this);
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, this.map.rooms[this.playerlocx, this.playerlocy]);
-		this.monsters = [new Blob(this, 100, 100)];
+		this.room = new Room(this, {x: this.map.center, y: this.map.center});
+		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200),new Blob(this, 100, 150),new Blob(this, 150, 150),new Blob(this, 200, 150)];
+		this.player = new Player(this, 100, 50, 50);
 
 		// handle key presses
 		this.pressed = {};
@@ -26,14 +29,16 @@ export default class Game {
 
 		this.gameStates = ["Main Menu", "Pause Menu", "Gameplay", "Game Over"];
 		this.currentState = this.gameStates[0];
+		this.canvas.onmousedown = (event) => {this.pressed['mouse' + event.which] = true};
+		this.canvas.onmouseup = (event) => {this.pressed['mouse' + event.which] = false};
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
 	}
 
-	movetoroom(locx, locy, dir) {
-		this.room = new Room(this.map.rooms[locx, locy]);
-		this.room.render(this.ctx);
+	movetoroom(locx, locy) {
+		this.room.destroy();
+		this.room = new Room(this, {x: locx, y: locy});
 	}
 
 	add(obj) {
