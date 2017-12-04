@@ -13,31 +13,14 @@ export default class Player extends GameObject {
 		this.speed_mult = 0.4;
 		this.friction = 0.9;
 
-		this.lookingLeft = false;
-		this.gold = 0;
-		this.class = 0;
-		this.className = "Warrior";
-	}
-
-	mouseDown(event){
-		switch(event.which){
-			//Left click action
-			case 1:
-				switch(this.class){
-					//Left click is Sword attack for Warriors
-					case 0:
-						break;
-				}
-				break;
-			//Right click action
-			case 3:
-				switch(this.class){
-					//Right click is Block for Warriors
-					case 0:
-						break;
-				}
-				break;
-		}
+		//for walking animation
+		this.moveEffect = 0;
+		//possible states : move, attack, block
+		this.state = 'move';
+		this.chargeSpeed = 8;//how far will the player charge when attacking
+		//this.gold = 0;
+		//this.class = 0;
+		//this.className = "Warrior"; Make a new class in javascript for different type of Player 
 	}
 
 	inTileCollision() {
@@ -85,23 +68,7 @@ export default class Player extends GameObject {
 		return ret;
 	}
 
-	update(delta){
-		var previous_pos = this.pos.clone();
-
-		var l = this.game.pressed['a'] | 0;
-		var r = this.game.pressed['d'] | 0;
-		var u = this.game.pressed['w'] | 0;
-		var d = this.game.pressed['s'] | 0;
-
-		if(r-l > 0){
-			this.lookingLeft = false;
-		}
-		if(r-l < 0){
-			this.lookingLeft = true;
-		}
-		
-
-		this.velocity.add(new Vector(r-l,d-u).normalize().multiply(this.speed_mult));
+	applyVelocity(){
 		this.velocity.multiply(this.friction);
 		//this.pos.add(this.velocity);
 
@@ -115,16 +82,60 @@ export default class Player extends GameObject {
 		}
 	}
 
+	moveState(){
+		var previous_pos = this.pos.clone();
+
+		var l = this.game.pressed['a'] | 0;
+		var r = this.game.pressed['d'] | 0;
+		var u = this.game.pressed['w'] | 0;
+		var d = this.game.pressed['s'] | 0;
+
+		
+		this.velocity.add(new Vector(r-l,d-u).normalize().multiply(this.speed_mult));
+		this.applyVelocity();
+	}
+
+	changeToAttackHandle(){
+		if(this.game.pressed['mouse1']){
+			this.velocity.add(new Vector(this.game.mousePos.x-this.pos.x,this.game.mousePos.y-this.pos.y).normalize().multiply(this.chargeSpeed));
+			this.state = 'attack';
+		}
+	}
+
+	attackState(){
+		this.applyVelocity();
+		if(this.velocity.length() < 0.5){
+			this.state = 'move';
+		}
+	}
+
+	update(delta){
+		switch(this.state){
+			case 'move':
+				this.moveEffect += this.velocity.length()/10;
+				this.moveState();
+				this.changeToAttackHandle();
+			break;
+			case 'attack':
+				this.moveEffect = 0;
+				this.attackState();
+			break;
+		}
+	}
+
 	render(ctx) {
 
+
 		ctx.save();
-		if(this.lookingLeft){
+		if(this.velocity.x < 0){
 			ctx.translate(Math.floor(this.pos.x - 8)+Constants.tileSize, Math.floor(this.pos.y - 12));
-			ctx.scale(-1, 1);
+			ctx.scale(-1+Math.sin(this.moveEffect)/15*this.velocity.length(), 1);
 		}else{
 			ctx.translate(Math.floor(this.pos.x - 8), Math.floor(this.pos.y - 12));
-			ctx.scale(1, 1);	
+			ctx.scale(1+Math.sin(this.moveEffect)/15*this.velocity.length(), 1);	
 		}
+
+		//player
 		ctx.drawImage(
 			Constants.tileset,
 			14 * Constants.tileSize,
@@ -132,6 +143,24 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4,
 			0,
+			0,
+			Constants.tileSize,
+			Constants.tileSize + 4
+		);
+
+		if(this.state == 'attack'){
+			ctx.translate(22,14);
+			ctx.rotate(Math.PI/2);
+		}
+
+		//sword
+		ctx.drawImage(
+			Constants.tileset,
+			12 * Constants.tileSize,
+			1 * Constants.tileSize - 6,
+			Constants.tileSize,
+			Constants.tileSize + 6,
+			-6,
 			0,
 			Constants.tileSize,
 			Constants.tileSize + 4
