@@ -12,14 +12,14 @@ export default class Game {
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
-		this.gameObjects = [];
 		this.canvas = canvas;
-		// this.player = new Player(this);
+		this.gameObjects = [];
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, {x: this.map.center, y: this.map.center});
-		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200),new Blob(this, 100, 150),new Blob(this, 150, 150),new Blob(this, 200, 150)];
+		this.room = new Room(this, { x: this.map.center, y: this.map.center });
+		this.movecd = 0;
+		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.player = new Player(this, 100, 50, 50);
 
 		// handle key presses
@@ -27,18 +27,30 @@ export default class Game {
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
 		window.onkeyup = (event) => { this.pressed[event.key] = false; };
 
-		this.gameStates = ["Main Menu", "Pause Menu", "Gameplay", "Game Over"];
+		this.canvas.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
+		this.canvas.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
+		this.canvas.onmousemove = (event) => { this.mousemove(event) };
+		this.mousePos = { x: 0, y: 0 };
+
+		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
 		this.currentState = this.gameStates[0];
-		this.canvas.onmousedown = (event) => {this.pressed['mouse' + event.which] = true};
-		this.canvas.onmouseup = (event) => {this.pressed['mouse' + event.which] = false};
+
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
 	}
 
+	mousemove(event) {
+		let rect = this.canvas.getBoundingClientRect();
+		let x = Math.floor((event.clientX - rect.left) / this.canvas.offsetWidth * this.canvas.width);
+		let y = Math.floor((event.clientY - rect.top) / this.canvas.offsetHeight * this.canvas.height);
+		this.mousePos = { x, y };
+	}
+
 	movetoroom(locx, locy) {
 		this.room.destroy();
-		this.room = new Room(this, {x: locx, y: locy});
+		this.room = new Room(this, { x: locx, y: locy });
+		this.movecd = 500;
 	}
 
 	add(obj) {
@@ -51,61 +63,60 @@ export default class Game {
 	}
 
 	update() {
+		let delta = +new Date() - this.lastTime;
+		this.lastTime = +new Date();
+		this.movecd -= delta;
 
 
-		if(this.currentState === "Main Menu")
+		if (this.currentState === "Title Screen")
 		{
-			if(this.pressed['ArrowUp'])
-			{
-
-			}
-			else if(this.pressed['ArrowDown'])
-			{
-
-			}
-			else if(this.pressed['Enter'])
-			{
-				this.currentState = this.gameStates[2];
-			}
-		}
-		else if(this.currentState === "Pause Menu")
-		{
-			if(this.pressed['Escape'])
-			{
-				this.currentState = this.gameStates[2];
-			}
-			else if(this.pressed['ArrowUp'])
-			{
-
-			}
-			else if(this.pressed['ArrowDown'])
-			{
-
-			}
-			else if(this.pressed['Enter'])
-			{
-
-			}
-		}
-		else if(this.currentState === "Gameplay")
-		{
-			let delta = +new Date() - this.lastTime;
-			this.lastTime = +new Date();
-
-			// loop backwards to handle object removal
-			for (let i = this.gameObjects.length - 1; i > 0; i--) {
-				this.gameObjects[i].update(delta);
-			}
-			this.room.update(this.pressed);
-			if(this.pressed['Escape'])
+			if (this.pressed['Enter'])
 			{
 				this.currentState = this.gameStates[1];
 			}
 		}
-		else if(this.currentState === "Game Over")
+		if (this.currentState === "Main Menu") {
+			if (this.pressed['ArrowUp']) {
+
+			}
+			else if (this.pressed['ArrowDown']) {
+
+			}
+			else if (this.pressed['Enter']) {
+				this.currentState = this.gameStates[3];
+			}
+		}
+		else if (this.currentState === "Pause Menu") {
+			if (this.pressed['Escape']) {
+				this.currentState = this.gameStates[3];
+			}
+			else if (this.pressed['ArrowUp']) {
+
+			}
+			else if (this.pressed['ArrowDown']) {
+
+			}
+			else if (this.pressed['Enter']) {
+
+			}
+		}
+		else if (this.currentState === "Gameplay")
 		{
-			if(this.pressed['Enter'] || this.pressed['Space'])
+			// loop backwards to handle object removal
+			for (let i = this.gameObjects.length - 1; i > 0; i--) {
+				if (this.gameObjects[i])
+					this.gameObjects[i].update(delta);
+			}
+
+			if (this.pressed['Escape'])
 			{
+				this.currentState = this.gameStates[2];
+			}
+
+		}
+		else if (this.currentState === "Game Over")
+		{
+			if (this.pressed['Enter'] || this.pressed['Space']) {
 
 			}
 		}
@@ -113,16 +124,14 @@ export default class Game {
 	}
 
 	render() {
+		// clear the screen
+		this.ctx.fillStyle = '#1c1117';
+		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
 
-		if(this.currentState === "Main Menu")
-		{
-
-		}
-		else if(this.currentState === "Pause Menu")
-		{
+		if (this.currentState === "Main Menu") {
 
 		}
-		else if(this.currentState === "Gameplay")
+		else if (this.currentState === "Pause Menu")
 		{
 			// reorder if zindex changed on some object
 			if (this.zindexChanged) {
@@ -136,8 +145,20 @@ export default class Game {
 				this.ctx.restore();
 			}
 		}
-		else if(this.currentState === "Game Over")
-		{
+		else if (this.currentState === "Gameplay") {
+			// reorder if zindex changed on some object
+			if (this.zindexChanged) {
+				this.gameObjects = _.sortBy(this.gameObjects, (obj) => { return obj.zindex });
+				this.zindexChanged = false;
+			}
+
+			for (let obj of this.gameObjects) {
+				this.ctx.save();
+				obj.render(this.ctx);
+				this.ctx.restore();
+			}
+		}
+		else if (this.currentState === "Game Over") {
 
 		}
 
