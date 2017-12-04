@@ -1,6 +1,7 @@
 import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
+import Arrow from './arrow.js';
 
 export default class Player extends GameObject {
 	zindex = 10;
@@ -14,28 +15,10 @@ export default class Player extends GameObject {
 		this.gold = 0;
 		this.class = 0;
 		this.className = "Warrior";
+		this.arrows = [];
 	}
 
-	mouseDown(event){
-		switch(event.which){
-			//Left click action
-			case 1:
-				switch(this.class){
-					//Left click is Sword attack for Warriors
-					case 0:
-						break;
-				}
-				break;
-			//Right click action
-			case 3:
-				switch(this.class){
-					//Right click is Block for Warriors
-					case 0:
-						break;
-				}
-				break;
-		}
-	}
+	//Checks to see if player collides with a tile
 	inTileCollision() {
 		var xx = Math.floor(this.pos.x / Constants.tileSize);
 		var yy = Math.floor(this.pos.y / Constants.tileSize);
@@ -56,6 +39,7 @@ export default class Player extends GameObject {
 		return null;
 	}
 
+	//Create player collision box
 	get BBox() {
 		return {
 			x: this.pos.x - 4,
@@ -65,9 +49,14 @@ export default class Player extends GameObject {
 		}
 	}
 
-	update(delta){
-		var previous_pos = this.pos.clone();
+	//Attack event
+	attack(mx, my){
+		this.arrows.push(new Arrow(this.pos, new Vector(mx,my)));
+	}
 
+	update(delta){
+		//Update Player collision
+		var previous_pos = this.pos.clone();
 		if(this.game.pressed['a']){
 			if(this.game.pressed['s']){
 				this.pos.x += -this.speed;
@@ -94,9 +83,22 @@ export default class Player extends GameObject {
 			this.pos.y += -this.speed;
 		}
 
+		//Sees if player can move to the location
 		var col = this.inTileCollision();
 		if (col !== null) {
 			this.pos = previous_pos.clone();
+		}
+
+		//Handles mouse events
+		if(this.game.pressed['mouse1']){
+			this.attack(this.game.mousePos.x, this.game.mousePos.y);
+		}
+
+		for(var i = 0; i < this.arrows.length; i++){
+			this.arrows[i].update(delta);
+			if(this.arrows[i].remove){
+				this.arrows.splice(i,1);
+			}
 		}
 	}
 
@@ -112,6 +114,10 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4
 		);
+		for(var i = 0; i < this.arrows.length; i++){
+			this.arrows[i].render(ctx);
+		}
 		// this.debugDrawBBox(ctx);
+
 	}
 }
