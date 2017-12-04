@@ -28,7 +28,7 @@ export default class Map {
 		this.makeBranch(this.center, this.center, 1, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 2, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 3, Math.floor(size/2 - 1));
-		this.connectRooms();
+		this.finalizeRooms();
 		
 		this.roomsToString();
 		console.log(this.seed);
@@ -130,7 +130,7 @@ export default class Map {
 		}
 	}
 	
-	connectRooms() {
+	finalizeRooms() {
 		for(var y = 0; y < this.size; y++) {
 			for(var x = 0; x < this.size; x++) {
 				if(this.rooms[y][x][0] > 0) {
@@ -151,10 +151,17 @@ export default class Map {
 						wdoor = 1;
 					}
 					
+					this.rooms[y][x][1] = Math.floor(Math.random() * 5);
+					
 					this.rooms[y][x][2] = ndoor;
 					this.rooms[y][x][3] = edoor;
 					this.rooms[y][x][4] = sdoor;
 					this.rooms[y][x][5] = wdoor;
+					
+					this.rooms[y][x][6] = Math.ceiling(Math.random() * 4);
+					this.rooms[y][x][7] = Math.ceiling(Math.random() * 4);
+					this.rooms[y][x][8] = Math.ceiling(Math.random() * 4);
+					this.rooms[y][x][9] = Math.ceiling(Math.random() * 4);
 				}
 			}
 		}
