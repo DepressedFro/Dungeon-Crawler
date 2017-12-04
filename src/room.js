@@ -1,10 +1,13 @@
 import seedrandom from 'seedrandom';
-import { Tile, FloorTile, WallTile, ExitTile, tileTypes } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTileBlob } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 import GameObject from './gameobject';
 import * as _ from 'lodash';
 import Constants from './constants.js';
+import KnifeThrower from './knifethrower.js';
+import BigBlob from './bigblob.js';
+import Blob from './blob.js';
 
 let riddles = new Riddles();
 
@@ -25,8 +28,9 @@ export default class Room extends GameObject {
 		this.monsters = [];
 		this.tiles = [];
 
- 	    this.riddle = riddles;
+    this.riddle = riddles;
 		this.trap;
+
 
 		//Determine riddle or Trap
 		//this.riddleTrap((roomcode[13]*100) + (roomcode[14]*10) + roomcode[15]);
@@ -49,7 +53,7 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
-		this.shape = Constants.shapeNames[this._.random(0, 1)];//shapeNames[this.roomcode[1]];
+		this.shape = Constants.shapeNames[this._.random(0,5)];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
 			'>': this.roomcode[3],
@@ -81,12 +85,18 @@ export default class Room extends GameObject {
 
 	createByShape(shape) {
 		this.tiles = [];
-		
+
+		//I hack this a little bit
+		var hack_x = 0; 
+		var hack_y = 0; 
+
 		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
-
+			++hack_y;
+			
 			for (let l of row) {
 				let tile = tileTypes[l];
+				++hack_x;
 
 				if (tile === null) {
 					new_row.push(null);
@@ -96,6 +106,9 @@ export default class Room extends GameObject {
 					else
 						new_row.push(new ExitTile(this, l));
 				} else {
+					if(tile == EnemyTileBlob){
+						this.game.monsters.push(new Blob(this.game,hack_x*Constants.tileSize,hack_y*Constants.tileSize));
+					}
 					new_row.push(new tile(this)); // instantiate
 				}
 			}

@@ -6,9 +6,11 @@ import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
 import Riddles from './riddle';
+import KnifeThrower from './knifethrower.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
+		this.monsters = [];
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
@@ -19,7 +21,6 @@ export default class Game {
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, { x: this.map.center, y: this.map.center });
 		this.movecd = 0;
-		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.player = new Player(this, 100, 50, 50);
 
 		// handle key presses
@@ -46,6 +47,10 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
+		for(let mon of this.monsters){
+			mon.destroy();
+		}
+		this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
 		this.movecd = 500;
@@ -64,7 +69,6 @@ export default class Game {
 		let delta = +new Date() - this.lastTime;
 		this.lastTime = +new Date();
 		this.movecd -= delta;
-
 
 		if (this.currentState === "Main Menu") {
 			if (this.pressed['ArrowUp']) {

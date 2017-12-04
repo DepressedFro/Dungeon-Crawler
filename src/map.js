@@ -158,10 +158,10 @@ export default class Map {
 					this.rooms[y][x][4] = sdoor;
 					this.rooms[y][x][5] = wdoor;
 					
-					this.rooms[y][x][6] = Math.ceiling(Math.random() * 4);
-					this.rooms[y][x][7] = Math.ceiling(Math.random() * 4);
-					this.rooms[y][x][8] = Math.ceiling(Math.random() * 4);
-					this.rooms[y][x][9] = Math.ceiling(Math.random() * 4);
+					this.rooms[y][x][6] = Math.ceil(Math.random() * 4);
+					this.rooms[y][x][7] = Math.ceil(Math.random() * 4);
+					this.rooms[y][x][8] = Math.ceil(Math.random() * 4);
+					this.rooms[y][x][9] = Math.ceil(Math.random() * 4);
 				}
 			}
 		}
