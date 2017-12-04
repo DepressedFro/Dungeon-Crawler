@@ -7,6 +7,7 @@ export default class Monster extends GameObject {
 		super(game);
 		this.pos = new Vector(x, y);
 		this.speed = new Vector(0, 0);
+		this.knockBack = 1;
 	}
 	
 	setTilePosition(xtile,ytile){

@@ -2,6 +2,15 @@ import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
 
+/*****************************
+
+TODO:
+
+change speed according to delta time
+
+******************************/
+
+
 export default class Player extends GameObject {
 	zindex = 10;
 
@@ -17,7 +26,14 @@ export default class Player extends GameObject {
 		this.moveEffect = 0;
 		//possible states : move, attack, block
 		this.state = 'move';
-		this.chargeSpeed = 8;//how far will the player charge when attacking
+		//how far will the player charge when attacking
+		this.chargeSpeed = 8;
+		//how far will the player move back when is hit by a monster
+		this.knockBack = 1;
+
+		this.damagedEffect = 0;
+		this.damagedEffectSp = 0.95;
+
 		//this.gold = 0;
 		//this.class = 0;
 		//this.className = "Warrior"; Make a new class in javascript for different type of Player 
@@ -83,7 +99,6 @@ export default class Player extends GameObject {
 	}
 
 	moveState(){
-		var previous_pos = this.pos.clone();
 
 		var l = this.game.pressed['a'] | 0;
 		var r = this.game.pressed['d'] | 0;
@@ -110,6 +125,14 @@ export default class Player extends GameObject {
 	}
 
 	update(delta){
+
+		var previous_pos = this.pos.clone();
+		if(this.damagedEffect > 0.1){
+			this.damagedEffect *= this.damagedEffectSp;
+		}else{
+			this.damagedEffect = 0;
+		}
+
 		switch(this.state){
 			case 'move':
 				this.moveEffect += this.velocity.length()/10;
@@ -121,6 +144,30 @@ export default class Player extends GameObject {
 				this.attackState();
 			break;
 		}
+
+		//collision checking
+
+		for (var mon of this.game.monsters) {
+			//assuming all monsters have almost square BBoxes
+			if(mon.circleCollides(this)){
+				switch(this.state){
+					case 'move':
+						this.pos = previous_pos;
+
+						var tmp_knockback = new Vector(this.pos.x - mon.pos.x , this.pos.y - mon.pos.y).normalize();
+						this.velocity = tmp_knockback.multiply(3);
+						this.damagedEffect = 1;
+						//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
+
+
+					break;
+					case 'attack':
+						mon.onDeath();
+					break;
+				}
+			}
+		}
+
 	}
 
 	render(ctx) {
@@ -148,6 +195,24 @@ export default class Player extends GameObject {
 			Constants.tileSize + 4
 		);
 
+		//just an effect, is visible when the player is hit
+		if(this.damagedEffect > 0){
+			ctx.globalAlpha = this.damagedEffect;
+			//player
+			ctx.drawImage(
+				Constants.tileset,
+				15 * Constants.tileSize,
+				15 * Constants.tileSize - 4,
+				Constants.tileSize,
+				Constants.tileSize + 4,
+				0,
+				0,
+				Constants.tileSize,
+				Constants.tileSize + 4
+			);
+			ctx.globalAlpha = 1;
+		}
+
 		if(this.state == 'attack'){
 			ctx.translate(22,14);
 			ctx.rotate(Math.PI/2);
@@ -166,6 +231,6 @@ export default class Player extends GameObject {
 			Constants.tileSize + 4
 		);
 		ctx.restore();
-		// this.debugDrawBBox(ctx);
+		//this.debugDrawBBox(ctx);
 	}
 }
