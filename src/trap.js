@@ -129,6 +129,7 @@ export default class Trap extends GameObject {
 						);
 					}
 				}
+			//Spike Animation
 			if(this.start < 12) {
 				this.start+= 0.8;
 			}

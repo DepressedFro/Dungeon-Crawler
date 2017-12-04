@@ -6,7 +6,7 @@ import GameObject from './gameobject';
 import * as _ from 'lodash';
 import Constants from './constants.js';
 
-let riddles = new Riddles();
+// let riddles = new Riddles();
 
 export default class Room extends GameObject {
 	width = 16;
@@ -25,8 +25,8 @@ export default class Room extends GameObject {
 		this.monsters = [];
 		this.tiles = [];
 
- 	  this.riddle = riddles;
-		this.trap;
+ 	  this.riddle = new Riddles();
+		this.trap = new Trap(game, 203);
 
 		//Determine riddle or Trap
 		//this.riddleTrap((roomcode[13]*100) + (roomcode[14]*10) + roomcode[15]);
@@ -77,6 +77,9 @@ export default class Room extends GameObject {
 					t.destroy();
 			}
 		}
+		if(this.trap) {
+			this.trap.destroy();
+		}
 	}
 
 	createByShape(shape) {
@@ -113,8 +116,8 @@ export default class Room extends GameObject {
 	riddleTrap(index) {
 		if(index >= 200) {
 			this.trap = new Trap(index);
-		} else {
-			this.riddle = new Riddles(index);
+		} else if(index > 0){
+			this.riddle = new Riddles();
 		}
 	}
 
