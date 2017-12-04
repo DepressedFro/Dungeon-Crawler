@@ -25,7 +25,7 @@ export default class Room extends GameObject {
 		this.monsters = [];
 		this.tiles = [];
 
- 	    this.riddle = riddles;
+ 	  this.riddle = riddles;
 		this.trap;
 
 		//Determine riddle or Trap
@@ -81,7 +81,7 @@ export default class Room extends GameObject {
 
 	createByShape(shape) {
 		this.tiles = [];
-		
+
 		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
 
@@ -100,7 +100,7 @@ export default class Room extends GameObject {
 				}
 			}
 
-			this.tiles.push(new_row);			
+			this.tiles.push(new_row);
 		}
 	}
 
@@ -117,7 +117,7 @@ export default class Room extends GameObject {
 			this.riddle = new Riddles(index);
 		}
 	}
-	
+
 	update() {
 		if(this.riddle) {
 			var choices = this.riddle.getChoices();

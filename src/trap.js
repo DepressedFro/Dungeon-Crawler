@@ -15,7 +15,7 @@ export default class Trap extends GameObject {
 			this.tilex;
 			this.tiley;
 
-			this.fireStart;
+			this.start;
 			this.fireInt;
       this.damage;
 			this.cd;
@@ -51,7 +51,7 @@ export default class Trap extends GameObject {
     this.damage = 10;
 		this.type = 'flame';
 
-		this.fireStart = [this.pos.x, this.pos.x+3, this.pos.x+5.5];
+		this.start = [this.pos.x, this.pos.x+3, this.pos.x+5.5];
 		this.fireInt = [-0.75,-0.75,-0.75];
   }
   spike() {
@@ -63,10 +63,10 @@ export default class Trap extends GameObject {
     this.width = 1;
     this.damage = 2;
 		this.type = 'spike';
-		this.fireStart = 0;
+		this.start = 0;
   }
   blade() {
-		this.pos = {x: 130, y: 140};
+		this.pos = {x: 100, y: 140};
 		this.tilex = 11;
 		this.tiley = 3;
 		this.angle = 0;
@@ -89,10 +89,10 @@ export default class Trap extends GameObject {
 		var value = this.pos.x+6;
 		var value2 = this.pos.x-6;
 		for(var i = 0; i<3; i++) {
-			if(this.fireStart[i] > value || this.fireStart[i] < value2) {
+			if(this.start[i] > value || this.start[i] < value2) {
 				this.fireInt[i] *= -1;
 			}
-			this.fireStart[i] += this.fireInt[i];
+			this.start[i] += this.fireInt[i];
 		}
 	}
 	render(ctx) {
@@ -106,7 +106,7 @@ export default class Trap extends GameObject {
 					this.tiley * Constants.tileSize,
 					Constants.tileSize,
 					Constants.tileSize,
-					this.fireStart[i],
+					this.start[i],
 					this.pos.y+Constants.tileSize*i,
 					Constants.tileSize,
 					Constants.tileSize
@@ -121,16 +121,16 @@ export default class Trap extends GameObject {
 							this.tilex * Constants.tileSize,
 							this.tiley * Constants.tileSize,
 							Constants.tileSize,
-							this.fireStart,
+							this.start,
 							this.pos.x+(Constants.tileSize*i),
-							this.pos.y+(Constants.tileSize*j)+(16-this.fireStart),
+							this.pos.y+(Constants.tileSize*j)+(16-this.start),
 							Constants.tileSize,
-							this.fireStart
+							this.start
 						);
 					}
 				}
-			if(this.fireStart < 12) {
-				this.fireStart+= 0.8;
+			if(this.start < 12) {
+				this.start+= 0.8;
 			}
 				break;
 			case 203:
@@ -150,17 +150,6 @@ export default class Trap extends GameObject {
 				Constants.tileSize,
 				Constants.tileSize
 			);
-			// ctx.drawImage(
-			// 	Constants.tileset,
-			// 	this.tilex * Constants.tileSize,
-			// 	this.tiley * Constants.tileSize-10,
-			// 	Constants.tileSize,
-			// 	Constants.tileSize,
-			// 	(Constants.tileSize/-2),
-			// 	(Constants.tileSize/-2)+Constants.tileSize,
-			// 	Constants.tileSize,
-			// 	Constants.tileSize
-			// );
 
 			ctx.restore();
 				break;
