@@ -87,8 +87,8 @@ export default class Blob extends Monster {
 	}
 
 	onDeath(){
-		this.destroy();
-		_.remove(this.game.monsters,this);		
+		this.game.remove(this);
+		//_.remove(this.game.monsters,this);		
 	}
 
 }

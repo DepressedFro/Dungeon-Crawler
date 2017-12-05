@@ -2,6 +2,7 @@ import GameObject from './gameobject.js';
 import Constants from './constants.js';
 import * as _ from 'lodash';
 import Blob from './blob.js';
+import BigBlob from './bigblob.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -197,14 +198,21 @@ export class ExitTile extends FloorTile {
         }
 
         this.game.movetoroom(this.game.room.pos.x + dir.x, this.game.room.pos.y + dir.y);
-        console.log(this.game.room.pos, this.game.player.pos);
+        //console.log(this.game.room.pos, this.game.player.pos);
     }
 }
 
 export class EnemyTileBlob extends FloorTile {
     init(x,y){
         super.init(x,y);
-        this.game.monsters.push(new Blob(this.game,x*Constants.tileSize,y*Constants.tileSize));
+        new Blob(this.game,x*Constants.tileSize,y*Constants.tileSize);
+    }
+}
+
+export class EnemyTileBigBlob extends FloorTile {
+    init(x,y){
+        super.init(x,y);
+        new BigBlob(this.game,x*Constants.tileSize,y*Constants.tileSize);
     }
 }
 
@@ -218,7 +226,7 @@ export let tileTypes = {
     'v': ExitTile,
     '^': ExitTile,
     '1': EnemyTileBlob,
-    '2': EnemyTileBlob,
-    '3': EnemyTileBlob,
-    '4': EnemyTileBlob
+    '2': EnemyTileBigBlob,
+    '3': EnemyTileBigBlob,
+    '4': EnemyTileBigBlob
 }

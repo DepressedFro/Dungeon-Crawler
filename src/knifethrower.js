@@ -49,8 +49,7 @@ export default class KnifeThrower extends Monster {
 	}
 
 	onDeath(){
-		this.destroy();
-		_.remove(this.game.monsters,this);		
+		this.game.remove(this);	
 	}
 
 }

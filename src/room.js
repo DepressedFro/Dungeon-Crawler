@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTileBlob } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTileBlob, EnemyTileBigBlob } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 import GameObject from './gameobject';
@@ -25,7 +25,7 @@ export default class Room extends GameObject {
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
 
-		this.monsters = [];
+		//this.monsters = [];
 		this.tiles = [];
 
     this.riddle = riddles;
@@ -106,9 +106,6 @@ export default class Room extends GameObject {
 					else
 						new_row.push(new ExitTile(this, l));
 				} else {
-					if(tile == EnemyTileBlob){
-						this.game.monsters.push(new Blob(this.game,hack_x*Constants.tileSize,hack_y*Constants.tileSize));
-					}
 					new_row.push(new tile(this)); // instantiate
 				}
 			}

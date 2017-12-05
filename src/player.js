@@ -1,7 +1,7 @@
 import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
-
+import Monster from './monster.js';
 /*****************************
 
 TODO:
@@ -147,23 +147,25 @@ export default class Player extends GameObject {
 
 		//collision checking
 
-		for (var mon of this.game.monsters) {
+		for (var mon of this.game.gameObjects) {
 			//assuming all monsters have almost square BBoxes
-			if(mon.circleCollides(this)){
+			if(mon instanceof Monster){
+				if(mon.circleCollides(this)){
 				switch(this.state){
-					case 'move':
-						this.pos = previous_pos;
+						case 'move':
+							this.pos = previous_pos;
 
-						var tmp_knockback = new Vector(this.pos.x - mon.pos.x , this.pos.y - mon.pos.y).normalize();
-						this.velocity = tmp_knockback.multiply(3);
-						this.damagedEffect = 1;
-						//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
+							var tmp_knockback = new Vector(this.pos.x - mon.pos.x , this.pos.y - mon.pos.y).normalize();
+							this.velocity = tmp_knockback.multiply(3);
+							this.damagedEffect = 1;
+							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
 
 
-					break;
-					case 'attack':
-						mon.onDeath();
-					break;
+						break;
+						case 'attack':
+							mon.onDeath();
+						break;
+					}
 				}
 			}
 		}

@@ -10,7 +10,7 @@ import KnifeThrower from './knifethrower.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
-		this.monsters = [];
+		//this.monsters = [];
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
@@ -47,10 +47,13 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
-		for(let mon of this.monsters){
-			mon.destroy();
+		for(var i=0; i<this.gameObjects.length; ++i){
+			if(this.gameObjects[i] instanceof Blob){
+				this.remove(this.gameObjects[i]);
+				--i;
+			}
 		}
-		this.monsters = [];
+		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
 		this.movecd = 500;

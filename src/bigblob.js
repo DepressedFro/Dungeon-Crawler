@@ -29,10 +29,14 @@ export default class BigBlob extends Blob {
 	}
 
 	onDeath(){
+		//this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
+		//this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
+		//this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
+		
+new Blob(this.game,this.pos.x,this.pos.y);
+new Blob(this.game,this.pos.x,this.pos.y);
+new Blob(this.game,this.pos.x,this.pos.y);
 		super.onDeath();
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
 	}
 
 }
