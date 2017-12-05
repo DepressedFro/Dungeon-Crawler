@@ -58,7 +58,7 @@ export default class Game {
 		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
-		this.movecd = 500;
+		this.movecd = 200;
 	}
 
 	shake(magnitude) {

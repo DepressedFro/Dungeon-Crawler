@@ -1,6 +1,7 @@
 import Constants from './constants.js';
 import GameObject from './gameobject.js';
 import Vector from './lib/vector2d.js';
+import Particle from './particle.js';
 
 export default class Monster extends GameObject {
 	zindex = 9;
@@ -50,4 +51,11 @@ export default class Monster extends GameObject {
 		return null;
 	}
 
+	onDeath() {
+		for (let i = 0; i < 20; i++) {
+			new Particle(this.game, this.pos, {x: (Math.random() - 0.5) * 10 + this.game.player.velocity.x, y: -Math.random() * 10 + this.game.player.velocity.y},
+				{x: 0, y: 0.3}, '#800');
+		}
+		this.destroy();
+	}
 }

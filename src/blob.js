@@ -4,9 +4,6 @@ import Monster from './monster.js';
 import * as _ from 'lodash';
 
 export default class Blob extends Monster {
-
-
-
 	constructor(game, x, y) {
 		super(game, x, y);
 
@@ -84,10 +81,4 @@ export default class Blob extends Monster {
 		);
 		//this.debugDrawBBox(ctx);
 	}
-
-	onDeath(){
-		this.game.remove(this);
-		//_.remove(this.game.monsters,this);		
-	}
-
 }

@@ -4,6 +4,8 @@ import Constants from './constants.js';
 import Monster from './monster.js';
 import ThrownKnife from './thrownknife.js';
 import { ExitTile } from './tile.js';
+import Particle from './particle.js';
+
 /*****************************
 
 TODO:
@@ -229,6 +231,10 @@ export default class Player extends GameObject {
 		}
 
 		if(this.state == 'attack'){
+			new Particle(this.game, this.pos, 
+				{x: (Math.random() - 0.5) * 5 + this.game.player.velocity.x, y: -Math.random() * 5 + this.game.player.velocity.y},
+				{x: 0, y: 0.3}, '#aa0', 1, 500, 10);
+
 			ctx.translate(22,14);
 			ctx.rotate(Math.PI/2);
 		}
