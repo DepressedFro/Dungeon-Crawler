@@ -208,13 +208,20 @@ export class ExitTile extends FloorTile {
             'v': {x: 0, y: 1},
         }[this.letter];
 
+        this.pos.x += dir.x * 1.3;
+        this.pos.y += dir.y * 1.3;
+        let col = player.collides(this)
+        this.pos.x -= dir.x * 1.3;
+        this.pos.y -= dir.y * 1.3;
+        if (!col)
+            return;
 
         if (dir.x != 0) {
-            this.game.player.pos.x = 256 - this.game.player.pos.x + dir.x * 16;
+            this.game.player.pos.x = 256 - this.game.player.pos.x;
             this.game.player.pos.y = this.pos.y * Constants.tileSize + 8;
         } if (dir.y != 0) {
             this.game.player.pos.x = this.pos.x * Constants.tileSize + 8;
-            this.game.player.pos.y = 256 - this.game.player.pos.y + dir.y * 16;
+            this.game.player.pos.y = 256 - this.game.player.pos.y;
         }
 
         this.game.movetoroom(this.game.room.pos.x + dir.x, this.game.room.pos.y + dir.y);

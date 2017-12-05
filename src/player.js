@@ -3,6 +3,7 @@ import GameObject from './gameobject.js'
 import Constants from './constants.js';
 import Monster from './monster.js';
 import ThrownKnife from './thrownknife.js';
+import { ExitTile } from './tile.js';
 /*****************************
 
 TODO:
@@ -52,7 +53,7 @@ export default class Player extends GameObject {
 
 			tile.playerCollision(this);
 			var col = this.collides(tile);
-			if (!tile.passable && col !== null) {
+			if (!tile.passable && col !== null && !(tile instanceof ExitTile)) {
 				return col;
 			}
 		}
