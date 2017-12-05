@@ -7,6 +7,7 @@ import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
 import Riddles from './riddle';
 import KnifeThrower from './knifethrower.js';
+import ThrownKnife from './thrownknife.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -48,7 +49,7 @@ export default class Game {
 
 	movetoroom(locx, locy) {
 		for(var i=0; i<this.gameObjects.length; ++i){
-			if(this.gameObjects[i] instanceof Monster){
+			if(this.gameObjects[i] instanceof Monster || this.gameObjects[i] instanceof ThrownKnife){
 				this.remove(this.gameObjects[i]);
 				--i;
 			}

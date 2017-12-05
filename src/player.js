@@ -2,6 +2,7 @@ import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
 import Monster from './monster.js';
+import ThrownKnife from './thrownknife.js';
 /*****************************
 
 TODO:
@@ -124,9 +125,16 @@ export default class Player extends GameObject {
 		}
 	}
 
+	applyKnockback(mon){
+		this.pos = this.previous_pos;
+		var tmp_knockback = new Vector(this.pos.x - mon.pos.x , this.pos.y - mon.pos.y).normalize();
+		this.velocity = tmp_knockback.multiply(3);
+		this.damagedEffect = 1;
+	}
+
 	update(delta){
 
-		var previous_pos = this.pos.clone();
+		this.previous_pos = this.pos.clone();
 		if(this.damagedEffect > 0.1){
 			this.damagedEffect *= this.damagedEffectSp;
 		}else{
@@ -153,11 +161,7 @@ export default class Player extends GameObject {
 				if(mon.circleCollides(this)){
 					switch(this.state){
 						case 'move':
-							this.pos = previous_pos;
-
-							var tmp_knockback = new Vector(this.pos.x - mon.pos.x , this.pos.y - mon.pos.y).normalize();
-							this.velocity = tmp_knockback.multiply(3);
-							this.damagedEffect = 1;
+							this.applyKnockback(mon);
 							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
 
 
@@ -168,6 +172,11 @@ export default class Player extends GameObject {
 							}
 						break;
 					}
+				}
+			}else if(mon instanceof ThrownKnife){
+				if(mon.circleCollides(this)){
+					this.game.remove(mon);
+					this.applyKnockback(mon);
 				}
 			}
 		}
