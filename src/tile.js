@@ -92,34 +92,53 @@ export class WallTile extends Tile {
     init(x, y) {
         super.init(x, y);
 
+        // top wall
+        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null && 
+            this.room.getTile(this.pos.x - 1, this.pos.y) !== null && 
+            this.room.getTile(this.pos.x - 1, this.pos.y + 1) !== null && 
+            this.room.getTile(this.pos.x + 1, this.pos.y + 1) !== null && 
+            this.room.getTile(this.pos.x, this.pos.y + 1) instanceof WallTile && 
+            !(this.room.getTile(this.pos.x, this.pos.y - 1) instanceof WallTile)) {
+            this.zindex = 16;
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
+            return;
+        }
+
         // bottom wall
-        if (!(this.room.getTile(x, y + 1) instanceof FloorTile) &&
+        if (!(this.room.getTile(x, y + 1) instanceof FloorTile) && 
             this.room.getTile(this.pos.x, this.pos.y - 1) instanceof FloorTile) {
-            this.sourcePos = [
-                { x: 8, y: 0 },
-                { x: 7, y: 1 },
-                { x: 8, y: 1 },
-            ][this.room._.random(2)];
+            this.sourcePos = [{ x: 8, y: 0 }, { x: 7, y: 1 }, { x: 8, y: 1 }][this.room._.random(2)];
+            return;
+        }
+
+        // divider wall
+        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null && 
+            this.room.getTile(this.pos.x - 1, this.pos.y) !== null && 
+            this.room.getTile(this.pos.x, this.pos.y + 1) !== null && 
+            this.room.getTile(this.pos.x, this.pos.y - 1) instanceof WallTile) {
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
+            if (this.room.getTile(this.pos.x, this.pos.y + 1) instanceof WallTile) this.zindex = 16;
             return;
         }
 
         // side wall
         if (!(this.room.getTile(this.pos.x, this.pos.y + 1) instanceof FloorTile)) {
             this.sourcePos = { x: 4, y: 6 };
+            this.zindex = 14;
             return;
         }
 
         // top left wall
         if (this.room.getTile(x - 2, y) === null && this.room.getTile(x - 1, y + 1) instanceof WallTile) {
             this.sourcePos = { x: 0, y: 1 };
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 0, y: 0 }, 6));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 0, y: 0 }, 15));
             return;
         }
 
         // top right wall
         if (this.room.getTile(x + 2, y) === null && this.room.getTile(x + 1, y + 1) instanceof WallTile) {
             this.sourcePos = { x: 2, y: 1 };
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 2, y: 0 }, 6));
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 2, y: 0 }, 15));
             return;
         }
 
