@@ -162,6 +162,7 @@ export default class Player extends GameObject {
 				if(mon.circleCollides(this)){
 					switch(this.state){
 						case 'move':
+							this.game.shake(10);
 							this.applyKnockback(mon);
 							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
 

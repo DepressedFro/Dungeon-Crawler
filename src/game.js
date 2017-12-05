@@ -17,6 +17,7 @@ export default class Game {
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
+		this.shakeMag = 0;		
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
@@ -60,6 +61,10 @@ export default class Game {
 		this.movecd = 500;
 	}
 
+	shake(magnitude) {
+        this.shakeMag += magnitude;
+    }
+
 	add(obj) {
 		this.gameObjects.push(obj);
 		this.zindexChanged = true;
@@ -74,6 +79,7 @@ export default class Game {
 		//console.log(delta);
 		this.lastTime = +new Date();
 		this.movecd -= delta;
+		this.shakeMag *= 0.90;		
 
 		if (this.currentState === "Main Menu") {
 			if (this.pressed['ArrowUp']) {
@@ -120,7 +126,10 @@ export default class Game {
 	}
 
 	render() {
+		this.ctx.save();		
+
 		// clear the screen
+		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));		
 		this.ctx.fillStyle = '#1c1117';
 		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
 
@@ -147,6 +156,7 @@ export default class Game {
 
 		}
 
+		this.ctx.restore();				
 	}
 
 	loop() {
