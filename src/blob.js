@@ -16,7 +16,6 @@ export default class Blob extends Monster {
 		this.burstSpeed = 150;
 		this.currentState = "wait";
 		this.waitTime = 300;
-		this.timer = this.waitTime;
 	}
 
 	get BBox() {

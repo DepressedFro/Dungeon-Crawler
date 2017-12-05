@@ -9,6 +9,7 @@ export default class Monster extends GameObject {
 		this.speed = new Vector(0, 0);
 		this.knockBack = 1;
 		this.invincible = 1;
+		this.timer = 1000;		
 	}
 	
 	setTilePosition(xtile,ytile){

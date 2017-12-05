@@ -179,11 +179,11 @@ export default class Player extends GameObject {
 
 		ctx.save();
 		if(this.velocity.x < 0){
-			ctx.translate(Math.floor(this.pos.x - 8)+Constants.tileSize, Math.floor(this.pos.y - 12));
-			ctx.scale(-1+Math.sin(this.moveEffect)/15*this.velocity.length(), 1);
+			ctx.translate(Math.floor(this.pos.x - 8)+Constants.tileSize, Math.floor(this.pos.y - 12)-20*Math.sin(this.moveEffect)/30*this.velocity.length());
+			ctx.scale(-1, 1+Math.sin(this.moveEffect)/30*this.velocity.length());
 		}else{
-			ctx.translate(Math.floor(this.pos.x - 8), Math.floor(this.pos.y - 12));
-			ctx.scale(1+Math.sin(this.moveEffect)/15*this.velocity.length(), 1);	
+			ctx.translate(Math.floor(this.pos.x - 8), Math.floor(this.pos.y - 12)-20*Math.sin(this.moveEffect)/30*this.velocity.length());
+			ctx.scale(1, 1+Math.sin(this.moveEffect)/30*this.velocity.length());	
 		}
 
 		//player

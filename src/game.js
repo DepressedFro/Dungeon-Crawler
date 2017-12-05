@@ -28,9 +28,9 @@ export default class Game {
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
 		window.onkeyup = (event) => { this.pressed[event.key] = false; };
 
-		this.canvas.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
-		this.canvas.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
-		this.canvas.onmousemove = (event) => { this.mousemove(event) };
+		window.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
+		window.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
+		window.onmousemove = (event) => { this.mousemove(event) };
 		this.mousePos = { x: 0, y: 0 };
 		this.gameStates = ["Main Menu", "Pause Menu", "Gameplay", "Game Over"];
 		this.currentState = this.gameStates[2];
@@ -48,7 +48,7 @@ export default class Game {
 
 	movetoroom(locx, locy) {
 		for(var i=0; i<this.gameObjects.length; ++i){
-			if(this.gameObjects[i] instanceof Blob){
+			if(this.gameObjects[i] instanceof Monster){
 				this.remove(this.gameObjects[i]);
 				--i;
 			}
