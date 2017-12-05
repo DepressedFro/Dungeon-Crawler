@@ -3,6 +3,7 @@ import Constants from './constants.js';
 import * as _ from 'lodash';
 import Blob from './blob.js';
 import BigBlob from './bigblob.js';
+import KnifeThrower from './knifethrower.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -216,6 +217,13 @@ export class EnemyTileBigBlob extends FloorTile {
     }
 }
 
+export class EnemyTileKnifeThrower extends FloorTile {
+    init(x,y){
+        super.init(x,y);
+        new KnifeThrower(this.game,x*Constants.tileSize,y*Constants.tileSize);
+    }
+}
+
 export let tileTypes = {
     ' ': null,
     '#': WallTile,
@@ -227,6 +235,6 @@ export let tileTypes = {
     '^': ExitTile,
     '1': EnemyTileBlob,
     '2': EnemyTileBigBlob,
-    '3': EnemyTileBigBlob,
+    '3': EnemyTileKnifeThrower,
     '4': EnemyTileBigBlob
 }

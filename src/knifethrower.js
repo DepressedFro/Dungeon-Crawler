@@ -21,6 +21,7 @@ export default class KnifeThrower extends Monster {
 
 	update(delta) {
 
+		super.update(delta);
 		var xx = this.game.player.pos.x;
 		var yy = this.game.player.pos.y;
 		var dist = Math.sqrt((this.pos.y-yy)*(this.pos.y-yy) + (this.pos.x-xx)*(this.pos.x-xx));

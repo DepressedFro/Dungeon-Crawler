@@ -36,7 +36,7 @@ export default class Blob extends Monster {
 	}
 
 	update(delta) {
-
+		super.update(delta);
 		var previous_pos = this.pos.clone();
 		this.pos.add(Vector.multiply(this.speed, delta / 1000));
 		this.speed.multiply(this.friction);

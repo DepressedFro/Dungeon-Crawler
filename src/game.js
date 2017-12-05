@@ -70,6 +70,7 @@ export default class Game {
 
 	update() {
 		let delta = +new Date() - this.lastTime;
+		//console.log(delta);
 		this.lastTime = +new Date();
 		this.movecd -= delta;
 

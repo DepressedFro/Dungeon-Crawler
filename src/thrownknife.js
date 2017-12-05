@@ -3,13 +3,12 @@ import Constants from './constants.js';
 import * as _ from 'lodash';
 import Vector from './lib/vector2d.js';
 
-export default class KnifeThrower extends GameObject {
-	constructor(game, x, y) {
+export default class ThrownKnife extends GameObject {
+	constructor(game, x, y, dir) {
 		super(game,x,y);
-		this.setTilePosition(5,10);
-		this.dir = 0;
-		this.fireDist = 50;
+		this.setTilePosition(8,6);
 	}
+
 	get BBox() {
 		return {
 			x: this.pos.x - 6,
@@ -20,7 +19,7 @@ export default class KnifeThrower extends GameObject {
 	}
 
 	update(delta) {
-
+		this.pos();
 
 	}
 
@@ -33,7 +32,7 @@ export default class KnifeThrower extends GameObject {
 			Constants.tileSize,
 			Math.floor(this.pos.x - 8),
 			Math.floor(this.pos.y - 8),
-			Constants.tileSize,
+			Constants.tileSize/2,
 			Constants.tileSize
 		);
 	}

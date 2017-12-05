@@ -8,11 +8,21 @@ export default class Monster extends GameObject {
 		this.pos = new Vector(x, y);
 		this.speed = new Vector(0, 0);
 		this.knockBack = 1;
+		this.invincible = 1;
 	}
 	
 	setTilePosition(xtile,ytile){
 		this.xTile = xtile;
 		this.yTile = ytile;
+	}
+
+	update(delta){
+		if(this.invincible < 0){
+			this.invincible = 0;
+		}
+		if(this.invincible > 0){
+			this.invincible-=delta/1000;
+		}
 	}
 
 	inTileCollision() {

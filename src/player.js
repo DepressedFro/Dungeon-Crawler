@@ -151,7 +151,7 @@ export default class Player extends GameObject {
 			//assuming all monsters have almost square BBoxes
 			if(mon instanceof Monster){
 				if(mon.circleCollides(this)){
-				switch(this.state){
+					switch(this.state){
 						case 'move':
 							this.pos = previous_pos;
 
@@ -163,7 +163,9 @@ export default class Player extends GameObject {
 
 						break;
 						case 'attack':
-							mon.onDeath();
+							if(mon.invincible == 0){
+								mon.onDeath();
+							}
 						break;
 					}
 				}

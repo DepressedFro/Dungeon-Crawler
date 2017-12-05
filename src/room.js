@@ -53,7 +53,7 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
-		this.shape = Constants.shapeNames[this._.random(0,5)];//shapeNames[this.roomcode[1]];
+		this.shape = Constants.shapeNames[this._.random(0,Constants.shapeNames.length-1)];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
 			'>': this.roomcode[3],
