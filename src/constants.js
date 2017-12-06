@@ -8,7 +8,7 @@ let Constants = {
     tileset: tileset,   
 
     
-    shapeNames: ['down','round','EWtunnel','NStunnel','square','cross','crossround','ring','tunnel'],
+    shapeNames: ['down','round','EWtunnel','NStunnel','square','cross','crossround','ring'],
     
     shapes: {
         'down': [
@@ -149,6 +149,7 @@ let Constants = {
             '<....#    #....>',
             '#....#    #....#',
             '#....######....#',
+            '#..............#',
             '#..............#',
             '#..............#',
             '#..............#',

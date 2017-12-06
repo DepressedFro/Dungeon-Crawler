@@ -181,7 +181,7 @@ export default class Map {
 						this.rooms[y][x][1] = 3;
 					}
 					else {
-						this.rooms[y][x][1] = Math.floor(Math.random() * 5) + 4;
+						this.rooms[y][x][1] = Math.floor(Math.random() * 4) + 4;
 						
 						this.rooms[y][x][6] = Math.ceil(Math.random() * 4);
 						this.rooms[y][x][7] = Math.ceil(Math.random() * 4);

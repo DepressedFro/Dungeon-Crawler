@@ -36,7 +36,7 @@ export default class Game {
 		this.mousePos = { x: 0, y: 0 };
 
 		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
-		this.currentState = this.gameStates[0];
+		this.currentState = this.gameStates[3];
 
 
 		this.lastTime = +new Date();

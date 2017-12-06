@@ -9,7 +9,7 @@ import KnifeThrower from './knifethrower.js';
 import BigBlob from './bigblob.js';
 import Blob from './blob.js';
 
-// let riddles = new Riddles();
+let riddles = new Riddles();
 
 export default class Room extends GameObject {
 	width = 16;
@@ -28,7 +28,7 @@ export default class Room extends GameObject {
 		//this.monsters = [];
 		this.tiles = [];
 
- 	  this.riddle = new Riddles();
+ 	    this.riddle = riddles;
 		this.trap = new Trap(game, 203);
 
 
@@ -63,6 +63,7 @@ export default class Room extends GameObject {
 
 		// test room
 		this.createByShape(this.shape);
+		console.log(this.shape);
 
 		// init all tiles after the map has been created
 		for (var x = 0; x < this.width; x++) {
