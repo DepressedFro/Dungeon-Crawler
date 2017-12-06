@@ -40,7 +40,7 @@ export default class Player extends GameObject {
 
 		//this.gold = 0;
 		//this.class = 0;
-		//this.className = "Warrior"; Make a new class in javascript for different type of Player 
+		//this.className = "Warrior"; Make a new class in javascript for different type of Player
 	}
 
 	inTileCollision() {
@@ -77,7 +77,7 @@ export default class Player extends GameObject {
 		var dir = this.velocity.toAngles()+Math.PI/2*i/steps;
 		var tmpPrevPos = this.pos.clone();
 		this.pos.add(new Vector(Math.cos(dir),Math.sin(dir)).multiply(this.velocity.length()));
-		
+
 		var col = this.inTileCollision();
 		var ret = false;
 
@@ -109,7 +109,7 @@ export default class Player extends GameObject {
 		var u = this.game.pressed['w'] | 0;
 		var d = this.game.pressed['s'] | 0;
 
-		
+
 		this.velocity.add(new Vector(r-l,d-u).normalize().multiply(this.speed_mult));
 		this.applyVelocity();
 	}
@@ -167,8 +167,7 @@ export default class Player extends GameObject {
 							this.game.shake(10);
 							this.applyKnockback(mon);
 							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
-
-
+							this.health -= 1;
 						break;
 						case 'attack':
 							if(mon.invincible == 0){
@@ -181,6 +180,7 @@ export default class Player extends GameObject {
 				if(mon.circleCollides(this)){
 					this.game.remove(mon);
 					this.applyKnockback(mon);
+					this.health -= 15;
 				}
 			}
 		}
@@ -196,7 +196,7 @@ export default class Player extends GameObject {
 			ctx.scale(-1, 1+Math.sin(this.moveEffect)/30*this.velocity.length());
 		}else{
 			ctx.translate(Math.floor(this.pos.x - 8), Math.floor(this.pos.y - 12)-20*Math.sin(this.moveEffect)/30*this.velocity.length());
-			ctx.scale(1, 1+Math.sin(this.moveEffect)/30*this.velocity.length());	
+			ctx.scale(1, 1+Math.sin(this.moveEffect)/30*this.velocity.length());
 		}
 
 		//player
@@ -231,7 +231,7 @@ export default class Player extends GameObject {
 		}
 
 		if(this.state == 'attack'){
-			new Particle(this.game, this.pos, 
+			new Particle(this.game, this.pos,
 				{x: (Math.random() - 0.5) * 5 + this.game.player.velocity.x, y: -Math.random() * 5 + this.game.player.velocity.y},
 				{x: 0, y: 0.3}, '#aa0', 1, 500, 10);
 

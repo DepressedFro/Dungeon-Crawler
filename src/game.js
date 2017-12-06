@@ -17,7 +17,7 @@ export default class Game {
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
-		this.shakeMag = 0;		
+		this.shakeMag = 0;
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
@@ -81,7 +81,7 @@ export default class Game {
 		//console.log(delta);
 		this.lastTime = +new Date();
 		this.movecd -= delta;
-		this.shakeMag *= 0.90;		
+		this.shakeMag *= 0.90;
 
 		if (this.currentState === "Title Screen")
 		{
@@ -121,6 +121,7 @@ export default class Game {
 			for (let i = this.gameObjects.length - 1; i > 0; i--) {
 				if (this.gameObjects[i])
 					this.gameObjects[i].update(delta);
+				if(this.player.health <= 0) this.currentState = this.gameStates[3];
 			}
 
 			if (this.pressed['Escape'])
@@ -139,10 +140,10 @@ export default class Game {
 	}
 
 	render() {
-		this.ctx.save();		
+		this.ctx.save();
 
 		// clear the screen
-		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));		
+		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));
 		this.ctx.fillStyle = '#1c1117';
 		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
 
@@ -175,12 +176,18 @@ export default class Game {
 				obj.render(this.ctx);
 				this.ctx.restore();
 			}
+
+			this.ctx.fillStyle = "white";
+			this.ctx.font = "12pt sans-serif";
+			this.ctx.fillText("Health: " + this.player.health, 50, this.ctx.height - 10);
 		}
 		else if (this.currentState === "Game Over") {
 
 		}
-
-		this.ctx.restore();				
+		this.ctx.fillStyle = "white";
+		this.ctx.font = "12pt sans-serif";
+		this.ctx.fillText("Health: " + this.player.health, 50, this.ctx.height - 10);
+		this.ctx.restore();
 	}
 
 	loop() {
