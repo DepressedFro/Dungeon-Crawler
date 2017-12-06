@@ -9,7 +9,7 @@ import KnifeThrower from './knifethrower.js';
 import BigBlob from './bigblob.js';
 import Blob from './blob.js';
 
-let riddles = new Riddles();
+// let riddles = new Riddles();
 
 export default class Room extends GameObject {
 	width = 16;
@@ -28,8 +28,8 @@ export default class Room extends GameObject {
 		//this.monsters = [];
 		this.tiles = [];
 
-    this.riddle = riddles;
-		this.trap;
+ 	  this.riddle = new Riddles();
+		this.trap = new Trap(game, 203);
 
 
 		//Determine riddle or Trap
@@ -81,6 +81,9 @@ export default class Room extends GameObject {
 					t.destroy();
 			}
 		}
+		if(this.trap) {
+			this.trap.destroy();
+		}
 	}
 
 	createByShape(shape) {
@@ -110,7 +113,7 @@ export default class Room extends GameObject {
 				}
 			}
 
-			this.tiles.push(new_row);			
+			this.tiles.push(new_row);
 		}
 	}
 
@@ -123,11 +126,11 @@ export default class Room extends GameObject {
 	riddleTrap(index) {
 		if(index >= 200) {
 			this.trap = new Trap(index);
-		} else {
-			this.riddle = new Riddles(index);
+		} else if(index > 0){
+			this.riddle = new Riddles();
 		}
 	}
-	
+
 	update() {
 		if(this.riddle) {
 			var choices = this.riddle.getChoices();

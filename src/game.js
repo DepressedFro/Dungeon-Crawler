@@ -34,8 +34,10 @@ export default class Game {
 		window.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
 		window.onmousemove = (event) => { this.mousemove(event) };
 		this.mousePos = { x: 0, y: 0 };
-		this.gameStates = ["Main Menu", "Pause Menu", "Gameplay", "Game Over"];
-		this.currentState = this.gameStates[2];
+
+		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
+		this.currentState = this.gameStates[0];
+
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
@@ -81,6 +83,13 @@ export default class Game {
 		this.movecd -= delta;
 		this.shakeMag *= 0.90;		
 
+		if (this.currentState === "Title Screen")
+		{
+			if (this.pressed['Enter'])
+			{
+				this.currentState = this.gameStates[1];
+			}
+		}
 		if (this.currentState === "Main Menu") {
 			if (this.pressed['ArrowUp']) {
 
@@ -89,12 +98,12 @@ export default class Game {
 
 			}
 			else if (this.pressed['Enter']) {
-				this.currentState = this.gameStates[2];
+				this.currentState = this.gameStates[3];
 			}
 		}
 		else if (this.currentState === "Pause Menu") {
 			if (this.pressed['Escape']) {
-				this.currentState = this.gameStates[2];
+				this.currentState = this.gameStates[3];
 			}
 			else if (this.pressed['ArrowUp']) {
 
@@ -106,18 +115,22 @@ export default class Game {
 
 			}
 		}
-		else if (this.currentState === "Gameplay") {
+		else if (this.currentState === "Gameplay")
+		{
 			// loop backwards to handle object removal
 			for (let i = this.gameObjects.length - 1; i > 0; i--) {
 				if (this.gameObjects[i])
 					this.gameObjects[i].update(delta);
 			}
-			
-			if (this.pressed['Escape']) {
-				this.currentState = this.gameStates[1];
+
+			if (this.pressed['Escape'])
+			{
+				this.currentState = this.gameStates[2];
 			}
+
 		}
-		else if (this.currentState === "Game Over") {
+		else if (this.currentState === "Game Over")
+		{
 			if (this.pressed['Enter'] || this.pressed['Space']) {
 
 			}
@@ -136,8 +149,19 @@ export default class Game {
 		if (this.currentState === "Main Menu") {
 
 		}
-		else if (this.currentState === "Pause Menu") {
+		else if (this.currentState === "Pause Menu")
+		{
+			// reorder if zindex changed on some object
+			if (this.zindexChanged) {
+				this.gameObjects = _.sortBy(this.gameObjects, (obj) => { return obj.zindex });
+				this.zindexChanged = false;
+			}
 
+			for (let obj of this.gameObjects) {
+				this.ctx.save();
+				obj.render(this.ctx);
+				this.ctx.restore();
+			}
 		}
 		else if (this.currentState === "Gameplay") {
 			// reorder if zindex changed on some object

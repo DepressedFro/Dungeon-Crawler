@@ -1,4 +1,5 @@
 import * as Papa from "papaparse";
+import seedrandom from 'seedrandom';
 import Riddles from './riddles.csv';
 
 export default class Riddle {
@@ -16,11 +17,11 @@ export default class Riddle {
 		this.grabRiddles = this.grabRiddles.bind(this);
 		this.setRiddles = this.setRiddles.bind(this);
     this.grabRiddles(this.setRiddles);
-
+		var rng = seedrandom();
 		//Timeout provides time for this.riddles to be filled.
 		setTimeout(() => {
 			//Temporary random number until roomcode works.
-			this.randomChoice(Math.floor((Math.random()*(this.riddles.length-2))+1));
+			this.randomChoice(Math.floor((rng()*(this.riddles.length-2))+1));
 			this.render();
     }, 100)
 	}
