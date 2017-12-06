@@ -21,10 +21,16 @@ export default class Game {
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, { x: this.map.center, y: this.map.center });
+		this.room = new Room(this, {
+			x: this.map.startx >= 0 ? this.map.startx : this.map.center, 
+			y: this.map.starty >= 0 ? this.map.starty : this.map.center
+		});
 		this.movecd = 0;
-		this.player = new Player(this, 100, 50, 50);
-
+		if (this.room.shape === "down")
+			this.player = new Player(this, 100, 60, 60);
+		else
+			this.player = new Player(this, 100, 128, 128);
+		
 		// handle key presses
 		this.pressed = {};
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };

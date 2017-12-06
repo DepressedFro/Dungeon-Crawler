@@ -1,3 +1,5 @@
+import Constants from './constants.js';
+
 /* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
  * RA:Room Art Style
  * RS:Room Shape
@@ -181,7 +183,9 @@ export default class Map {
 						this.rooms[y][x][1] = 3;
 					}
 					else {
-						this.rooms[y][x][1] = Math.floor(Math.random() * 4) + 4;
+						let regular_rooms_num = Constants.shapeNames.length - 4;
+
+						this.rooms[y][x][1] = Math.floor(Math.random() * regular_rooms_num) + 4;
 						
 						this.rooms[y][x][6] = Math.ceil(Math.random() * 4);
 						this.rooms[y][x][7] = Math.ceil(Math.random() * 4);
