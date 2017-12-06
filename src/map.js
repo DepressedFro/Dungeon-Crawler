@@ -188,7 +188,6 @@ export default class Map {
 						this.rooms[y][x][8] = Math.ceil(Math.random() * 4);
 						this.rooms[y][x][9] = Math.ceil(Math.random() * 4);
 					}
-					
 				}
 			}
 		}

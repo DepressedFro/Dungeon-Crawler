@@ -39,6 +39,30 @@ export default class GameObject {
             y <= this.BBox.y + this.BBox.height;
     }
 
+    circleCollides(obj){
+        //This is a good approximation ONLY for square BBoxes! 
+        //Very simple but very handy
+
+        if (this.BBox === null || obj.BBox === null)
+            return false;
+        
+        var ww = (this.BBox.width + obj.BBox.width)/2;
+        var hh = (this.BBox.height + obj.BBox.height)/2;
+
+        var radius = Math.sqrt(ww*ww+hh*hh);
+
+        var xx = (this.BBox.x+this.BBox.width/2) - (obj.BBox.x+obj.BBox.width/2);
+        var yy = (this.BBox.y+this.BBox.height/2) - (obj.BBox.y+obj.BBox.height/2);
+
+        var dist = Math.sqrt(xx*xx+yy*yy);
+
+        if(dist < radius){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     collides(obj) {
         if (this.BBox === null || obj.BBox === null)
             return null;

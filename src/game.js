@@ -6,20 +6,23 @@ import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
 import Riddles from './riddle';
+import KnifeThrower from './knifethrower.js';
+import ThrownKnife from './thrownknife.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
+		//this.monsters = [];
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
+		this.shakeMag = 0;		
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, { x: this.map.center, y: this.map.center });
 		this.movecd = 0;
-		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.player = new Player(this, 100, 50, 50);
 
 		// handle key presses
@@ -27,9 +30,9 @@ export default class Game {
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
 		window.onkeyup = (event) => { this.pressed[event.key] = false; };
 
-		this.canvas.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
-		this.canvas.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
-		this.canvas.onmousemove = (event) => { this.mousemove(event) };
+		window.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
+		window.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
+		window.onmousemove = (event) => { this.mousemove(event) };
 		this.mousePos = { x: 0, y: 0 };
 		this.gameStates = ["Main Menu", "Pause Menu", "Gameplay", "Game Over"];
 		this.currentState = this.gameStates[2];
@@ -46,10 +49,21 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
+		for(var i=0; i<this.gameObjects.length; ++i){
+			if(this.gameObjects[i] instanceof Monster || this.gameObjects[i] instanceof ThrownKnife){
+				this.remove(this.gameObjects[i]);
+				--i;
+			}
+		}
+		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
-		this.movecd = 500;
+		this.movecd = 200;
 	}
+
+	shake(magnitude) {
+        this.shakeMag += magnitude;
+    }
 
 	add(obj) {
 		this.gameObjects.push(obj);
@@ -62,9 +76,10 @@ export default class Game {
 
 	update() {
 		let delta = +new Date() - this.lastTime;
+		//console.log(delta);
 		this.lastTime = +new Date();
 		this.movecd -= delta;
-
+		this.shakeMag *= 0.90;		
 
 		if (this.currentState === "Main Menu") {
 			if (this.pressed['ArrowUp']) {
@@ -111,7 +126,10 @@ export default class Game {
 	}
 
 	render() {
+		this.ctx.save();		
+
 		// clear the screen
+		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));		
 		this.ctx.fillStyle = '#1c1117';
 		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
 
@@ -138,6 +156,7 @@ export default class Game {
 
 		}
 
+		this.ctx.restore();				
 	}
 
 	loop() {
