@@ -1,5 +1,6 @@
 import GameObject from './gameobject.js'
 import Constants from './constants.js';
+import Vector from './lib/vector2d.js';
 
 export default class Trap extends GameObject {
 	constructor(game, index) {
@@ -11,7 +12,7 @@ export default class Trap extends GameObject {
       this.width;
 
 			this.angle;
-			this.pos = {x: null, y: null};
+			this.pos;
 			this.tilex;
 			this.tiley;
 
@@ -22,9 +23,21 @@ export default class Trap extends GameObject {
 
       this.determineTrap();
 	}
+	get BBox() {
+		return {
+			x: this.pos.x,
+			y: this.pos.y,
+			width: this.wwidth,
+			height: this.height,
+		}
+	}
   getPosition() {
     return {x: this.pos.x, y: this.pos.y, height: this.height, width: this.width};
   }
+	setTilePosition(tilex,tiley){
+		this.tilex = tilex;
+		this.tiley = tiley;
+	}
 	determineTrap() {
 		//Generate a trap based on type.
 		//Assign (Puzzle/Riddle Index) to 200s.
@@ -42,7 +55,7 @@ export default class Trap extends GameObject {
 		}
 	}
   flame() {
-		this.pos = {x: 150, y: 32};
+		this.pos = new Vector(150, 32);
 		this.tilex = 2;
 		this.tiley = 13;
 
@@ -55,7 +68,7 @@ export default class Trap extends GameObject {
 		this.fireInt = [-0.75,-0.75,-0.75];
   }
   spike() {
-		this.pos = {x: 150, y: 150};
+		this.pos = new Vector(150, 150);
 		this.tilex = 8;
 		this.tiley = 6;
 
@@ -66,7 +79,7 @@ export default class Trap extends GameObject {
 		this.start = 0;
   }
   blade() {
-		this.pos = {x: 100, y: 140};
+		this.pos = new Vector(100, 140);
 		this.tilex = 11;
 		this.tiley = 3;
 		this.angle = 0;
