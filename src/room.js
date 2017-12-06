@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTileBlob, EnemyTileBigBlob } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTile } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 import GameObject from './gameobject';
@@ -70,6 +70,9 @@ export default class Room extends GameObject {
 			for (var y = 0; y < this.width; y++) {
 				if (this.tiles[y][x] !== null)
 					this.tiles[y][x].init(x, y);
+					if( this.tiles[y][x] instanceof EnemyTile){
+						this.tiles[y][x].spawn(this._.random(0,2));
+					}
 			}
 		}
 	}

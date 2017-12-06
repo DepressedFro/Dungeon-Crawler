@@ -229,26 +229,25 @@ export class ExitTile extends FloorTile {
     }
 }
 
-export class EnemyTileBlob extends FloorTile {
+export class EnemyTile extends FloorTile {
     init(x,y){
         super.init(x,y);
-        new Blob(this.game,x*Constants.tileSize,y*Constants.tileSize);
+    }
+    spawn(enemyType){
+        switch(enemyType){
+            case 0:
+                new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+            break;
+            case 1:
+                new BigBlob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+            break;
+            case 2:
+                new KnifeThrower(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+            break;
+        }
     }
 }
 
-export class EnemyTileBigBlob extends FloorTile {
-    init(x,y){
-        super.init(x,y);
-        new BigBlob(this.game,x*Constants.tileSize,y*Constants.tileSize);
-    }
-}
-
-export class EnemyTileKnifeThrower extends FloorTile {
-    init(x,y){
-        super.init(x,y);
-        new KnifeThrower(this.game,x*Constants.tileSize,y*Constants.tileSize);
-    }
-}
 
 export let tileTypes = {
     ' ': null,
@@ -259,8 +258,5 @@ export let tileTypes = {
     '<': ExitTile,
     'v': ExitTile,
     '^': ExitTile,
-    '1': EnemyTileBlob,
-    '2': EnemyTileBigBlob,
-    '3': EnemyTileKnifeThrower,
-    '4': EnemyTileBigBlob
+    '@': EnemyTile
 }
