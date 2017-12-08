@@ -217,11 +217,11 @@ export class ExitTile extends FloorTile {
             return;
 
         if (dir.x != 0) {
-            this.game.player.pos.x = 256 - this.game.player.pos.x;
+            this.game.player.pos.x = 256 - this.game.player.pos.x + dir.x * 16;
             this.game.player.pos.y = this.pos.y * Constants.tileSize + 8;
         } if (dir.y != 0) {
             this.game.player.pos.x = this.pos.x * Constants.tileSize + 8;
-            this.game.player.pos.y = 256 - this.game.player.pos.y;
+            this.game.player.pos.y = 256 - this.game.player.pos.y + dir.y * 16;
         }
 
         this.game.movetoroom(this.game.room.pos.x + dir.x, this.game.room.pos.y + dir.y);
@@ -234,6 +234,9 @@ export class EnemyTile extends FloorTile {
         super.init(x,y);
     }
     spawn(enemyType){
+        if (this.room.pos.x == this.game.map.startx && this.room.pos.y == this.game.map.starty)
+            return;            
+
         switch(enemyType){
             case 0:
                 new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);

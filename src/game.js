@@ -28,7 +28,6 @@ export default class Game {
 			y: this.map.starty >= 0 ? this.map.starty : this.map.center
 		});
 		this.movecd = 0;
-		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.menu_title = new Menu_Title();
 		this.menu_main = new Menu_Main();
 
@@ -49,7 +48,7 @@ export default class Game {
 
 		//states the game can be in
 		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
-		this.currentState = this.gameStates[0];
+		this.currentState = this.gameStates[3];
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
 
