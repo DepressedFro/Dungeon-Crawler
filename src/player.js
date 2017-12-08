@@ -38,7 +38,8 @@ export default class Player extends GameObject {
 		this.damagedEffect = 0;
 		this.damagedEffectSp = 0.95;
 
-		//this.gold = 0;
+		this.gold = 0;
+
 		//this.class = 0;
 		//this.className = "Warrior"; Make a new class in javascript for different type of Player
 	}
@@ -171,6 +172,13 @@ export default class Player extends GameObject {
 						case 'attack':
 							if(mon.invincible == 0){
 								mon.onDeath();
+								if(mon.name == "blob"){
+									this.gold += 25;
+								} else if (mon.name == "big blob"){
+									this.gold += 50;
+								} else {
+									this.gold += 100;
+								}
 							}
 						break;
 					}

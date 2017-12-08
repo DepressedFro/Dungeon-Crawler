@@ -12,6 +12,7 @@ export default class KnifeThrower extends Monster {
 		this.fireDist = 75;
 		this.fireTimer = 0;
 		this.fireTimerSet = 2;
+		this.name = "knifethrower";
 	}
 	get BBox() {
 		return {
@@ -32,7 +33,7 @@ export default class KnifeThrower extends Monster {
 		var dir = vec.toAngles();
 
 		if(dist > this.fireDist){
-			this.pos.add(vec);	
+			this.pos.add(vec);
 		}else{
 			if(this.fireTimer > 0){
 				this.fireTimer -= delta/1000;
