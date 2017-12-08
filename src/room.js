@@ -1,12 +1,15 @@
 import seedrandom from 'seedrandom';
-import { Tile, FloorTile, WallTile, ExitTile, tileTypes } from './tile.js';
+import { Tile, FloorTile, WallTile, ExitTile, tileTypes, EnemyTile } from './tile.js';
 import Riddles from './riddle';
 import Trap from './trap';
 import GameObject from './gameobject';
 import * as _ from 'lodash';
 import Constants from './constants.js';
+import KnifeThrower from './knifethrower.js';
+import BigBlob from './bigblob.js';
+import Blob from './blob.js';
 
-// let riddles = new Riddles();
+let riddles = new Riddles();
 
 export default class Room extends GameObject {
 	width = 16;
@@ -22,11 +25,12 @@ export default class Room extends GameObject {
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
 
-		this.monsters = [];
+		//this.monsters = [];
 		this.tiles = [];
 
- 	  this.riddle = new Riddles();
+ 	    this.riddle = riddles;
 		this.trap = new Trap(game, 203);
+
 
 		//Determine riddle or Trap
 		//this.riddleTrap((roomcode[13]*100) + (roomcode[14]*10) + roomcode[15]);
@@ -49,7 +53,7 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
-		this.shape = Constants.shapeNames[this._.random(0, 1)];//shapeNames[this.roomcode[1]];
+		this.shape = Constants.shapeNames[this.roomcode[1]];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
 			'>': this.roomcode[3],
@@ -59,12 +63,16 @@ export default class Room extends GameObject {
 
 		// test room
 		this.createByShape(this.shape);
+		console.log(this.shape);
 
 		// init all tiles after the map has been created
 		for (var x = 0; x < this.width; x++) {
 			for (var y = 0; y < this.width; y++) {
 				if (this.tiles[y][x] !== null)
 					this.tiles[y][x].init(x, y);
+					if( this.tiles[y][x] instanceof EnemyTile){
+						this.tiles[y][x].spawn(this._.random(0,2));
+					}
 			}
 		}
 	}
@@ -85,11 +93,17 @@ export default class Room extends GameObject {
 	createByShape(shape) {
 		this.tiles = [];
 
+		//I hack this a little bit
+		var hack_x = 0; 
+		var hack_y = 0; 
+
 		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
-
+			++hack_y;
+			
 			for (let l of row) {
 				let tile = tileTypes[l];
+				++hack_x;
 
 				if (tile === null) {
 					new_row.push(null);

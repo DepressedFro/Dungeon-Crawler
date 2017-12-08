@@ -9,7 +9,7 @@ export default class BigBlob extends Blob {
 
 	constructor(game, x, y) {
 		super(game, x, y);
-		this.setTilePosition(1,12);
+		this.setTilePosition(1, 12);
 		this.friction = 0.97;
 		this.burstSpeed = 300;
 		this.waitTime = 2000;
@@ -28,11 +28,12 @@ export default class BigBlob extends Blob {
 		super.update(delta);
 	}
 
-	onDeath(){
+	onDeath() {
+		for (var i = 0; i < 3; i++) {
+			let b = new Blob(this.game, this.pos.x, this.pos.y);
+			b.timer = 0;
+		}
 		super.onDeath();
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
-		this.game.monsters.push(new Blob(this.game,this.pos.x,this.pos.y));
 	}
 
 }

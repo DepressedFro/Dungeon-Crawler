@@ -8,31 +8,44 @@ import * as _ from 'lodash';
 import Riddles from './riddle';
 import Menu_Title from './menu_title';
 import Menu_Main from './menu_main';
+import KnifeThrower from './knifethrower.js';
+import ThrownKnife from './thrownknife.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
+		//this.monsters = [];
 		this.width = screenWidth;
 		this.height = screenHeight;
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
+		this.shakeMag = 0;
 
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, { x: this.map.center, y: this.map.center });
+		this.room = new Room(this, {
+			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
+			y: this.map.starty >= 0 ? this.map.starty : this.map.center
+		});
 		this.movecd = 0;
 		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.player = new Player(this, 100, 50, 50);
 		this.menu_title = new Menu_Title();
 		this.menu_main = new Menu_Main();
+
+		if (this.room.shape === "down")
+			this.player = new Player(this, 100, 60, 60);
+		else
+			this.player = new Player(this, 100, 128, 128);
+
 		// handle key presses
 		this.pressed = {};
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
 		window.onkeyup = (event) => { this.pressed[event.key] = false; };
 
-		this.canvas.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
-		this.canvas.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
-		this.canvas.onmousemove = (event) => { this.mousemove(event) };
+		window.onmousedown = (event) => { this.pressed['mouse' + event.which] = true };
+		window.onmouseup = (event) => { this.pressed['mouse' + event.which] = false };
+		window.onmousemove = (event) => { this.mousemove(event) };
 		this.mousePos = { x: 0, y: 0 };
 
 		//states the game can be in
@@ -54,10 +67,21 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
+		for(var i=0; i<this.gameObjects.length; ++i){
+			if(this.gameObjects[i] instanceof Monster || this.gameObjects[i] instanceof ThrownKnife){
+				this.remove(this.gameObjects[i]);
+				--i;
+			}
+		}
+		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
-		this.movecd = 500;
+		this.movecd = 200;
 	}
+
+	shake(magnitude) {
+        this.shakeMag += magnitude;
+    }
 
 	add(obj) {
 		this.gameObjects.push(obj);
@@ -70,10 +94,12 @@ export default class Game {
 
 	update() {
 		let delta = +new Date() - this.lastTime;
+		//console.log(delta);
 		this.lastTime = +new Date();
 		//ensures that you don't press a button more than you want
 		this.movecd -= delta;
 		this.key_cd -= delta;
+		this.shakeMag *= 0.90;
 
 		if (this.currentState === "Title Screen")
 		{
@@ -118,6 +144,8 @@ export default class Game {
 					this.gameObjects[i].update(delta);
 			}
 
+			if(this.player.health <= 0) this.currentState = this.gameStates[4];
+
 			if (this.pressed['Escape'] && this.key_cd <= 0)
 			{
 				this.currentState = this.gameStates[2];
@@ -139,7 +167,10 @@ export default class Game {
 	}
 
 	render() {
+		this.ctx.save();
+
 		// clear the screen
+		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));
 		this.ctx.fillStyle = '#1c1117';
 		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
 		if (this.currentState === "Title Screen")
@@ -177,9 +208,12 @@ export default class Game {
 			}
 		}
 		else if (this.currentState === "Game Over") {
-
+			this.ctx.fillStyel = "red";
+			this.ctx.fillText("You Are Dead!", this.widt/2, 100)
 		}
-
+		this.ctx.fillStyle = "red";
+		this.ctx.fillRect((this.width/2)-50, 230, this.player.health, 10);
+		this.ctx.restore();
 	}
 
 	loop() {

@@ -1,3 +1,5 @@
+import Constants from './constants.js';
+
 /* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
  * RA:Room Art Style
  * RS:Room Shape
@@ -23,12 +25,14 @@ export default class Map {
 		this.rooms = [];
 		this.roomsString = [];
 		this.center = Math.floor(size/2);
+		this.startx = -1;
+		this.starty = -1;
 		this.getEmptyMap(size);
 		this.makeBranch(this.center, this.center, 0, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 1, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 2, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 3, Math.floor(size/2 - 1));
-		this.connectRooms();
+		this.finalizeRooms();
 		
 		this.roomsToString();
 		console.log(this.seed);
@@ -76,7 +80,7 @@ export default class Map {
 		while(len > 0 && x > 0 && y > 0 && x < this.size - 1 && y < this.size - 1) {
 			x += dx;
 			y += dy;
-			this.rooms[y][x] = this.getRoomCode(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			this.rooms[y][x] = this.getRoomCode(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 			if(Math.random() * 100 < 35) {
 				this.makeBranchingBranch(x, y, dir, len);
 			}
@@ -130,31 +134,64 @@ export default class Map {
 		}
 	}
 	
-	connectRooms() {
+	finalizeRooms() {
 		for(var y = 0; y < this.size; y++) {
 			for(var x = 0; x < this.size; x++) {
 				if(this.rooms[y][x][0] > 0) {
+					var numdoors = 0;
+					
 					var ndoor = 0;
 					if(y > 0 && this.rooms[y - 1][x][0] > 0) {
 						ndoor = 1;
+						numdoors++;
 					}
 					var edoor = 0;
 					if(x < this.size - 1 && this.rooms[y][x + 1][0] > 0) {
 						edoor = 1;
+						numdoors++;
 					}
 					var sdoor = 0;
 					if(y < this.size - 1 && this.rooms[y + 1][x][0] > 0) {
 						sdoor = 1;
+						numdoors++;
 					}
 					var wdoor = 0;
 					if(x > 0 && this.rooms[y][x - 1][0] > 0) {
 						wdoor = 1;
+						numdoors++;
 					}
 					
 					this.rooms[y][x][2] = ndoor;
 					this.rooms[y][x][3] = edoor;
 					this.rooms[y][x][4] = sdoor;
 					this.rooms[y][x][5] = wdoor;
+					
+					if(y === this.center && x == this.center) {
+						this.rooms[y][x][1] = 0;
+					}
+					else if(numdoors < 2) {
+						this.rooms[y][x][1] = 1;
+						if(this.startx < 0 || Math.random() < 0.25) {
+							this.startx = x;
+							this.starty = y;
+						}
+					}
+					else if(ndoor === 0 && sdoor === 0 && edoor === 1 && wdoor === 1 && Math.random() < 0.75) {
+						this.rooms[y][x][1] = 2;
+					}
+					else if(ndoor === 1 && sdoor === 1 && edoor === 0 && wdoor === 0 && Math.random() < 0.75) {
+						this.rooms[y][x][1] = 3;
+					}
+					else {
+						let regular_rooms_num = Constants.shapeNames.length - 4;
+
+						this.rooms[y][x][1] = Math.floor(Math.random() * regular_rooms_num) + 4;
+						
+						this.rooms[y][x][6] = Math.ceil(Math.random() * 4);
+						this.rooms[y][x][7] = Math.ceil(Math.random() * 4);
+						this.rooms[y][x][8] = Math.ceil(Math.random() * 4);
+						this.rooms[y][x][9] = Math.ceil(Math.random() * 4);
+					}
 				}
 			}
 		}
