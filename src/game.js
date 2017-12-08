@@ -29,7 +29,6 @@ export default class Game {
 		});
 		this.movecd = 0;
 		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
-		this.player = new Player(this, 100, 50, 50);
 		this.menu_title = new Menu_Title();
 		this.menu_main = new Menu_Main();
 
@@ -208,11 +207,11 @@ export default class Game {
 			}
 		}
 		else if (this.currentState === "Game Over") {
-			this.ctx.fillStyel = "red";
-			this.ctx.fillText("You Are Dead!", this.widt/2, 100)
+			this.ctx.fillStyle = "red";
+			this.ctx.fillText("You Are Dead!", this.width/2, 100);
 		}
 		this.ctx.fillStyle = "red";
-		this.ctx.fillRect((this.width/2)-50, 230, this.player.health, 10);
+		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
 		this.ctx.restore();
 	}
 
