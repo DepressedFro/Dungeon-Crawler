@@ -144,7 +144,7 @@ export default class Game {
 			}
 
 			if(this.player.health <= 0) {
-				this.currentState = this.gameStates[4];
+				this.currentState = this.gameStates[5];
 				this.player.health = 0;
 			}
 
@@ -203,6 +203,8 @@ export default class Game {
 				this.zindexChanged = false;
 			}
 
+			document.getElementById("gold").textContent = "Gold: " + this.player.gold;
+
 			for (let obj of this.gameObjects) {
 				this.ctx.save();
 				obj.render(this.ctx);
@@ -210,14 +212,26 @@ export default class Game {
 			}
 		}
 		else if (this.currentState === "Game Over") {
-			this.ctx.fillStyle = "red";
-			this.ctx.fillText("You Are Dead!", this.width/2, 100);
+
+			document.getElementById("gold").textContent = "";
+			document.getElementById("gameOver").textContent = "You Are Dead!;"
+
+			var temp = ['level', 'goldS', 'monster'];
+			var count = 0;
+			var content = ["Level: " + this.level, "Gold: " + this.player.gold, "Monsters Killed: "  + this.player.kill];
+
+			//Loop to add in text.
+			temp.forEach(function(i){
+			  var temp2 = document.getElementById(i);
+			  temp2.textContent = content[count];
+				count++;
+			});
+
 		}
 		this.ctx.fillStyle = "red";
 		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
 
-		this.ctx.fillStyle = "gold";
-		this.ctx.fillText("Gold: " + this.player.gold, 10, 30);
+
 
 		this.ctx.restore();
 	}
