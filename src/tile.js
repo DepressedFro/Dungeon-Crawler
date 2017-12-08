@@ -259,6 +259,8 @@ export class ChestTile extends FloorTile {
             this.decorations.push(new Chest(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
         }
     }
+}
+
 export class NextLevelTile extends Tile {
     sourcePos = { x: 5, y: 1 }; // basic wall    
 
@@ -287,6 +289,6 @@ export let tileTypes = {
     'v': ExitTile,
     '^': ExitTile,
     '@': EnemyTile,
-    '$': NextLevelTile,
+    '*': NextLevelTile,
     '$': ChestTile 
 }
