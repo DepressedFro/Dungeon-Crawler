@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import KnifeThrower from './knifethrower.js';
+import Chest from './chest.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -239,18 +240,27 @@ export class EnemyTile extends FloorTile {
 
         switch(enemyType){
             case 0:
-                new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
             case 1:
-                new BigBlob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new BigBlob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
             case 2:
-                new KnifeThrower(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new KnifeThrower(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
         }
     }
 }
 
+export class ChestTile extends FloorTile {
+    init(x,y){
+        super.init(x,y);
+        if(this.room.chest){
+            this.decorations.push(new Chest(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
+        }
+    }
+
+}
 
 export let tileTypes = {
     ' ': null,
@@ -261,5 +271,6 @@ export let tileTypes = {
     '<': ExitTile,
     'v': ExitTile,
     '^': ExitTile,
-    '@': EnemyTile
+    '@': EnemyTile,
+    '$': ChestTile 
 }

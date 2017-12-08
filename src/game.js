@@ -10,6 +10,7 @@ import Menu_Title from './menu_title';
 import Menu_Main from './menu_main';
 import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
+import Chest from './thrownknife.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -65,12 +66,7 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
-		for(var i=0; i<this.gameObjects.length; ++i){
-			if(this.gameObjects[i] instanceof Monster || this.gameObjects[i] instanceof ThrownKnife){
-				this.remove(this.gameObjects[i]);
-				--i;
-			}
-		}
+
 		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });

@@ -61,6 +61,8 @@ export default class Room extends GameObject {
 			'<': this.roomcode[5],
 		}
 
+		this.chest = this.roomcode[11];
+
 		// test room
 		this.createByShape(this.shape);
 		console.log(this.shape);
@@ -71,7 +73,8 @@ export default class Room extends GameObject {
 				if (this.tiles[y][x] !== null)
 					this.tiles[y][x].init(x, y);
 					if( this.tiles[y][x] instanceof EnemyTile){
-						this.tiles[y][x].spawn(this._.random(0,2));
+						var tmp = Math.min(this.level,2);
+						this.tiles[y][x].spawn(this._.random(0,this.level));
 					}
 			}
 		}
