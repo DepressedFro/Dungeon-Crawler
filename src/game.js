@@ -208,11 +208,11 @@ export default class Game {
 			}
 		}
 		else if (this.currentState === "Game Over") {
-			this.ctx.fillStyel = "red";
-			this.ctx.fillText("You Are Dead!", this.widt/2, 100)
+			this.ctx.fillStyle = "red";
+			this.ctx.fillText("You Are Dead!", this.width/2, 100);
 		}
 		this.ctx.fillStyle = "red";
-		this.ctx.fillRect((this.width/2)-50, 230, this.player.health, 10);
+		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
 		this.ctx.restore();
 	}
 
