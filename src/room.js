@@ -74,7 +74,7 @@ export default class Room extends GameObject {
 					this.tiles[y][x].init(x, y);
 					if( this.tiles[y][x] instanceof EnemyTile){
 						var tmp = Math.min(this.level,2);
-						this.tiles[y][x].spawn(this._.random(0,this.level));
+						this.tiles[y][x].spawn(this._.random(0,this.game.level));
 					}
 			}
 		}

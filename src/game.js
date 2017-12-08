@@ -10,7 +10,7 @@ import Menu_Title from './menu_title';
 import Menu_Main from './menu_main';
 import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
-import Chest from './thrownknife.js';
+import Chest from './chest.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -149,7 +149,7 @@ export default class Game {
 			}
 
 			if(this.player.health <= 0) {
-				this.currentState = this.gameStates[4];
+				this.currentState = this.gameStates[5];
 				this.player.health = 0;
 			}
 
@@ -173,7 +173,7 @@ export default class Game {
 		else if (this.currentState === "Game Over")
 		{
 			if (this.pressed['Enter'] || this.pressed['Space']) {
-
+				window.location.reload();
 			}
 		}
 
@@ -219,17 +219,22 @@ export default class Game {
 				obj.render(this.ctx);
 				this.ctx.restore();
 			}
+
+			this.ctx.fillStyle = "red";
+			this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
+
+			this.ctx.fillStyle = "gold";
+			this.ctx.fillText("Gold: " + this.player.gold, 10, 30);
+
+
 		}
 		else if (this.currentState === "Game Over") {
-			this.ctx.fillStyle = "red";
-			this.ctx.fillText("You Are Dead!", this.width/2, 100);
+
+			this.ctx.fillStyle = "#ffffff";
+			this.ctx.textAlign="center"; 
+			this.ctx.fillText("You Are Dead!", this.width/2, this.height/2-25);
+			this.ctx.fillText("Press enter to start again", this.width/2, this.height/2+25);
 		}
-		this.ctx.fillStyle = "red";
-		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
-
-		this.ctx.fillStyle = "gold";
-		this.ctx.fillText("Gold: " + this.player.gold, 10, 30);
-
 		this.ctx.restore();
 	}
 
