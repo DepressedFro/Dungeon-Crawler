@@ -40,7 +40,7 @@ export default class Player extends GameObject {
 		this.damagedEffectSp = 0.95;
 
 		this.gold = 0;
-
+		this.kill = 0;
 		//this.class = 0;
 		//this.className = "Warrior"; Make a new class in javascript for different type of Player
 	}
@@ -186,6 +186,7 @@ export default class Player extends GameObject {
 								} else {
 									this.gold += 100;
 								}
+								this.kill+=1;
 							}
 						break;
 					}

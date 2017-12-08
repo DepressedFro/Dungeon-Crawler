@@ -155,7 +155,7 @@ export default class Game {
 
 			// remove destroyed objects
 			for (let obj of this.toRemove) {
-				this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);        
+				this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);
 			}
 			this.toRemove = [];
 
@@ -221,7 +221,8 @@ export default class Game {
 				obj.render(this.ctx);
 				this.ctx.restore();
 			}
-
+		}
+		else if (this.currentState === "Game Over") {
 
 			document.getElementById("gold").textContent = "";
 			document.getElementById("gameOver").textContent = "You Are Dead!;"
@@ -237,8 +238,9 @@ export default class Game {
 				count++;
 			});
 
-			this.ctx.fillStyle = "red";
-			this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
+		}
+		this.ctx.fillStyle = "red";
+		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
 
 
 
@@ -247,7 +249,7 @@ export default class Game {
 		else if (this.currentState === "Game Over") {
 
 			this.ctx.fillStyle = "#ffffff";
-			this.ctx.textAlign="center"; 
+			this.ctx.textAlign="center";
 			this.ctx.fillText("You Are Dead!", this.width/2, this.height/2-25);
 			this.ctx.fillText("Press enter to start again", this.width/2, this.height/2+25);
 		}

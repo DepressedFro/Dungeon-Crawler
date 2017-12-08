@@ -11,7 +11,6 @@ body {
 }
 
 canvas {
-  position: relative;
   height: 100vh;
 
   image-rendering: optimizeSpeed;             /* Older versions of FF          */
@@ -48,6 +47,30 @@ ol {
   width: 400px;
   top: 30px;
   left: 5px;
+}
+
+#gold {
+  font: arial;
+  font-size: 30px;
+  color: gold;
+  top: 50px;
+  left: 500px;
+}
+
+#gameOver {
+  text-align: center;
+  color: red;
+  font-size: 40px;
+  top: 300px;
+  left: 500px;
+}
+
+#scoreBoard {
+  text-align: left;
+  color: red;
+  font-size: 20px;
+  top: 400px;
+  left: 500px;
 }
 
 /*cA {
