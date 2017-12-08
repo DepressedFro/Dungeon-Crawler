@@ -5,6 +5,7 @@ import Monster from './monster.js';
 import ThrownKnife from './thrownknife.js';
 import { ExitTile } from './tile.js';
 import Particle from './particle.js';
+import Chest from './chest.js';
 
 /*****************************
 
@@ -160,6 +161,12 @@ export default class Player extends GameObject {
 
 		for (var mon of this.game.gameObjects) {
 			//assuming all monsters have almost square BBoxes
+			if(mon instanceof Chest){
+				if(this.collides(mon)){
+					mon.destroy();
+					this.gold += 200;
+				}
+			}
 			if(mon instanceof Monster){
 				if(mon.circleCollides(this)){
 					switch(this.state){
@@ -185,7 +192,7 @@ export default class Player extends GameObject {
 				}
 			}else if(mon instanceof ThrownKnife){
 				if(mon.circleCollides(this)){
-					this.game.remove(mon);
+					mon.destroy();
 					this.applyKnockback(mon);
 					this.health -= 15;
 				}

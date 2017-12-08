@@ -1,6 +1,4 @@
-import Constants from './constants.js';
-
-/* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
+/* [0:RA, 1:RS, 2:ND, 3:ED, 4:SD, 5:WD,6:E1, 7:E2, 8:E3, 9:E4, 10:K, 11:G, 12:P, 13:T]
  * RA:Room Art Style
  * RS:Room Shape
  * ND:North Door
@@ -11,11 +9,10 @@ import Constants from './constants.js';
  * E2:Enemy Count 2
  * E3:Enemy Count 3
  * E4:Enemy Count 4
- * K: Key
- * G: Gold/Treasure Type
- * P1:Puzzle/Riddle Index 1
- * P2:Puzzle/Riddle Index 2
- * P3:Puzzle/Riddle Index 3
+ * K :Key
+ * G :Gold/Treasure Type
+ * P :Puzzle/Riddle Index 	(1 - 130)
+ * T :Trap Index			(1 - 3)
  */
 
 export default class Map {
@@ -46,10 +43,10 @@ export default class Map {
 			for(var x = 0; x < size; x++) {
 				roomrowString.push("");
 				if(x === this.center && y === this.center) {
-					roomrow.push(this.getRoomCode(1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0));
+					roomrow.push(this.getRoomCode(1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0));
 				}
 				else {
-					roomrow.push(this.getRoomCode(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+					roomrow.push(this.getRoomCode(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 				}
 			}
 			this.rooms.push(roomrow);
@@ -80,7 +77,7 @@ export default class Map {
 		while(len > 0 && x > 0 && y > 0 && x < this.size - 1 && y < this.size - 1) {
 			x += dx;
 			y += dy;
-			this.rooms[y][x] = this.getRoomCode(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			this.rooms[y][x] = this.getRoomCode(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 			if(Math.random() * 100 < 35) {
 				this.makeBranchingBranch(x, y, dir, len);
 			}
@@ -166,35 +163,76 @@ export default class Map {
 					this.rooms[y][x][4] = sdoor;
 					this.rooms[y][x][5] = wdoor;
 					
+					//Staircase Room
 					if(y === this.center && x == this.center) {
 						this.rooms[y][x][1] = 0;
 					}
+					//Treasure/Key/Spawn Room
 					else if(numdoors < 2) {
 						this.rooms[y][x][1] = 1;
 						if(this.startx < 0 || Math.random() < 0.25) {
 							this.startx = x;
 							this.starty = y;
 						}
+						this.rooms[y][x][6] = Math.ceil(Math.random() * 3);
+						this.rooms[y][x][7] = Math.ceil(Math.random() * 3);
+						this.rooms[y][x][8] = Math.ceil(Math.random() * 3);
+						this.rooms[y][x][9] = Math.ceil(Math.random() * 3);
+						
+						if(Math.random() < 0.25) {
+							this.rooms[y][x][10] = 1;
+						}
+						else {
+							this.rooms[y][x][11] = 1;
+						}
+						this.rooms[y][x][12] = Math.ceil(Math.random() * 130);
 					}
+					//E-W Corridor
 					else if(ndoor === 0 && sdoor === 0 && edoor === 1 && wdoor === 1 && Math.random() < 0.75) {
 						this.rooms[y][x][1] = 2;
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
+						}
 					}
+					//N-S Corridor
 					else if(ndoor === 1 && sdoor === 1 && edoor === 0 && wdoor === 0 && Math.random() < 0.75) {
 						this.rooms[y][x][1] = 3;
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
+						}
 					}
+					//Standard Room
 					else {
-						let regular_rooms_num = Constants.shapeNames.length - 4;
-
-						this.rooms[y][x][1] = Math.floor(Math.random() * regular_rooms_num) + 4;
+						this.rooms[y][x][1] = Math.floor(Math.random() * 4) + 4;
 						
-						this.rooms[y][x][6] = Math.ceil(Math.random() * 4);
-						this.rooms[y][x][7] = Math.ceil(Math.random() * 4);
-						this.rooms[y][x][8] = Math.ceil(Math.random() * 4);
-						this.rooms[y][x][9] = Math.ceil(Math.random() * 4);
+						this.rooms[y][x][6] = Math.ceil(Math.random() * 2);
+						this.rooms[y][x][7] = Math.ceil(Math.random() * 2);
+						this.rooms[y][x][8] = Math.ceil(Math.random() * 2);
+						this.rooms[y][x][9] = Math.ceil(Math.random() * 2);
+						
+						if(Math.random() < 0.25) {
+							this.rooms[y][x][11] = 1;
+						}
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][12] = Math.ceil(Math.random() * 130);
+						}
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
+						}
 					}
 				}
 			}
 		}
+		
+		//Clearing Spawn Room
+		this.rooms[this.starty][this.startx][6] = 0;
+		this.rooms[this.starty][this.startx][7] = 0;
+		this.rooms[this.starty][this.startx][8] = 0;
+		this.rooms[this.starty][this.startx][9] = 0;
+		this.rooms[this.starty][this.startx][10] = 0;
+		this.rooms[this.starty][this.startx][11] = 0;
+		this.rooms[this.starty][this.startx][12] = 0;
+		this.rooms[this.starty][this.startx][13] = 0;
 	}
 	
 	getRoomCode(artStyle, shape, ndoor, edoor, sdoor, wdoor, enemyCount1, enemyCount2, enemyCount3, enemyCount4, key, treasure, puzzleID) {
