@@ -22,19 +22,35 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
 
-textbox {
+p {
   position: absolute;
   text-align: left;
   word-wrap: break-word;
-  width: 400px;
-  top: 30px;
-  left: 5px;
   font: arial;
   font-size: 20px;
   color: white;
 }
 
-cA {
+ol {
+  position: absolute;
+  font: arial;
+  font-size: 20px;
+  color: white;
+}
+
+#options {
+  text-align: left;
+  top: 150px;
+  left: 5px;
+}
+
+#textbox {
+  width: 400px;
+  top: 30px;
+  left: 5px;
+}
+
+/*cA {
   position: absolute;
   text-align: left;
   top: 150px;
@@ -62,4 +78,4 @@ cC {
   font: arial;
   font-size: 20px;
   color: white;
-}
+}*/
