@@ -22,7 +22,7 @@ export default class Game {
 		this.level = 1;
 		this.map = new Map(9 + this.level, 1);
 		this.room = new Room(this, {
-			x: this.map.startx >= 0 ? this.map.startx : this.map.center, 
+			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
 			y: this.map.starty >= 0 ? this.map.starty : this.map.center
 		});
 		this.movecd = 0;
@@ -30,7 +30,7 @@ export default class Game {
 			this.player = new Player(this, 100, 60, 60);
 		else
 			this.player = new Player(this, 100, 128, 128);
-		
+
 		// handle key presses
 		this.pressed = {};
 		window.onkeydown = (event) => { this.pressed[event.key] = true; };
@@ -127,9 +127,8 @@ export default class Game {
 			for (let i = this.gameObjects.length - 1; i > 0; i--) {
 				if (this.gameObjects[i])
 					this.gameObjects[i].update(delta);
-				if(this.player.health <= 0) this.currentState = this.gameStates[3];
 			}
-
+			if(this.player.health <= 0) this.currentState = this.gameStates[4];
 			if (this.pressed['Escape'])
 			{
 				this.currentState = this.gameStates[2];
@@ -182,17 +181,13 @@ export default class Game {
 				obj.render(this.ctx);
 				this.ctx.restore();
 			}
-
-			this.ctx.fillStyle = "white";
-			this.ctx.font = "12pt sans-serif";
-			this.ctx.fillText("Health: " + this.player.health, 50, this.ctx.height - 10);
 		}
 		else if (this.currentState === "Game Over") {
-
+			this.ctx.fillStyel = "red";
+			this.ctx.fillText("You Are Dead!", this.widt/2, 100)
 		}
-		this.ctx.fillStyle = "white";
-		this.ctx.font = "12pt sans-serif";
-		this.ctx.fillText("Health: " + this.player.health, 50, this.ctx.height - 10);
+		this.ctx.fillStyle = "red";
+		this.ctx.fillRect((this.width/2)-50, 230, this.player.health, 10);
 		this.ctx.restore();
 	}
 

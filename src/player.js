@@ -136,7 +136,6 @@ export default class Player extends GameObject {
 	}
 
 	update(delta){
-
 		this.previous_pos = this.pos.clone();
 		if(this.damagedEffect > 0.1){
 			this.damagedEffect *= this.damagedEffectSp;
@@ -251,6 +250,7 @@ export default class Player extends GameObject {
 			Constants.tileSize,
 			Constants.tileSize + 4
 		);
+
 		ctx.restore();
 		//this.debugDrawBBox(ctx);
 	}
