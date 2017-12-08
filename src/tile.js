@@ -256,7 +256,7 @@ export class ChestTile extends FloorTile {
     init(x,y){
         super.init(x,y);
         if(this.room.chest){
-            this.decorations.push(new Chest(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
+            new Chest(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
         }
     }
 }

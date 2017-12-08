@@ -71,7 +71,12 @@ export default class Game {
 	}
 
 	movetoroom(locx, locy) {
-
+		for(var i=0; i<this.gameObjects.length; ++i){
+			if(this.gameObjects[i] instanceof Chest){
+				this.remove(this.gameObjects[i]);
+				--i;
+			}
+		}
 		//this.monsters = [];
 		this.room.destroy();
 		this.room = new Room(this, { x: locx, y: locy });
