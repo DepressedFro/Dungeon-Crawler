@@ -19,6 +19,7 @@ export default class Game {
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
+		this.toRemove = [];
 		this.shakeMag = 0;
 
 		this.level = 1;
@@ -91,7 +92,7 @@ export default class Game {
 	}
 
 	remove(obj) {
-		this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);
+		this.toRemove.push(obj);
 	}
 
 	update() {
@@ -150,6 +151,12 @@ export default class Game {
 				this.currentState = this.gameStates[4];
 				this.player.health = 0;
 			}
+
+			// remove destroyed objects
+			for (let obj of this.toRemove) {
+				this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);        
+			}
+			this.toRemove = [];
 
 			if (this.pressed['Escape'] && this.key_cd <= 0)
 			{
