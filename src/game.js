@@ -22,11 +22,7 @@ export default class Game {
 		this.shakeMag = 0;
 
 		this.level = 1;
-		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, {
-			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
-			y: this.map.starty >= 0 ? this.map.starty : this.map.center
-		});
+		this.initMap();
 		this.movecd = 0;
 		this.menu_title = new Menu_Title();
 		this.menu_main = new Menu_Main();
@@ -48,13 +44,21 @@ export default class Game {
 
 		//states the game can be in
 		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
-		this.currentState = this.gameStates[3];
+		this.currentState = this.gameStates[0];
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
 
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
+	}
+
+	initMap() {
+		this.map = new Map(9 + this.level, this.level);
+		this.room = new Room(this, {
+			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
+			y: this.map.starty >= 0 ? this.map.starty : this.map.center
+		});
 	}
 
 	mousemove(event) {

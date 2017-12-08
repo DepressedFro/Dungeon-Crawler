@@ -251,6 +251,23 @@ export class EnemyTile extends FloorTile {
     }
 }
 
+export class NextLevelTile extends Tile {
+    sourcePos = { x: 5, y: 1 }; // basic wall    
+
+    init (x, y) {
+        super.init(x, y);
+    
+        if (this.room.getTile(x, y + 1) instanceof FloorTile)
+            this.sourcePos = { x: 5, y: 2 };
+    }
+
+    playerCollision(player) {
+        this.game.level++;
+        this.game.room.destroy();
+        this.game.initMap();
+    }
+}
+
 
 export let tileTypes = {
     ' ': null,
@@ -261,5 +278,6 @@ export let tileTypes = {
     '<': ExitTile,
     'v': ExitTile,
     '^': ExitTile,
-    '@': EnemyTile
+    '@': EnemyTile,
+    '$': NextLevelTile,
 }
