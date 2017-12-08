@@ -128,7 +128,11 @@ export default class Game {
 				if (this.gameObjects[i])
 					this.gameObjects[i].update(delta);
 			}
-			if(this.player.health <= 0) this.currentState = this.gameStates[4];
+			if(this.player.health <= 0) {
+				this.currentState = this.gameStates[4];
+				this.player.health = 0;
+			}
+
 			if (this.pressed['Escape'])
 			{
 				this.currentState = this.gameStates[2];
@@ -188,6 +192,10 @@ export default class Game {
 		}
 		this.ctx.fillStyle = "red";
 		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
+
+		this.ctx.fillStyle = "gold";
+		this.ctx.fillText("Gold: " + this.player.gold, 10, 30);
+
 		this.ctx.restore();
 	}
 

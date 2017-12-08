@@ -13,6 +13,7 @@ export default class BigBlob extends Blob {
 		this.friction = 0.97;
 		this.burstSpeed = 300;
 		this.waitTime = 2000;
+		this.name = "big blob";
 	}
 
 	get BBox() {
