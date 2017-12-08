@@ -97,7 +97,7 @@ export default class Riddle {
 
 		var temp = ['textbox', 'cA', 'cB', 'cC'];
 		var count = 0;
-		var content = [this.question, this.cA, this.cB, this.cC];
+		var content = [this.question, "1. " + this.cA, "2. " + this.cB, "3. " + this.cC];
 
 		//Loop to add in text.
 		temp.forEach(function(i){
@@ -105,14 +105,5 @@ export default class Riddle {
 		  temp2.textContent = content[count];
 			count++;
 		});
-
-		// ctx.save();
-    // ctx.fillStyle = 'white';
-		// ctx.font = "10px Arial";
-    // ctx.fillText(this.question, 18, 190);
-		// ctx.fillText("A: " + this.cA, 18, 205);
-		// ctx.fillText("B: " + this.cB, 18, 220)
-		// ctx.fillText("C: " + this.cC, 18, 235)
-    // ctx.restore();
 	}
 }

@@ -30,7 +30,8 @@ p {
   color: white;
 }
 
-ol {
+ul {
+  list-style-type: none;
   position: absolute;
   font: arial;
   font-size: 20px;
@@ -73,32 +74,14 @@ ol {
   left: 500px;
 }
 
-/*cA {
-  position: absolute;
-  text-align: left;
-  top: 150px;
-  left: 5px;
-  font: arial;
-  font-size: 20px;
-  color: white;
-}
 
-cB {
-  position: absolute;
-  text-align: left;
-  top: 180px;
-  left: 5px;
-  font: arial;
-  font-size: 20px;
-  color: white;
-}
+/*From https://stackoverflow.com/questions/21003535/anyway-to-prevent-the-blue-highlighting-of-elements-in-chrome-when-clicking-quic*/
 
-cC {
-  position: absolute;
-  text-align: left;
-  top: 210px;
-  left: 5px;
-  font: arial;
-  font-size: 20px;
-  color: white;
-}*/
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
