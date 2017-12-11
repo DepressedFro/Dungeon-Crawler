@@ -3,8 +3,8 @@ import Vector from './lib/vector2d.js';
 import GameObject from './gameobject.js';
 
 export default class Chest extends GameObject {
-	constructor(game, x, y, dir) {
-		super(game,x,y);
+	constructor(game, x, y) {
+		super(game);
 		this.pos = new Vector(x,y);
 		this.xTile = 15;
 		this.yTile = 13;

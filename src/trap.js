@@ -30,9 +30,6 @@ export default class Trap extends GameObject {
 			height: this.height,
 		}
 	}
-  getPosition() {
-    return {x: this.pos.x, y: this.pos.y, height: this.height, width: this.width};
-  }
 	setTilePosition(tilex,tiley){
 		this.tilex = tilex;
 		this.tiley = tiley;
@@ -77,7 +74,6 @@ export default class Trap extends GameObject {
 		this.type = 'spike';
 		this.start = 0;
 		this.activate = false;
-		console.log("trap here");
   }
   blade() {
 		this.pos = new Vector(100, 140);

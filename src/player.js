@@ -165,6 +165,7 @@ export default class Player extends GameObject {
 			if(mon instanceof Chest){
 				if(this.collides(mon)){
 					mon.destroy();
+					this.game.room.roomcode[11] = 0;
 					this.gold += 200;
 				}
 			}

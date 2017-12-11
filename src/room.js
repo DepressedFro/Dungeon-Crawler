@@ -8,6 +8,7 @@ import Constants from './constants.js';
 import KnifeThrower from './knifethrower.js';
 import BigBlob from './bigblob.js';
 import Blob from './blob.js';
+import Chest from './chest.js';
 
 // let riddles = new Riddles();
 
@@ -55,7 +56,7 @@ export default class Room extends GameObject {
 			'<': this.roomcode[5],
 		}
 
-		//this.chest = this.roomcode[11];
+		this.chest = this.roomcode[11];
 
 		// test room
 		this.createByShape(this.shape);
