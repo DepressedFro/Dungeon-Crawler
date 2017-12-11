@@ -130,6 +130,8 @@ export default class Room extends GameObject {
 			if(result || result === 0) {
 				this.game.room.roomcode[12] = 0;
 				this.riddle = undefined;
+				this.game.player.health -= result;
+				if(result === 0) this.game.player.gold += 200;
 			}
 		}
 	}
