@@ -27,8 +27,8 @@ export default class Room extends GameObject {
 
 		//this.monsters = [];
 		this.tiles = [];
- 	  this.riddle = new Riddles(this.roomcode[12]);
-		if(this.roomcode[13] > 0)	this.trap = new Trap(game, this.roomcode[13]);
+ 	  this.riddle = new Riddles(game, this.roomcode[12], this.game.riddles);
+		if(this.roomcode[13])	this.trap = new Trap(game, this.roomcode[13]);
 
 		// parse roomcode
 		/* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
@@ -125,11 +125,11 @@ export default class Room extends GameObject {
 	}
 	update() {
 
-		if(this.roomcode[12] > 0 && this.game.room === this) {
+		if(this.roomcode[12] && this.game.room === this) {
 			var result = this.riddle.update(this.game.pressed);
-			if(result && result > 0) {
+			if(result || result === 0) {
+				this.game.room.roomcode[12] = 0;
 				this.riddle = undefined;
-				this.game.map.rooms[this.pos.y][this.pos.x][12] = 0;
 			}
 		}
 	}
