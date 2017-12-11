@@ -9,7 +9,7 @@ import KnifeThrower from './knifethrower.js';
 import BigBlob from './bigblob.js';
 import Blob from './blob.js';
 
-let riddles = new Riddles();
+// let riddles = new Riddles();
 
 export default class Room extends GameObject {
 	width = 16;
@@ -20,20 +20,14 @@ export default class Room extends GameObject {
 
 		this.pos = pos;
 		this.roomcode = this.game.map.rooms[pos.y][pos.x];
-
 		// seed the rng
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
 
 		//this.monsters = [];
 		this.tiles = [];
-
- 	    this.riddle = riddles;
-		this.trap = new Trap(game, 203);
-
-
-		//Determine riddle or Trap
-		//this.riddleTrap((roomcode[13]*100) + (roomcode[14]*10) + roomcode[15]);
+ 	  this.riddle = new Riddles(this.roomcode[12]);
+		if(this.roomcode[13] > 0)	this.trap = new Trap(game, this.roomcode[13]);
 
 		// parse roomcode
 		/* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
@@ -61,11 +55,10 @@ export default class Room extends GameObject {
 			'<': this.roomcode[5],
 		}
 
-		this.chest = this.roomcode[11];
+		//this.chest = this.roomcode[11];
 
 		// test room
 		this.createByShape(this.shape);
-		console.log(this.shape);
 
 		// init all tiles after the map has been created
 		for (var x = 0; x < this.width; x++) {
@@ -97,13 +90,13 @@ export default class Room extends GameObject {
 		this.tiles = [];
 
 		//I hack this a little bit
-		var hack_x = 0; 
-		var hack_y = 0; 
+		var hack_x = 0;
+		var hack_y = 0;
 
 		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
 			++hack_y;
-			
+
 			for (let l of row) {
 				let tile = tileTypes[l];
 				++hack_x;
@@ -129,28 +122,14 @@ export default class Room extends GameObject {
 			return null;
 		return this.tiles[y][x];
 	}
-
-	riddleTrap(index) {
-		if(index >= 200) {
-			this.trap = new Trap(index);
-		} else if(index > 0){
-			this.riddle = new Riddles();
-		}
-	}
-
 	update() {
-		if(this.riddle) {
-			var choices = this.riddle.getChoices();
-			var result;
-			if(this.game.pressed['1']){
-				result = this.riddle.update(choices.a);
-			} else if (this.game.pressed['2']) {
-				result = this.riddle.update(choices.b);
-			} else if (this.game.pressed['3']) {
-				result = this.riddle.update(choices.c);
+
+		if(this.roomcode[12] > 0 && this.game.room === this) {
+			var result = this.riddle.update(this.game.pressed);
+			if(result && result > 0) {
+				this.riddle = undefined;
+				this.game.map.rooms[this.pos.y][this.pos.x][12] = 0;
 			}
-			if(result >= 0) this.riddle = undefined;
-			// console.log(result);
 		}
 	}
 }

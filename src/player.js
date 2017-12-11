@@ -6,6 +6,7 @@ import ThrownKnife from './thrownknife.js';
 import { ExitTile } from './tile.js';
 import Particle from './particle.js';
 import Chest from './chest.js';
+import Trap from './trap.js';
 
 /*****************************
 
@@ -165,6 +166,14 @@ export default class Player extends GameObject {
 				if(this.collides(mon)){
 					mon.destroy();
 					this.gold += 200;
+				}
+			}
+			if(mon instanceof Trap) {
+				if(this.collides(mon)){
+					this.game.shake(10);
+					this.applyKnockback(mon);
+
+					this.health -= mon.dealDamage();
 				}
 			}
 			if(mon instanceof Monster){

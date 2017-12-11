@@ -3,8 +3,8 @@ import seedrandom from 'seedrandom';
 import Riddles from './riddles.csv';
 
 export default class Riddle {
-	constructor() {
-		this.index;
+	constructor(index) {
+		this.index = index;
     this.damage = 5;
 		this.riddles;
 		this.question;
@@ -17,13 +17,14 @@ export default class Riddle {
 		this.grabRiddles = this.grabRiddles.bind(this);
 		this.setRiddles = this.setRiddles.bind(this);
     this.grabRiddles(this.setRiddles);
-		var rng = seedrandom();
+		if(this.index === 0) this.clear();
+		else {
 		//Timeout provides time for this.riddles to be filled.
 		setTimeout(() => {
-			//Temporary random number until roomcode works.
-			this.randomChoice(Math.floor((rng()*(this.riddles.length-2))+1));
+			this.randomChoice(this.index);
 			this.render();
-    }, 100)
+    }, 500);
+	}
 	}
   getChoices() {
     return {a: this.cA, b: this.cB, c: this.cC};
@@ -82,7 +83,19 @@ export default class Riddle {
 		  temp2.textContent = "";
 		});
 	}
-  update(guess) {
+  update(pressed) {
+		var choices = this.getChoices();
+		var guess
+		if(pressed['1']){
+			guess = choices.a;
+		} else if (pressed['2']) {
+			guess = choices.b;
+		} else if (pressed['3']) {
+			guess = choices.c;
+		} else {
+			return null;
+		}
+
 		this.clear();
     if(guess === this.correct) {
       //allow them to pass.
