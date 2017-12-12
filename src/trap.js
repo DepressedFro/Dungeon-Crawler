@@ -148,7 +148,7 @@ export default class Trap extends GameObject {
 			ctx.save();
 			ctx.translate(this.pos.x,this.pos.y);
 			ctx.rotate(this.angle);
-			this.angle+= 1;
+			this.angle+= 0.2;
 
 			ctx.drawImage(
 				Constants.tileset,

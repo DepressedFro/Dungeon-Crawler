@@ -90,17 +90,11 @@ export default class Room extends GameObject {
 	createByShape(shape) {
 		this.tiles = [];
 
-		//I hack this a little bit
-		var hack_x = 0;
-		var hack_y = 0;
-
 		for (let row of Constants.shapes[shape]) {
 			let new_row = [];
-			++hack_y;
 
 			for (let l of row) {
 				let tile = tileTypes[l];
-				++hack_x;
 
 				if (tile === null) {
 					new_row.push(null);

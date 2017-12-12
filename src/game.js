@@ -27,7 +27,6 @@ export default class Game {
 		this.level = 1;
 		this.initMap();
 		this.movecd = 0;
-		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
 		this.menu_title = new Menu_Title();
 		this.menu_main = new Menu_Main();
 		this.riddles;
