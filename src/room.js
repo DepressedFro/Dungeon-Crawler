@@ -53,6 +53,13 @@ export default class Room extends GameObject {
 		* P2:Puzzle/Riddle Index 2
 		* P3:Puzzle/Riddle Index 3
 		*/
+
+
+		console.log("e1: " ,this.roomcode[6]);
+		console.log("e2: ",this.roomcode[7]);
+		console.log("e3: ",this.roomcode[8]);
+		console.log("e4: ",this.roomcode[9]);
+
 		this.shape = Constants.shapeNames[this.roomcode[1]];//shapeNames[this.roomcode[1]];
 		this.doors = {
 			'^': this.roomcode[2],
@@ -66,14 +73,28 @@ export default class Room extends GameObject {
 		// test room
 		this.createByShape(this.shape);
 
+		var tmp = [];
+		for(var type=6;type<9;++type){
+			tmp.push(this.roomcode[type]);
+		}
+
 		// init all tiles after the map has been created
 		for (var x = 0; x < this.width; x++) {
 			for (var y = 0; y < this.width; y++) {
 				if (this.tiles[y][x] !== null)
 					this.tiles[y][x].init(x, y);
+										
 					if( this.tiles[y][x] instanceof EnemyTile){
-						var tmp = Math.min(this.level,2);
-						this.tiles[y][x].spawn(this._.random(0,this.game.level));
+
+						for(var type=6;type<9;++type){
+							
+							if(this.roomcode[type] > 0){ 
+								this.roomcode[type]--;
+								this.tiles[y][x].spawn(type-6);
+								break;
+							}
+						}
+
 					}
 			}
 		}
@@ -84,6 +105,9 @@ export default class Room extends GameObject {
 		this.sfx_riddle_incorrect = new Audio();
     this.sfx_riddle_incorrect.src = SFX_Riddle_Incorrect;
 	  //end sfx
+		for(var type=0;type<3;++type){
+			this.roomcode[type+6] = tmp[type];
+		}
 	}
 
 	destroy() {

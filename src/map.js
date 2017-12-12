@@ -25,6 +25,7 @@ export default class Map {
 		this.center = Math.floor(size/2);
 		this.startx = -1;
 		this.starty = -1;
+		this.type = type;
 		this.getEmptyMap(size);
 		this.makeBranch(this.center, this.center, 0, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 1, Math.floor(size/2 - 1));
@@ -175,10 +176,13 @@ export default class Map {
 							this.startx = x;
 							this.starty = y;
 						}
-						this.rooms[y][x][6] = Math.ceil(Math.random() * 3);
-						this.rooms[y][x][7] = Math.ceil(Math.random() * 3);
-						this.rooms[y][x][8] = Math.ceil(Math.random() * 3);
-						this.rooms[y][x][9] = Math.ceil(Math.random() * 3);
+
+						if( this.type == 1)
+							this.rooms[y][x][6] = Math.round(Math.random()*2);
+						
+						this.rooms[y][x][7] = Math.round(Math.random()*this.type*2);
+						if( this.type >= 2)
+							this.rooms[y][x][8] = Math.round(Math.random()*2);
 
 						if(Math.random() < 0.25) {
 							this.rooms[y][x][10] = 1;
@@ -212,10 +216,14 @@ export default class Map {
 					else {
 						this.rooms[y][x][1] = Math.floor(Math.random() * 4) + 4;
 
-						this.rooms[y][x][6] = Math.ceil(Math.random() * 2);
-						this.rooms[y][x][7] = Math.ceil(Math.random() * 2);
-						this.rooms[y][x][8] = Math.ceil(Math.random() * 2);
-						this.rooms[y][x][9] = Math.ceil(Math.random() * 2);
+						if( this.type == 1)
+							this.rooms[y][x][6] = Math.round(Math.random()*3);
+						
+						this.rooms[y][x][7] = Math.round(Math.random()*this.type);
+						if( this.type >= 2)
+							this.rooms[y][x][8] = Math.round(Math.random());
+						
+						this.rooms[y][x][9] = Math.round(Math.random());
 
 						if(Math.random() < 0.25) {
 							this.rooms[y][x][11] = 1;

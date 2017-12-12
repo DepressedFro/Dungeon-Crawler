@@ -225,10 +225,12 @@ export default class Player extends GameObject {
 								if(mon.name == "blob"){
 									var sound = this.sfx_warrior_slash_hit.cloneNode();
 									sound.volume = this.volumeSFXSlider;
+									this.game.room.roomcode[6] -= 1;
 									sound.play();
 									this.gold += 25;
 								} else if (mon.name == "big blob"){
 									var sound = this.sfx_blob_split.cloneNode();
+									this.game.room.roomcode[7] -= 1;
 									sound.volume = this.volumeSFXSlider;
 									sound.play();
 									this.gold += 50;
@@ -237,6 +239,7 @@ export default class Player extends GameObject {
 									var sound = this.sfx_warrior_slash_hit.cloneNode();
 									sound.volume = this.volumeSFXSlider;
 									sound.play();
+									this.game.room.roomcode[8] -= 1;
 									this.gold += 100;
 								}
 								this.kill+=1;

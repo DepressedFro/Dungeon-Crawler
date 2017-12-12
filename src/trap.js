@@ -5,6 +5,7 @@ import Vector from './lib/vector2d.js';
 export default class Trap extends GameObject {
 	constructor(game, index, x, y) {
 			super(game);
+			this.zindex = 10;
       this.index = index;
 
 			this.type;
@@ -61,7 +62,7 @@ export default class Trap extends GameObject {
 		this.tilex = 2;
 		this.tiley = 13;
 
-    this.height = 48;
+    this.height = 24;
     this.width = 16;
     this.damage = 5;
 		this.type = 'flame';
