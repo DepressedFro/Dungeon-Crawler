@@ -28,7 +28,7 @@ export default class Room extends GameObject {
 		//this.monsters = [];
 		this.tiles = [];
  	  this.riddle = new Riddles(game, this.roomcode[12], this.game.riddles);
-		if(this.roomcode[13])	this.trap = new Trap(game, this.roomcode[13]);
+		this.trap = this.roomcode[13];
 
 		// parse roomcode
 		/* [RA, RS, ND, ED, SD, WD, E1, E2, E3, E4, K, G, T, P1, P2, P3]
@@ -81,9 +81,6 @@ export default class Room extends GameObject {
 				if (t !== null)
 					t.destroy();
 			}
-		}
-		if(this.trap) {
-			this.trap.destroy();
 		}
 	}
 
