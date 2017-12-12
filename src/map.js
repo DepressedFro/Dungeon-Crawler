@@ -30,12 +30,12 @@ export default class Map {
 		this.makeBranch(this.center, this.center, 2, Math.floor(size/2 - 1));
 		this.makeBranch(this.center, this.center, 3, Math.floor(size/2 - 1));
 		this.finalizeRooms();
-		
+
 		this.roomsToString();
 		console.log(this.seed);
 		//console.log(this.roomsString);
 	}
-	
+
 	getEmptyMap(size) {
 		for(var y = 0; y < size; y++) {
 			var roomrow = [];
@@ -53,7 +53,7 @@ export default class Map {
 			this.roomsString.push(roomrowString);
 		}
 	}
-	
+
 	makeBranch(x, y, dir, len) {
 		var dy = 0;
 		var dx = 0;
@@ -73,7 +73,7 @@ export default class Map {
 			default:
 				break;
 		}
-		
+
 		while(len > 0 && x > 0 && y > 0 && x < this.size - 1 && y < this.size - 1) {
 			x += dx;
 			y += dy;
@@ -84,7 +84,7 @@ export default class Map {
 			len--;
 		}
 	}
-	
+
 	makeBranchingBranch(x, y, olddir, len) {
 		if(len > 0) {
 			var dir = -1;
@@ -124,19 +124,19 @@ export default class Map {
 				default:
 					break;
 			}
-			
+
 			if(dir > -1) {
 				this.makeBranch(x, y, dir, len);
 			}
 		}
 	}
-	
+
 	finalizeRooms() {
 		for(var y = 0; y < this.size; y++) {
 			for(var x = 0; x < this.size; x++) {
 				if(this.rooms[y][x][0] > 0) {
 					var numdoors = 0;
-					
+
 					var ndoor = 0;
 					if(y > 0 && this.rooms[y - 1][x][0] > 0) {
 						ndoor = 1;
@@ -157,12 +157,12 @@ export default class Map {
 						wdoor = 1;
 						numdoors++;
 					}
-					
+
 					this.rooms[y][x][2] = ndoor;
 					this.rooms[y][x][3] = edoor;
 					this.rooms[y][x][4] = sdoor;
 					this.rooms[y][x][5] = wdoor;
-					
+
 					//Staircase Room
 					if(y === this.center && x == this.center) {
 						this.rooms[y][x][1] = 0;
@@ -178,7 +178,7 @@ export default class Map {
 						this.rooms[y][x][7] = Math.ceil(Math.random() * 3);
 						this.rooms[y][x][8] = Math.ceil(Math.random() * 3);
 						this.rooms[y][x][9] = Math.ceil(Math.random() * 3);
-						
+
 						if(Math.random() < 0.25) {
 							this.rooms[y][x][10] = 1;
 						}
@@ -204,17 +204,17 @@ export default class Map {
 					//Standard Room
 					else {
 						this.rooms[y][x][1] = Math.floor(Math.random() * 4) + 4;
-						
+
 						this.rooms[y][x][6] = Math.ceil(Math.random() * 2);
 						this.rooms[y][x][7] = Math.ceil(Math.random() * 2);
 						this.rooms[y][x][8] = Math.ceil(Math.random() * 2);
 						this.rooms[y][x][9] = Math.ceil(Math.random() * 2);
-						
+
 						if(Math.random() < 0.25) {
 							this.rooms[y][x][11] = 1;
 						}
 						if(Math.random() < 0.5) {
-							this.rooms[y][x][12] = Math.ceil(Math.random() * 130);
+							this.rooms[y][x][12] = Math.ceil(Math.random() * 129);
 						}
 						if(Math.random() < 0.5) {
 							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
@@ -223,7 +223,7 @@ export default class Map {
 				}
 			}
 		}
-		
+
 		//Clearing Spawn Room
 		this.rooms[this.starty][this.startx][6] = 0;
 		this.rooms[this.starty][this.startx][7] = 0;
@@ -234,7 +234,7 @@ export default class Map {
 		this.rooms[this.starty][this.startx][12] = 0;
 		this.rooms[this.starty][this.startx][13] = 0;
 	}
-	
+
 	getRoomCode(artStyle, shape, ndoor, edoor, sdoor, wdoor, enemyCount1, enemyCount2, enemyCount3, enemyCount4, key, treasure, puzzleID) {
 		var roomCode = [];
 		roomCode.push(artStyle);
@@ -252,13 +252,13 @@ export default class Map {
 		roomCode.push(puzzleID);
 		return roomCode;
 	}
-	
+
 	roomsToString() {
 		for(var y = 0; y < this.size; y++) {
 			for(var x = 0; x < this.size; x++) {
 				var roomCode = "";
 				roomCode += this.rooms[y][x][0].toString();	//Art Style
-				
+
 				roomCode += this.rooms[y][x][1].toString(); //Room Shape
 				roomCode += this.rooms[y][x][2].toString(); //North Door
 				roomCode += this.rooms[y][x][3].toString(); //East Door
@@ -271,7 +271,7 @@ export default class Map {
 				roomCode += this.rooms[y][x][9].toString(); //Enemy Count 4
 				roomCode += this.rooms[y][x][10].toString(); //Key ID
 				roomCode += this.rooms[y][x][11].toString(); //Treasure ID
-				
+
 				var puzzleString = this.rooms[y][x][12].toString();
 				if(puzzleString.length === 0)
 					roomCode += "000";
@@ -279,7 +279,7 @@ export default class Map {
 					roomCode += "00";
 				else if(puzzleString.length === 2)
 					roomCode += "0";
-				
+
 				roomCode += puzzleString;	//Puzzle ID
 				*/
 				this.roomsString[y][x] = roomCode;
