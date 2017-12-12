@@ -147,7 +147,7 @@ export class WallTile extends Tile {
         this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
 
         // random types of walls for variety
-        switch (this.room._.random(30)) {
+        switch (this.room._.random(Math.floor(20 / this.game.level))) {
             case 0:
             case 1:
             case 2:
