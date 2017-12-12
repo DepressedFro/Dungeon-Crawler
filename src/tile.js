@@ -293,6 +293,58 @@ export class NextLevelTile extends Tile {
     }
 }
 
+export class FountainTile extends WallTile { 
+    zindex = 5; 
+    anim = 0;
+    animTime = -1;
+
+    init(x, y) {
+        super.init(x, y);
+        
+        if (this.room.roomcode[12] === 0)
+            this.anim = 8;
+    }
+
+    playerCollision(player) { 
+        if (this.room.roomcode[12] === 0)
+            return;
+
+        if (this.animTime == -1) {
+            this.animTime = 0;
+            this.room.riddle.show = true;
+            this.room.riddle.render();
+        }
+    } 
+ 
+    update(delta) { 
+        if (this.room.roomcode[12] === 0 && this.animTime == -1)
+            return super.update(delta);
+
+        if (this.animTime == -1) 
+            return;
+        
+        this.animTime += delta;
+        this.anim = Math.min(Math.floor(this.animTime / 200), 8);
+    } 
+ 
+    render(ctx) {
+        // check that the tileset is loaded
+        if (!Constants.fountainTileset.complete)
+            return;
+
+        ctx.drawImage(
+            Constants.fountainTileset,
+            this.anim * Constants.tileSize, // source BBox
+            0,
+            16,
+            32,
+            this.pos.x * Constants.tileSize, // target BBox
+            this.pos.y * Constants.tileSize,
+            16,
+            32,
+        )
+    }
+} 
 
 
 export let tileTypes = {
@@ -307,5 +359,6 @@ export let tileTypes = {
     '@': EnemyTile,
     '*': NextLevelTile,
     '$': ChestTile,
-    'x': TrapTile
+    'x': TrapTile,
+    'F': FountainTile,
 }
