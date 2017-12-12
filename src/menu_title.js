@@ -45,6 +45,8 @@ export default class Menu_Title
     this.frameTime = this.frame_cd;
     this.currentTitleFrame = 0;
     this.currentTorchFrame = 0;
+    this.currentCharacterFrame = 0;
+    this.charSpeed = 60;
     this.torchSpeed = 8;
     this.titleSpeed = 20;
   }
@@ -85,12 +87,27 @@ export default class Menu_Title
         }
     }
 
+    if(this.frameTime % this.charSpeed === 0)
+    {
+        this.currentCharacterFrame += 1;
+        if(this.currentCharacterFrame > 1)
+        {
+          this.currentCharacterFrame = 0;
+        }
+    }
+
+
+
+
     ctx.save();
     ctx.drawImage(this.backImg, 0 ,0);
     //draw the gifs
     ctx.drawImage(this.titleImg, 228*this.currentTitleFrame, 0, 228, 58, 18, 0, 228, 58);
     ctx.drawImage(this.torchImg, 16*this.currentTorchFrame, 0, 16, 32, 68, 114, 16, 32);
     ctx.drawImage(this.torchImg, 16*this.currentTorchFrame, 0, 16, 32, 172, 114, 16, 32);
+    ctx.drawImage(this.knightImg, 32*this.currentCharacterFrame, 0, 32, 20, 150, 200, 32, 20);
+
+
     //img, renderStartXPos, renderStartYPos, widthX, heightY, xPos, yPos, imgXSize, imgYSize
 
     ctx.restore();
