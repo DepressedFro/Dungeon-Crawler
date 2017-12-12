@@ -72,7 +72,7 @@ export default class Menu_Main
         }
         case "Exit":
         {
-          window.currentState = "Exit";
+          window.currentState = "Title Screen";
           break;
         }
       }

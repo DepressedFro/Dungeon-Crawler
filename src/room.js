@@ -9,6 +9,8 @@ import KnifeThrower from './knifethrower.js';
 import BigBlob from './bigblob.js';
 import Blob from './blob.js';
 import Chest from './chest.js';
+import SFX_Riddle_Correct from './sfx/sfx_riddle_correct.wav'
+import SFX_Riddle_Incorrect from './sfx/sfx_riddle_incorrect.wav'
 
 // let riddles = new Riddles();
 
@@ -24,6 +26,7 @@ export default class Room extends GameObject {
 		// seed the rng
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
+		this.volumeSFXSlider = .6;
 		this.check = false;
 		this.monsters = [];
 		this.tiles = [];
@@ -74,6 +77,13 @@ export default class Room extends GameObject {
 					}
 			}
 		}
+
+		//sfx time
+		this.sfx_riddle_correct = new Audio();
+    this.sfx_riddle_correct.src = SFX_Riddle_Correct;
+		this.sfx_riddle_incorrect = new Audio();
+    this.sfx_riddle_incorrect.src = SFX_Riddle_Incorrect;
+	  //end sfx
 	}
 
 	destroy() {
@@ -145,7 +155,15 @@ export default class Room extends GameObject {
 				if(result === 0) {
 					this.game.player.gold += 100;
 					this.game.player.health += 25;
+					var sound = this.sfx_riddle_correct.cloneNode();
+					sound.volume = this.volumeSFXSlider;
+					sound.play();
 					if(this.game.player.health > 100) this.game.player.health = 100;
+				}
+				else {
+					var sound = this.sfx_riddle_incorrect.cloneNode();
+					sound.volume = this.volumeSFXSlider;
+					sound.play();
 				}
 
 
