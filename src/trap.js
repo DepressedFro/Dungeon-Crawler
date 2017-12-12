@@ -23,6 +23,14 @@ export default class Trap extends GameObject {
       this.determineTrap();
 	}
 	get BBox() {
+		if(this.type === 'blade') {
+			return {
+				x: this.pos.x-8,
+				y: this.pos.y-8,
+				width: this.width,
+				height: this.height,
+			}
+		}
 		return {
 			x: this.pos.x,
 			y: this.pos.y,
@@ -36,8 +44,7 @@ export default class Trap extends GameObject {
 	}
 	determineTrap() {
 		//Generate a trap based on type.
-		//Assign (Puzzle/Riddle Index) to 200s.
-		//Flame = 201, Spike = 202, Blade = 203;
+		//Flame = 1, Spike = 2, Blade = 3;
 		switch(this.index) {
 			case 1:
 				this.flame();
