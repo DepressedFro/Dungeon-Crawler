@@ -66,7 +66,7 @@ export default class Menu_Title
   render(ctx)
   {
     this.frameTime += 1;
-    console.log(this.frameTime);
+    // console.log(this.frameTime);
     //change title frame rendering depending on time
     if(this.frameTime % this.titleSpeed === 0)
     {
