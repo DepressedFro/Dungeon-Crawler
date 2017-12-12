@@ -5,6 +5,7 @@ import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import KnifeThrower from './knifethrower.js';
 import Chest from './chest.js';
+import Trap from './trap.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -279,6 +280,14 @@ export class NextLevelTile extends Tile {
     }
 }
 
+export class TrapTile extends FloorTile {
+    init(x,y){
+        super.init(x,y);
+        if(this.room.trap){
+            new Trap(this.game, this.room.trap);
+        }
+    }
+}
 
 
 export let tileTypes = {
@@ -292,5 +301,6 @@ export let tileTypes = {
     '^': ExitTile,
     '@': EnemyTile,
     '*': NextLevelTile,
-    '$': ChestTile
+    '$': ChestTile,
+    '%': TrapTile
 }

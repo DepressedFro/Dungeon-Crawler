@@ -12,6 +12,7 @@ import Menu_Main from './menu_main';
 import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
 import Chest from './chest.js';
+import Trap from './trap.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -101,7 +102,7 @@ export default class Game {
 
 	movetoroom(locx, locy) {
 		for(var i=0; i<this.gameObjects.length; ++i){
-			if(this.gameObjects[i] instanceof Chest){
+			if(this.gameObjects[i] instanceof Chest || this.gameObjects[i] instanceof Trap){
 				this.gameObjects[i].destroy();
 			}
 		}
