@@ -13,7 +13,7 @@ import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
 import Chest from './chest.js';
 import Music_Menu from './songs/Main_Menu.wav';
-import SFX_Slash from './sfx/sfx_player_warrior_sword'
+import SFX_Slash from './sfx/sfx_player_warrior_sword_hit.wav'
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
 		//this.monsters = [];
