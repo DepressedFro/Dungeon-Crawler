@@ -244,6 +244,10 @@ export default class Game {
 				obj.render(this.ctx);
 				this.ctx.restore();
 			}
+
+			this.ctx.fillStyle = "red";
+			this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
+
 		}
 		else if (window.currentState === "Game Over") {
 
@@ -260,6 +264,8 @@ export default class Game {
 			  temp2.textContent = content[count];
 				count++;
 			});
+
+
 		}
 		this.ctx.restore();
 	}
