@@ -27,6 +27,7 @@ export default class Room extends GameObject {
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
 		this.volumeSFXSlider = .6;
+		this.check = false;
 		this.monsters = [];
 		this.tiles = [];
  	  this.riddle = new Riddles(game, this.roomcode[12], this.game.riddles);
@@ -102,6 +103,8 @@ export default class Room extends GameObject {
 		if(this.trap) {
 			this.trap.destroy();
 		}
+
+		super.destroy();
 	}
 
 	createByShape(shape) {
@@ -145,9 +148,10 @@ export default class Room extends GameObject {
 		if(this.roomcode[12] && this.game.room === this) {
 			var result = this.riddle.update(this.game.pressed);
 			if(result || result === 0) {
+				this.check = true;
 				this.game.room.roomcode[12] = 0;
 				this.riddle = undefined;
-				this.game.player.health -= result;				
+				this.game.player.health -= result;
 				if(result === 0) {
 					this.game.player.gold += 100;
 					this.game.player.health += 25;

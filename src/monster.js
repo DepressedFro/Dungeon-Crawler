@@ -25,7 +25,7 @@ export default class Monster extends GameObject {
 			this.invincible = 0;
 		}
 		if(this.invincible > 0){
-			this.invincible-=delta/1000;
+			this.invincible-=delta/300;
 		}
 	}
 

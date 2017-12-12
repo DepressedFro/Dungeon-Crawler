@@ -271,7 +271,7 @@ export class TrapTile extends FloorTile {
         super.init(x,y);
         console.log(this.pos.x);
         console.log(this.pos.y);
-        this.decorations.push(new Trap(this.game,this.roomcode13,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));    
+        this.decorations.push(new Trap(this.game,this.roomcode13,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
     }
 }
 
@@ -293,19 +293,19 @@ export class NextLevelTile extends Tile {
     }
 }
 
-export class FountainTile extends WallTile { 
-    zindex = 5; 
+export class FountainTile extends WallTile {
+    zindex = 5;
     anim = 0;
     animTime = -1;
 
     init(x, y) {
         super.init(x, y);
-        
+
         if (this.room.roomcode[12] === 0)
             this.anim = 8;
     }
 
-    playerCollision(player) { 
+    playerCollision(player) {
         if (this.room.roomcode[12] === 0)
             return;
 
@@ -314,19 +314,19 @@ export class FountainTile extends WallTile {
             this.room.riddle.show = true;
             this.room.riddle.render();
         }
-    } 
- 
-    update(delta) { 
+    }
+
+    update(delta) {
         if (this.room.roomcode[12] === 0 && this.animTime == -1)
             return super.update(delta);
 
-        if (this.animTime == -1) 
+        if (this.animTime == -1 || !this.game.room.check) 
             return;
-        
+
         this.animTime += delta;
         this.anim = Math.min(Math.floor(this.animTime / 200), 8);
-    } 
- 
+    }
+
     render(ctx) {
         // check that the tileset is loaded
         if (!Constants.fountainTileset.complete)
@@ -344,7 +344,7 @@ export class FountainTile extends WallTile {
             32,
         )
     }
-} 
+}
 
 
 export let tileTypes = {

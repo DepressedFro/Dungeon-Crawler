@@ -186,11 +186,14 @@ export default class Map {
 						else {
 							this.rooms[y][x][11] = 1;
 						}
-						this.rooms[y][x][12] = Math.ceil(Math.random() * 130);
+						this.rooms[y][x][12] = Math.ceil(Math.random() * 129);
 					}
 					//E-W Corridor
 					else if(ndoor === 0 && sdoor === 0 && edoor === 1 && wdoor === 1 && Math.random() < 0.75) {
 						this.rooms[y][x][1] = 2;
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][12] = Math.ceil(Math.random() * 129);
+						}
 						if(Math.random() < 0.5) {
 							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
 						}
@@ -198,6 +201,9 @@ export default class Map {
 					//N-S Corridor
 					else if(ndoor === 1 && sdoor === 1 && edoor === 0 && wdoor === 0 && Math.random() < 0.75) {
 						this.rooms[y][x][1] = 3;
+						if(Math.random() < 0.5) {
+							this.rooms[y][x][12] = Math.ceil(Math.random() * 129);
+						}
 						if(Math.random() < 0.5) {
 							this.rooms[y][x][13] = Math.ceil(Math.random() * 3);
 						}

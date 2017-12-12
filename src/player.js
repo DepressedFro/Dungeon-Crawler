@@ -206,10 +206,12 @@ export default class Player extends GameObject {
 				if(mon.circleCollides(this)){
 					switch(this.state){
 						case 'move':
+							if (this.damagedEffect > 0)
+								break;
 							this.game.shake(10);
 							this.applyKnockback(mon);
 							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
-							this.health -= 1;
+							this.health -= 3;
 							//play hurt sound
 							var sound = this.sfx_player_hurt.cloneNode();
 							sound.volume = this.volumeSFXSlider;
@@ -246,7 +248,7 @@ export default class Player extends GameObject {
 				if(mon.circleCollides(this)){
 					mon.destroy();
 					this.applyKnockback(mon);
-					this.health -= 15;
+					this.health -= 5;
 					var sound = this.sfx_player_hurt.cloneNode();
 					sound.volume = this.volumeSFXSlider;
 					sound.play();

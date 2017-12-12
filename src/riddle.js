@@ -72,7 +72,6 @@ export default class Riddle {
 		} else {
 			return null;
 		}
-
 		this.clear();
     if(guess === this.correct) {
       //allow them to pass.
