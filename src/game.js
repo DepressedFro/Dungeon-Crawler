@@ -24,7 +24,6 @@ export default class Game {
 		this.gameObjects = [];
 		this.toRemove = [];
 		this.shakeMag = 0;
-
 		this.level = 1;
 		this.initMap();
 		this.movecd = 0;
@@ -207,7 +206,6 @@ export default class Game {
 		{
 			//do nothing right now
 		}
-
 	}
 
 	render() {

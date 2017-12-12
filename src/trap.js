@@ -119,7 +119,7 @@ export default class Trap extends GameObject {
 					Constants.tileSize,
 					Constants.tileSize,
 					this.start[i],
-					this.pos.y+Constants.tileSize*i,
+					Math.floor(this.pos.y+Constants.tileSize*i*0.2),
 					Constants.tileSize,
 					Constants.tileSize
 				);

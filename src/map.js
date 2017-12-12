@@ -1,3 +1,4 @@
+
 /* [0:RA, 1:RS, 2:ND, 3:ED, 4:SD, 5:WD,6:E1, 7:E2, 8:E3, 9:E4, 10:K, 11:G, 12:P, 13:T]
  * RA:Room Art Style
  * RS:Room Shape
