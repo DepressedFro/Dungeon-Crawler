@@ -5,6 +5,7 @@ import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import KnifeThrower from './knifethrower.js';
 import Chest from './chest.js';
+import Trap from './trap.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -261,6 +262,19 @@ export class ChestTile extends FloorTile {
     }
 }
 
+export class TrapTile extends FloorTile {
+    constructor(room,roomcode13){
+        super(room);
+        this.roomcode13 = roomcode13;
+    }
+    init(x,y){
+        super.init(x,y);
+        console.log(this.pos.x);
+        console.log(this.pos.y);
+        this.decorations.push(new Trap(this.game,this.roomcode13,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));    
+    }
+}
+
 export class NextLevelTile extends Tile {
     sourcePos = { x: 5, y: 1 }; // basic wall
 
@@ -292,5 +306,6 @@ export let tileTypes = {
     '^': ExitTile,
     '@': EnemyTile,
     '*': NextLevelTile,
-    '$': ChestTile
+    '$': ChestTile,
+    'x': TrapTile
 }
