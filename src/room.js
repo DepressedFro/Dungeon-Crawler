@@ -25,7 +25,7 @@ export default class Room extends GameObject {
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
 
-		//this.monsters = [];
+		this.monsters = [];
 		this.tiles = [];
 		this.riddle = new Riddles(game, this.roomcode[12], this.game.riddles);
 		if(this.roomcode[13]) this.trap = new Trap(game, this.roomcode[13]);
@@ -82,6 +82,12 @@ export default class Room extends GameObject {
 					t.destroy();
 			}
 		}
+
+		for (let m of this.monsters) {
+			if (m !== null)
+				m.destroy();
+		}
+	
 		if(this.trap) {
 			this.trap.destroy();
 		}
