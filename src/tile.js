@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import KnifeThrower from './knifethrower.js';
+import Chest from './chest.js';
 
 export class Tile extends GameObject {
     passable = true;
@@ -217,11 +218,11 @@ export class ExitTile extends FloorTile {
             return;
 
         if (dir.x != 0) {
-            this.game.player.pos.x = 256 - this.game.player.pos.x;
+            this.game.player.pos.x = 256 - this.game.player.pos.x + dir.x * 16;
             this.game.player.pos.y = this.pos.y * Constants.tileSize + 8;
         } if (dir.y != 0) {
             this.game.player.pos.x = this.pos.x * Constants.tileSize + 8;
-            this.game.player.pos.y = 256 - this.game.player.pos.y;
+            this.game.player.pos.y = 256 - this.game.player.pos.y + dir.y * 16;
         }
 
         this.game.movetoroom(this.game.room.pos.x + dir.x, this.game.room.pos.y + dir.y);
@@ -234,17 +235,46 @@ export class EnemyTile extends FloorTile {
         super.init(x,y);
     }
     spawn(enemyType){
+        if (this.room.pos.x == this.game.map.startx && this.room.pos.y == this.game.map.starty)
+            return;            
+
         switch(enemyType){
             case 0:
-                new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new Blob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
             case 1:
-                new BigBlob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new BigBlob(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
             case 2:
-                new KnifeThrower(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+                this.decorations.push(new KnifeThrower(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize));
             break;
         }
+    }
+}
+
+export class ChestTile extends FloorTile {
+    init(x,y){
+        super.init(x,y);
+        if(this.room.chest){
+            new Chest(this.game,this.pos.x*Constants.tileSize,this.pos.y*Constants.tileSize);
+        }
+    }
+}
+
+export class NextLevelTile extends Tile {
+    sourcePos = { x: 5, y: 1 }; // basic wall    
+
+    init (x, y) {
+        super.init(x, y);
+    
+        if (this.room.getTile(x, y + 1) instanceof FloorTile)
+            this.sourcePos = { x: 5, y: 2 };
+    }
+
+    playerCollision(player) {
+        this.game.level++;
+        this.game.room.destroy();
+        this.game.initMap();
     }
 }
 
@@ -258,5 +288,7 @@ export let tileTypes = {
     '<': ExitTile,
     'v': ExitTile,
     '^': ExitTile,
-    '@': EnemyTile
+    '@': EnemyTile,
+    '*': NextLevelTile,
+    '$': ChestTile 
 }

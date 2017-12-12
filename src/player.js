@@ -5,6 +5,8 @@ import Monster from './monster.js';
 import ThrownKnife from './thrownknife.js';
 import { ExitTile } from './tile.js';
 import Particle from './particle.js';
+import Chest from './chest.js';
+import Trap from './trap.js';
 
 /*****************************
 
@@ -39,7 +41,7 @@ export default class Player extends GameObject {
 		this.damagedEffectSp = 0.95;
 
 		this.gold = 0;
-
+		this.kill = 0;
 		//this.class = 0;
 		//this.className = "Warrior"; Make a new class in javascript for different type of Player
 	}
@@ -160,6 +162,21 @@ export default class Player extends GameObject {
 
 		for (var mon of this.game.gameObjects) {
 			//assuming all monsters have almost square BBoxes
+			if(mon instanceof Chest){
+				if(this.collides(mon)){
+					mon.destroy();
+					this.game.room.roomcode[11] = 0;
+					this.gold += 200;
+				}
+			}
+			if(mon instanceof Trap) {
+				if(this.collides(mon)){
+					this.game.shake(10);
+					this.applyKnockback(mon);
+
+					this.health -= mon.dealDamage();
+				}
+			}
 			if(mon instanceof Monster){
 				if(mon.circleCollides(this)){
 					switch(this.state){
@@ -179,13 +196,14 @@ export default class Player extends GameObject {
 								} else {
 									this.gold += 100;
 								}
+								this.kill+=1;
 							}
 						break;
 					}
 				}
 			}else if(mon instanceof ThrownKnife){
 				if(mon.circleCollides(this)){
-					this.game.remove(mon);
+					mon.destroy();
 					this.applyKnockback(mon);
 					this.health -= 15;
 				}

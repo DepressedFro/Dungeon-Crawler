@@ -1,55 +1,27 @@
-import * as Papa from "papaparse";
-import seedrandom from 'seedrandom';
-import Riddles from './riddles.csv';
-
 export default class Riddle {
-	constructor() {
-		this.index;
+	constructor(game, index, riddles) {
+		this.index = index;
     this.damage = 5;
-		this.riddles;
+		this.riddles = riddles;
 		this.question;
 		this.correct;
     this.cA;
     this.cB;
     this.cC;
 
-		//bind functions for easy passing
-		this.grabRiddles = this.grabRiddles.bind(this);
-		this.setRiddles = this.setRiddles.bind(this);
-    this.grabRiddles(this.setRiddles);
-		var rng = seedrandom();
+
+		if(this.index === 0) this.clear();
+		else {
 		//Timeout provides time for this.riddles to be filled.
 		setTimeout(() => {
-			//Temporary random number until roomcode works.
-			this.randomChoice(Math.floor((rng()*(this.riddles.length-2))+1));
+			this.randomChoice(this.index);
 			this.render();
-    }, 100)
+    }, 10);
+	}
 	}
   getChoices() {
     return {a: this.cA, b: this.cB, c: this.cC};
   }
-//reads in the data and then calls a setter function
-	grabRiddles(callBack)
-	{
-		//use library to grab riddles
-		Papa.parse(Riddles,
-		{
-	    download: true,
-	    delimiter: ',',
-			header: true,
-			dynamicTyping: true,
-	    complete: function(results)
-			{
-	        callBack(results.data);
-	    }
-		});
-	}
-
-//sets the riddles array to be equal the read in data
-	setRiddles(results)
-	{
-		this.riddles = results;
-	}
   randomChoice(index) {
     //Random number between 1-3
     var rand = Math.floor((Math.random()*(4-1))+1);
@@ -82,7 +54,19 @@ export default class Riddle {
 		  temp2.textContent = "";
 		});
 	}
-  update(guess) {
+  update(pressed) {
+		var choices = this.getChoices();
+		var guess
+		if(pressed['1']){
+			guess = choices.a;
+		} else if (pressed['2']) {
+			guess = choices.b;
+		} else if (pressed['3']) {
+			guess = choices.c;
+		} else {
+			return null;
+		}
+
 		this.clear();
     if(guess === this.correct) {
       //allow them to pass.
@@ -97,7 +81,7 @@ export default class Riddle {
 
 		var temp = ['textbox', 'cA', 'cB', 'cC'];
 		var count = 0;
-		var content = [this.question, this.cA, this.cB, this.cC];
+		var content = [this.question, "1. " + this.cA, "2. " + this.cB, "3. " + this.cC];
 
 		//Loop to add in text.
 		temp.forEach(function(i){
@@ -105,14 +89,5 @@ export default class Riddle {
 		  temp2.textContent = content[count];
 			count++;
 		});
-
-		// ctx.save();
-    // ctx.fillStyle = 'white';
-		// ctx.font = "10px Arial";
-    // ctx.fillText(this.question, 18, 190);
-		// ctx.fillText("A: " + this.cA, 18, 205);
-		// ctx.fillText("B: " + this.cB, 18, 220)
-		// ctx.fillText("C: " + this.cC, 18, 235)
-    // ctx.restore();
 	}
 }

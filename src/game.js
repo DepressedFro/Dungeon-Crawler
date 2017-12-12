@@ -5,11 +5,13 @@ import Monster from './monster.js';
 import Blob from './blob.js';
 import BigBlob from './bigblob.js';
 import * as _ from 'lodash';
-import Riddles from './riddle';
+import * as Papa from "papaparse";
+import Riddles from './riddles.csv';
 import Menu_Title from './menu_title';
 import Menu_Main from './menu_main';
 import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
+import Chest from './chest.js';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -19,18 +21,21 @@ export default class Game {
 		this.ctx = context;
 		this.canvas = canvas;
 		this.gameObjects = [];
+		this.toRemove = [];
 		this.shakeMag = 0;
 
 		this.level = 1;
-		this.map = new Map(9 + this.level, 1);
-		this.room = new Room(this, {
-			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
-			y: this.map.starty >= 0 ? this.map.starty : this.map.center
-		});
+		this.initMap();
 		this.movecd = 0;
 		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
-		this.menu_title = new Menu_Title(this);
-		this.menu_main = new Menu_Main(this);
+		this.menu_title = new Menu_Title();
+		this.menu_main = new Menu_Main();
+		this.riddles;
+
+		//bind functions for easy passing
+		this.grabRiddles = this.grabRiddles.bind(this);
+		this.setRiddles = this.setRiddles.bind(this);
+    this.grabRiddles(this.setRiddles);
 
 		if (this.room.shape === "down")
 			this.player = new Player(this, 100, 60, 60);
@@ -48,7 +53,7 @@ export default class Game {
 		this.mousePos = { x: 0, y: 0 };
 
 		//states the game can be in
-		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over", "Exit"];
+		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Game Over", "Exit"];
 		window.currentState = this.gameStates[0];
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
@@ -56,6 +61,36 @@ export default class Game {
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
+	}
+	//reads in the data and then calls a setter function
+		grabRiddles(callBack)
+		{
+			//use library to grab riddles
+			Papa.parse(Riddles,
+			{
+		    download: true,
+		    delimiter: ',',
+				header: true,
+				dynamicTyping: true,
+		    complete: function(results)
+				{
+		        callBack(results.data);
+		    }
+			});
+		}
+
+	//sets the riddles array to be equal the read in data
+		setRiddles(results)
+		{
+			this.riddles = results;
+		}
+
+	initMap() {
+		this.map = new Map(9 + this.level, this.level);
+		this.room = new Room(this, {
+			x: this.map.startx >= 0 ? this.map.startx : this.map.center,
+			y: this.map.starty >= 0 ? this.map.starty : this.map.center
+		});
 	}
 
 	mousemove(event) {
@@ -67,9 +102,8 @@ export default class Game {
 
 	movetoroom(locx, locy) {
 		for(var i=0; i<this.gameObjects.length; ++i){
-			if(this.gameObjects[i] instanceof Monster || this.gameObjects[i] instanceof ThrownKnife){
-				this.remove(this.gameObjects[i]);
-				--i;
+			if(this.gameObjects[i] instanceof Chest){
+				this.gameObjects[i].destroy();
 			}
 		}
 		//this.monsters = [];
@@ -88,7 +122,7 @@ export default class Game {
 	}
 
 	remove(obj) {
-		this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);
+		this.toRemove.push(obj);
 	}
 
 	update() {
@@ -142,6 +176,12 @@ export default class Game {
 				this.player.health = 0;
 			}
 
+			// remove destroyed objects
+			for (let obj of this.toRemove) {
+				this.gameObjects.splice(this.gameObjects.indexOf(obj), 1);
+			}
+			this.toRemove = [];
+
 			if (this.pressed['Escape'] && this.key_cd <= 0)
 			{
 				window.currentState = this.gameStates[2];
@@ -149,14 +189,10 @@ export default class Game {
 			}
 
 		}
-		else if (window.currentState === "Scoreboard")
-		{
-
-		}
 		else if (window.currentState === "Game Over")
 		{
 			if (this.pressed['Enter'] || this.pressed['Space']) {
-
+				window.location.reload();
 			}
 		}
 		else if (window.currentState === "Exit")
@@ -202,6 +238,8 @@ export default class Game {
 				this.zindexChanged = false;
 			}
 
+			document.getElementById("gold").textContent = "Gold: " + this.player.gold;
+
 			for (let obj of this.gameObjects) {
 				this.ctx.save();
 				obj.render(this.ctx);
@@ -209,15 +247,21 @@ export default class Game {
 			}
 		}
 		else if (window.currentState === "Game Over") {
-			this.ctx.fillStyle = "red";
-			this.ctx.fillText("You Are Dead!", this.width/2, 100);
+
+			document.getElementById("gold").textContent = "";
+			document.getElementById("gameOver").textContent = "You Are Dead!";
+
+			var temp = ['level', 'goldS', 'monster'];
+			var count = 0;
+			var content = ["Level: " + this.level, "Gold: " + this.player.gold, "Monsters Killed: "  + this.player.kill];
+
+			//Loop to add in text.
+			temp.forEach(function(i){
+			  var temp2 = document.getElementById(i);
+			  temp2.textContent = content[count];
+				count++;
+			});
 		}
-		this.ctx.fillStyle = "red";
-		this.ctx.fillRect((this.width)-110, 20, (this.player.health), 10);
-
-		this.ctx.fillStyle = "gold";
-		this.ctx.fillText("Gold: " + this.player.gold, 10, 30);
-
 		this.ctx.restore();
 	}
 
