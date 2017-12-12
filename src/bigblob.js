@@ -32,6 +32,7 @@ export default class BigBlob extends Blob {
 	onDeath() {
 		for (var i = 0; i < 3; i++) {
 			let b = new Blob(this.game, this.pos.x, this.pos.y);
+			this.game.room.monsters.push(b);
 			b.timer = 0;
 		}
 		super.onDeath();
