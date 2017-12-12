@@ -29,8 +29,8 @@ export default class Game {
 		});
 		this.movecd = 0;
 		this.monsters = [new BigBlob(this, 100, 100), new BigBlob(this, 200, 200), new Blob(this, 200, 100), new Blob(this, 150, 200), new Blob(this, 100, 150), new Blob(this, 150, 150), new Blob(this, 200, 150)];
-		this.menu_title = new Menu_Title();
-		this.menu_main = new Menu_Main();
+		this.menu_title = new Menu_Title(this);
+		this.menu_main = new Menu_Main(this);
 
 		if (this.room.shape === "down")
 			this.player = new Player(this, 100, 60, 60);
@@ -48,8 +48,8 @@ export default class Game {
 		this.mousePos = { x: 0, y: 0 };
 
 		//states the game can be in
-		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over"];
-		this.currentState = this.gameStates[0];
+		this.gameStates = ["Title Screen", "Main Menu", "Pause Menu", "Gameplay", "Scoreboard", "Game Over", "Exit"];
+		window.currentState = this.gameStates[0];
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
 
@@ -100,29 +100,23 @@ export default class Game {
 		this.key_cd -= delta;
 		this.shakeMag *= 0.90;
 
-		if (this.currentState === "Title Screen")
+		if (window.currentState === "Title Screen")
 		{
+			this.menu_title.update(this.pressed);
 			if (this.pressed['Enter'])
 			{
-				this.currentState = this.gameStates[1];
+				window.currentState = this.gameStates[1];
+				this.pressed['Enter'] = false;
 				this.key_cd = this.cooldown;
 			}
 		}
-		if (this.currentState === "Main Menu") {
-			if (this.pressed['ArrowUp']) {
-
-			}
-			else if (this.pressed['ArrowDown']) {
-
-			}
-			else if (this.pressed['Enter'] && this.key_cd <= 0) {
-				this.key_cd = this.cooldown;
-				this.currentState = this.gameStates[3];
-			}
+		else if (window.currentState === "Main Menu")
+		{
+			this.menu_main.update(this.pressed);
 		}
-		else if (this.currentState === "Pause Menu") {
+		else if (window.currentState === "Pause Menu") {
 			if (this.pressed['Escape'] && this.key_cd <= 0) {
-				this.currentState = this.gameStates[3];
+				window.currentState = this.gameStates[3];
 				this.key_cd = this.cooldown;
 			}
 			else if (this.pressed['ArrowUp']) {
@@ -135,7 +129,7 @@ export default class Game {
 
 			}
 		}
-		else if (this.currentState === "Gameplay")
+		else if (window.currentState === "Gameplay")
 		{
 			// loop backwards to handle object removal
 			for (let i = this.gameObjects.length - 1; i > 0; i--) {
@@ -144,26 +138,30 @@ export default class Game {
 			}
 
 			if(this.player.health <= 0) {
-				this.currentState = this.gameStates[4];
+				window.currentState = this.gameStates[4];
 				this.player.health = 0;
 			}
 
 			if (this.pressed['Escape'] && this.key_cd <= 0)
 			{
-				this.currentState = this.gameStates[2];
+				window.currentState = this.gameStates[2];
 				this.key_cd = this.cooldown;
 			}
 
 		}
-		else if (this.currentState === "Scoreboard")
+		else if (window.currentState === "Scoreboard")
 		{
 
 		}
-		else if (this.currentState === "Game Over")
+		else if (window.currentState === "Game Over")
 		{
 			if (this.pressed['Enter'] || this.pressed['Space']) {
 
 			}
+		}
+		else if (window.currentState === "Exit")
+		{
+			//do nothing right now
 		}
 
 	}
@@ -175,14 +173,15 @@ export default class Game {
 		this.ctx.translate(Math.round(Math.random() * this.shakeMag), Math.round(Math.random() * this.shakeMag));
 		this.ctx.fillStyle = '#1c1117';
 		this.ctx.fillRect(-200, -200, this.width + 400, this.height + 400);
-		if (this.currentState === "Title Screen")
+
+		if (window.currentState === "Title Screen")
 		{
 			this.menu_title.render(this.ctx);
 		}
-		else if (this.currentState === "Main Menu") {
+		else if (window.currentState === "Main Menu") {
 			this.menu_main.render(this.ctx);
 		}
-		else if (this.currentState === "Pause Menu")
+		else if (window.currentState === "Pause Menu")
 		{
 			// reorder if zindex changed on some object
 			if (this.zindexChanged) {
@@ -196,7 +195,7 @@ export default class Game {
 				this.ctx.restore();
 			}
 		}
-		else if (this.currentState === "Gameplay") {
+		else if (window.currentState === "Gameplay") {
 			// reorder if zindex changed on some object
 			if (this.zindexChanged) {
 				this.gameObjects = _.sortBy(this.gameObjects, (obj) => { return obj.zindex });
@@ -209,7 +208,7 @@ export default class Game {
 				this.ctx.restore();
 			}
 		}
-		else if (this.currentState === "Game Over") {
+		else if (window.currentState === "Game Over") {
 			this.ctx.fillStyle = "red";
 			this.ctx.fillText("You Are Dead!", this.width/2, 100);
 		}
