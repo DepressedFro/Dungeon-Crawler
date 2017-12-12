@@ -14,6 +14,8 @@ import ThrownKnife from './thrownknife.js';
 import Chest from './chest.js';
 import Music_Menu from './songs/Main_Menu.wav';
 import SFX_Death from './sfx/sfx_deathscream.wav';
+import Music_Game1 from './songs/Game1.wav';
+import Music_Game2 from './songs/Game2.wav';
 
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
@@ -59,15 +61,20 @@ export default class Game {
 		this.key_cd = this.cooldown;
 
 		this.volumeSFXSlider = .6;
-		this.volumeSongSlider = .4;
+		this.volumeSongSlider = .2;
 		//music time
 		this.song_menu  = new Audio();
     this.song_menu.src = Music_Menu;
 		this.song_menu.volume = this.volumeSongSlider;
 		this.song_menu.play()
 
-		//end music time
+		this.song_game1 = new Audio();
+		this.song_game1.src = Music_Game1
 
+		this.song_game2 = new Audio();
+		this.song_game2.src = Music_Game2
+		//end music time
+		this.first = true;
 		//sfx time
 		this.sfx_death = new Audio();
     this.sfx_death.src = SFX_Death;
@@ -184,6 +191,22 @@ export default class Game {
 		}
 		else if (window.currentState === "Gameplay")
 		{
+			if(this.first === true)
+			{
+				var choice =  +new Date();
+				if(choice%2 === 0)
+				{
+					this.song_game1.volume = this.volumeSongSlider;
+					this.song_game1.play();
+				}
+				else
+				{
+					this.song_game2.volume = this.volumeSongSlider;
+					this.song_game2.play();
+				}
+				this.first = false;
+
+			}
 			// loop backwards to handle object removal
 			for (let i = this.gameObjects.length - 1; i > 0; i--) {
 				if (this.gameObjects[i])
@@ -218,10 +241,6 @@ export default class Game {
 			if (this.pressed['Enter'] || this.pressed['Space']) {
 				window.location.reload();
 			}
-		}
-		else if (window.currentState === "Exit")
-		{
-			//do nothing right now
 		}
 	}
 

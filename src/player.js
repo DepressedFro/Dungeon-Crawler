@@ -11,7 +11,7 @@ import SFX_Slash from './sfx/sfx_player_warrior_sword_hit.wav'
 import SFX_Ow from './sfx/sfx_player_hurt.wav';
 import SFX_Ow_Fire from './sfx/sfx_player_wizard_fireball_hit_.wav'
 import SFX_Gold_Pickup from './sfx/sfx_player_warrior_shield_block.wav'
-
+import SFX_Blob_Split from './sfx/sfx_enemy_blob_split.wav'
 /*****************************
 
 TODO:
@@ -53,8 +53,8 @@ export default class Player extends GameObject {
     this.sfx_player_hurt = new Audio();
     this.sfx_player_hurt.src = SFX_Ow;
 
-		this.sfx_player_hurt_fire = new Audio();
-    this.sfx_player_hurt_fire.src = SFX_Ow_Fire;
+		this.sfx_blob_split = new Audio();
+    this.sfx_blob_split.src = SFX_Blob_Split;
 
     this.sfx_warrior_slash_hit = new Audio();
     this.sfx_warrior_slash_hit.src = SFX_Slash;
@@ -218,16 +218,23 @@ export default class Player extends GameObject {
 						case 'attack':
 
 							if(mon.invincible == 0){
-								var sound = this.sfx_warrior_slash_hit.cloneNode();
-								sound.volume = this.volumeSFXSlider;
-								sound.play();
+
 								mon.onDeath();
 								if(mon.name == "blob"){
+									var sound = this.sfx_warrior_slash_hit.cloneNode();
+									sound.volume = this.volumeSFXSlider;
+									sound.play();
 									this.gold += 25;
 								} else if (mon.name == "big blob"){
+									var sound = this.sfx_blob_split.cloneNode();
+									sound.volume = this.volumeSFXSlider;
+									sound.play();
 									this.gold += 50;
 								} else {
 									//knife thrower
+									var sound = this.sfx_warrior_slash_hit.cloneNode();
+									sound.volume = this.volumeSFXSlider;
+									sound.play();
 									this.gold += 100;
 								}
 								this.kill+=1;
