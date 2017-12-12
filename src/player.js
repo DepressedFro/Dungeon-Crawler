@@ -7,6 +7,10 @@ import { ExitTile } from './tile.js';
 import Particle from './particle.js';
 import Chest from './chest.js';
 import Trap from './trap.js';
+import SFX_Slash from './sfx/sfx_player_warrior_sword_hit.wav'
+import SFX_Ow from './sfx/sfx_player_hurt.wav';
+import SFX_Ow_Fire from './sfx/sfx_player_wizard_fireball_hit_.wav'
+import SFX_Gold_Pickup from './sfx/sfx_player_warrior_shield_block.wav'
 
 /*****************************
 
@@ -44,6 +48,22 @@ export default class Player extends GameObject {
 		this.kill = 0;
 		//this.class = 0;
 		//this.className = "Warrior"; Make a new class in javascript for different type of Player
+		this.volumeSFXSlider = .8;
+		//load in sound effects
+    this.sfx_player_hurt = new Audio();
+    this.sfx_player_hurt.src = SFX_Ow;
+
+		this.sfx_player_hurt_fire = new Audio();
+    this.sfx_player_hurt_fire.src = SFX_Ow_Fire;
+
+    this.sfx_warrior_slash_hit = new Audio();
+    this.sfx_warrior_slash_hit.src = SFX_Slash;
+
+		this.sfx_gold_pickup = new Audio();
+    this.sfx_gold_pickup.src = SFX_Gold_Pickup;
+
+
+    //end sound effect loading
 	}
 
 	inTileCollision() {
@@ -167,13 +187,18 @@ export default class Player extends GameObject {
 					mon.destroy();
 					this.game.room.roomcode[11] = 0;
 					this.gold += 200;
+					var sound = this.sfx_gold_pickup.cloneNode();
+					sound.volume = this.volumeSFXSlider;
+					sound.play();
 				}
 			}
 			if(mon instanceof Trap) {
 				if(this.collides(mon)){
 					this.game.shake(10);
 					this.applyKnockback(mon);
-
+					var sound = this.sfx_player_hurt.cloneNode();
+					sound.volume = this.volumeSFXSlider;
+					sound.play();
 					this.health -= mon.dealDamage();
 				}
 			}
@@ -185,9 +210,17 @@ export default class Player extends GameObject {
 							this.applyKnockback(mon);
 							//mon.speed = tmp_knockback.negative().multiply(mon.knockBack);
 							this.health -= 1;
+							//play hurt sound
+							var sound = this.sfx_player_hurt.cloneNode();
+							sound.volume = this.volumeSFXSlider;
+							sound.play();
 						break;
 						case 'attack':
+
 							if(mon.invincible == 0){
+								var sound = this.sfx_warrior_slash_hit.cloneNode();
+								sound.volume = this.volumeSFXSlider;
+								sound.play();
 								mon.onDeath();
 								if(mon.name == "blob"){
 									this.gold += 25;
@@ -207,6 +240,9 @@ export default class Player extends GameObject {
 					mon.destroy();
 					this.applyKnockback(mon);
 					this.health -= 15;
+					var sound = this.sfx_player_hurt.cloneNode();
+					sound.volume = this.volumeSFXSlider;
+					sound.play();
 				}
 			}
 		}

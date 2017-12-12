@@ -13,7 +13,8 @@ import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
 import Chest from './chest.js';
 import Music_Menu from './songs/Main_Menu.wav';
-import SFX_Slash from './sfx/sfx_player_warrior_sword_hit.wav'
+import SFX_Death from './sfx/sfx_deathscream.wav';
+
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
 		//this.monsters = [];
@@ -24,7 +25,6 @@ export default class Game {
 		this.gameObjects = [];
 		this.toRemove = [];
 		this.shakeMag = 0;
-
 		this.level = 1;
 		this.initMap();
 		this.movecd = 0;
@@ -58,14 +58,20 @@ export default class Game {
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
 
-		this.volumeSFXSlider = 0;
+		this.volumeSFXSlider = .6;
+		this.volumeSongSlider = .4;
 		//music time
 		this.song_menu  = new Audio();
     this.song_menu.src = Music_Menu;
-		this.song_menu.volume = this.volumeSFXSlider;
+		this.song_menu.volume = this.volumeSongSlider;
 		this.song_menu.play()
 
 		//end music time
+
+		//sfx time
+		this.sfx_death = new Audio();
+    this.sfx_death.src = SFX_Death;
+		//end sfx
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
@@ -155,6 +161,11 @@ export default class Game {
 		else if (window.currentState === "Main Menu")
 		{
 			this.menu_main.update(this.pressed);
+			if(window.currentState === "Gameplay")
+			{
+				this.song_menu.pause();
+				this.song_menu.currentTime = 0;
+			}
 		}
 		else if (window.currentState === "Pause Menu") {
 			if (this.pressed['Escape'] && this.key_cd <= 0) {
@@ -180,8 +191,12 @@ export default class Game {
 			}
 
 			if(this.player.health <= 0) {
+				var sound = this.sfx_death.cloneNode();
+				sound.volume = this.volumeSFXSlider;
+				sound.play();
 				window.currentState = this.gameStates[4];
 				this.player.health = 0;
+
 			}
 
 			// remove destroyed objects
@@ -199,6 +214,7 @@ export default class Game {
 		}
 		else if (window.currentState === "Game Over")
 		{
+
 			if (this.pressed['Enter'] || this.pressed['Space']) {
 				window.location.reload();
 			}
@@ -207,7 +223,6 @@ export default class Game {
 		{
 			//do nothing right now
 		}
-
 	}
 
 	render() {

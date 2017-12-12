@@ -14,6 +14,7 @@ export default class Riddle {
 
 		if(this.index === 0) this.clear();
 		else {
+			this.clear();
 		//Timeout provides time for this.riddles to be filled.
 		setTimeout(() => {
 			this.randomChoice(this.index);
