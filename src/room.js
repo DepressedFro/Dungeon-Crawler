@@ -91,6 +91,8 @@ export default class Room extends GameObject {
 		if(this.trap) {
 			this.trap.destroy();
 		}
+
+		super.destroy();
 	}
 
 	createByShape(shape) {
