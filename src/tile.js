@@ -284,6 +284,13 @@ export class FountainTile extends WallTile {
     anim = 0;
     animTime = -1;
 
+    init(x, y) {
+        super.init(x, y);
+        
+        if (this.room.roomcode[12] === 0)
+            this.anim = 8;
+    }
+
     playerCollision(player) { 
         if (this.room.roomcode[12] === 0)
             return;
@@ -307,9 +314,6 @@ export class FountainTile extends WallTile {
     } 
  
     render(ctx) {
-        if (this.room.roomcode[12] === 0 && this.animTime == -1)
-            return super.render(ctx);
-
         // check that the tileset is loaded
         if (!Constants.fountainTileset.complete)
             return;
