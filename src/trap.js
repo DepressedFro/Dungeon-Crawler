@@ -3,7 +3,7 @@ import Constants from './constants.js';
 import Vector from './lib/vector2d.js';
 
 export default class Trap extends GameObject {
-	constructor(game, index) {
+	constructor(game, index, x, y) {
 			super(game);
       this.index = index;
 
@@ -12,7 +12,7 @@ export default class Trap extends GameObject {
       this.width;
 
 			this.angle;
-			this.pos;
+			this.pos = new Vector(x, y);
 			this.tilex;
 			this.tiley;
 
@@ -58,7 +58,6 @@ export default class Trap extends GameObject {
 		}
 	}
   flame() {
-		this.pos = new Vector(150, 32);
 		this.tilex = 2;
 		this.tiley = 13;
 
@@ -71,7 +70,6 @@ export default class Trap extends GameObject {
 		this.fireInt = [-0.75,-0.75,-0.75];
   }
   spike() {
-		this.pos = new Vector(150, 150);
 		this.tilex = 8;
 		this.tiley = 6;
 
@@ -83,7 +81,6 @@ export default class Trap extends GameObject {
 		this.activate = false;
   }
   blade() {
-		this.pos = new Vector(100, 140);
 		this.tilex = 11;
 		this.tiley = 3;
 		this.angle = 0;
@@ -122,7 +119,7 @@ export default class Trap extends GameObject {
 					Constants.tileSize,
 					Constants.tileSize,
 					this.start[i],
-					this.pos.y+Constants.tileSize*i,
+					Math.floor(this.pos.y+Constants.tileSize*i*0.2),
 					Constants.tileSize,
 					Constants.tileSize
 				);

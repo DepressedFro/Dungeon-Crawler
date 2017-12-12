@@ -1,8 +1,10 @@
 export default class Riddle {
 	constructor(game, index, riddles) {
+		this.game = game;
 		this.index = index;
     this.damage = 5;
 		this.riddles = riddles;
+		this.show = false;
 		this.question;
 		this.correct;
     this.cA;
@@ -12,6 +14,7 @@ export default class Riddle {
 
 		if(this.index === 0) this.clear();
 		else {
+			this.clear();
 		//Timeout provides time for this.riddles to be filled.
 		setTimeout(() => {
 			this.randomChoice(this.index);
@@ -55,6 +58,9 @@ export default class Riddle {
 		});
 	}
   update(pressed) {
+		if (!this.show)
+			return;
+
 		var choices = this.getChoices();
 		var guess
 		if(pressed['1']){
@@ -73,11 +79,14 @@ export default class Riddle {
 			return 0;
     }
     else {
-      //damage them and allow to pass.
+			//damage them and allow to pass.
+			this.game.shake(10);
       return this.damage;
     }
   }
 	render() {
+		if (!this.show)
+			return;
 
 		var temp = ['textbox', 'cA', 'cB', 'cC'];
 		var count = 0;
