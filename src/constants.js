@@ -5,11 +5,11 @@ tileset.src = tilesetPath;
 
 let Constants = {
     tileSize: 16,
-    tileset: tileset,   
+    tileset: tileset,
 
-    
+
     shapeNames: ['down','round','EWtunnel','NStunnel','square','cross','crossround','ring','rooms1','maze1','ring2'],
-    
+
     shapes: {
         'down': [
             '                ',
@@ -190,7 +190,7 @@ let Constants = {
             '#.@.#......@...#',
             '#...#..........#',
             '#######vv#######',
-        ], 
+        ],
         'ring2': [
             '                ',
             '#######^^#######',

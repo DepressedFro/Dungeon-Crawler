@@ -80,7 +80,7 @@ export class FloorTile extends Tile {
 
         // add randomly skull on the ground
         if (this.room._.random(100) == 0) {
-            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 1, y: 3 }, -8));            
+            this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y, { x: 1, y: 3 }, -8));
         }
     }
 }
@@ -94,11 +94,11 @@ export class WallTile extends Tile {
         super.init(x, y);
 
         // top wall
-        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null && 
-            this.room.getTile(this.pos.x - 1, this.pos.y) !== null && 
-            this.room.getTile(this.pos.x - 1, this.pos.y + 1) !== null && 
-            this.room.getTile(this.pos.x + 1, this.pos.y + 1) !== null && 
-            this.room.getTile(this.pos.x, this.pos.y + 1) instanceof WallTile && 
+        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null &&
+            this.room.getTile(this.pos.x - 1, this.pos.y) !== null &&
+            this.room.getTile(this.pos.x - 1, this.pos.y + 1) !== null &&
+            this.room.getTile(this.pos.x + 1, this.pos.y + 1) !== null &&
+            this.room.getTile(this.pos.x, this.pos.y + 1) instanceof WallTile &&
             !(this.room.getTile(this.pos.x, this.pos.y - 1) instanceof WallTile)) {
             this.zindex = 16;
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
@@ -106,16 +106,16 @@ export class WallTile extends Tile {
         }
 
         // bottom wall
-        if (!(this.room.getTile(x, y + 1) instanceof FloorTile) && 
+        if (!(this.room.getTile(x, y + 1) instanceof FloorTile) &&
             this.room.getTile(this.pos.x, this.pos.y - 1) instanceof FloorTile) {
             this.sourcePos = [{ x: 8, y: 0 }, { x: 7, y: 1 }, { x: 8, y: 1 }][this.room._.random(2)];
             return;
         }
 
         // divider wall
-        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null && 
-            this.room.getTile(this.pos.x - 1, this.pos.y) !== null && 
-            this.room.getTile(this.pos.x, this.pos.y + 1) !== null && 
+        if (this.room.getTile(this.pos.x + 1, this.pos.y) !== null &&
+            this.room.getTile(this.pos.x - 1, this.pos.y) !== null &&
+            this.room.getTile(this.pos.x, this.pos.y + 1) !== null &&
             this.room.getTile(this.pos.x, this.pos.y - 1) instanceof WallTile) {
             this.decorations.push(new Tile(this.room, this.pos.x, this.pos.y - 1, { x: 1, y: 0 }, 15));
             if (this.room.getTile(this.pos.x, this.pos.y + 1) instanceof WallTile) this.zindex = 16;
@@ -168,7 +168,7 @@ export class ExitTile extends FloorTile {
         super(room);
         this.letter = letter;
     }
-    
+
     init(x, y) {
         super.init(x, y);
 
@@ -236,7 +236,7 @@ export class EnemyTile extends FloorTile {
     }
     spawn(enemyType){
         if (this.room.pos.x == this.game.map.startx && this.room.pos.y == this.game.map.starty)
-            return;            
+            return;
 
         switch(enemyType){
             case 0:
@@ -262,21 +262,23 @@ export class ChestTile extends FloorTile {
 }
 
 export class NextLevelTile extends Tile {
-    sourcePos = { x: 5, y: 1 }; // basic wall    
+    sourcePos = { x: 5, y: 1 }; // basic wall
 
     init (x, y) {
         super.init(x, y);
-    
+
         if (this.room.getTile(x, y + 1) instanceof FloorTile)
             this.sourcePos = { x: 5, y: 2 };
     }
 
     playerCollision(player) {
         this.game.level++;
+        this.game.player.gold += 1000;
         this.game.room.destroy();
         this.game.initMap();
     }
 }
+
 
 
 export let tileTypes = {
@@ -290,5 +292,5 @@ export let tileTypes = {
     '^': ExitTile,
     '@': EnemyTile,
     '*': NextLevelTile,
-    '$': ChestTile 
+    '$': ChestTile
 }
