@@ -24,7 +24,7 @@ export default class Room extends GameObject {
 		// seed the rng
 		seedrandom('seed' + this.pos.x + this.pos.y, { global: true });
 		this._ = _.runInContext();
-
+		this.check = false;
 		this.monsters = [];
 		this.tiles = [];
  	  this.riddle = new Riddles(game, this.roomcode[12], this.game.riddles);
@@ -89,7 +89,7 @@ export default class Room extends GameObject {
 			if (m !== null)
 				m.destroy();
 		}
-	
+
 		if(this.trap) {
 			this.trap.destroy();
 		}
@@ -117,7 +117,7 @@ export default class Room extends GameObject {
 					if(this.roomcode[13]){
 						new_row.push(new TrapTile(this,this.roomcode[13])); // instantiate
 					}else{
-						new_row.push(new FloorTile(this)); // instantiate	
+						new_row.push(new FloorTile(this)); // instantiate
 					}
 				}else {
 					new_row.push(new tile(this)); // instantiate
@@ -138,6 +138,7 @@ export default class Room extends GameObject {
 		if(this.roomcode[12] && this.game.room === this) {
 			var result = this.riddle.update(this.game.pressed);
 			if(result || result === 0) {
+				this.check = true;
 				this.game.room.roomcode[12] = 0;
 				this.riddle = undefined;
 				this.game.player.health -= result;
