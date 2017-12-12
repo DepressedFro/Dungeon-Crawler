@@ -194,6 +194,7 @@ export default class Player extends GameObject {
 								} else if (mon.name == "big blob"){
 									this.gold += 50;
 								} else {
+									//knife thrower
 									this.gold += 100;
 								}
 								this.kill+=1;

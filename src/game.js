@@ -12,7 +12,8 @@ import Menu_Main from './menu_main';
 import KnifeThrower from './knifethrower.js';
 import ThrownKnife from './thrownknife.js';
 import Chest from './chest.js';
-
+import Music_Menu from './songs/Main_Menu.wav';
+import SFX_Slash from './sfx/sfx_player_warrior_sword'
 export default class Game {
 	constructor(screenWidth, screenHeight, context, canvas) {
 		//this.monsters = [];
@@ -57,6 +58,14 @@ export default class Game {
 		this.cooldown = 100;
 		this.key_cd = this.cooldown;
 
+		this.volumeSFXSlider = 0;
+		//music time
+		this.song_menu  = new Audio();
+    this.song_menu.src = Music_Menu;
+		this.song_menu.volume = this.volumeSFXSlider;
+		this.song_menu.play()
+
+		//end music time
 
 		this.lastTime = +new Date();
 		window.requestAnimationFrame(() => { this.loop() });
