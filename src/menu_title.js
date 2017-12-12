@@ -24,11 +24,11 @@ export default class Menu_Title
     this.knightImg = new Image();
     this.knightImg.src = Image_Knight;
 
-    this.banditImage = new Image();
-    this.banditImage.src = Image_Bandit;
+    this.banditImg = new Image();
+    this.banditImg.src = Image_Bandit;
 
-    this.wizardImage = new Image();
-    this.wizardImage.src = Image_Wizard;
+    this.wizardImg = new Image();
+    this.wizardImg.src = Image_Wizard;
     //end image loading
 
     this.volumeSFXSlider = .2;
@@ -66,7 +66,6 @@ export default class Menu_Title
   render(ctx)
   {
     this.frameTime += 1;
-    // console.log(this.frameTime);
     //change title frame rendering depending on time
     if(this.frameTime % this.titleSpeed === 0)
     {
@@ -105,7 +104,9 @@ export default class Menu_Title
     ctx.drawImage(this.titleImg, 228*this.currentTitleFrame, 0, 228, 58, 18, 0, 228, 58);
     ctx.drawImage(this.torchImg, 16*this.currentTorchFrame, 0, 16, 32, 68, 114, 16, 32);
     ctx.drawImage(this.torchImg, 16*this.currentTorchFrame, 0, 16, 32, 172, 114, 16, 32);
-    ctx.drawImage(this.knightImg, 32*this.currentCharacterFrame, 0, 32, 20, 150, 200, 32, 20);
+    ctx.drawImage(this.knightImg, 32*this.currentCharacterFrame, 0, 32, 20, 200, 200, 32, 20);
+    ctx.drawImage(this.wizardImg, 32*this.currentCharacterFrame, 0, 32, 20, 50, 230, 32, 20);
+    ctx.drawImage(this.banditImg, 16*this.currentCharacterFrame, 0, 16, 32, 115, 160, 16, 32);
 
 
     //img, renderStartXPos, renderStartYPos, widthX, heightY, xPos, yPos, imgXSize, imgYSize
