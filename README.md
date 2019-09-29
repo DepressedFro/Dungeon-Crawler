@@ -15,7 +15,7 @@ The first room you see
 ![alt text](https://i.imgur.com/bIZ0ibL.png)
 
 A room filled with traps and and enemies 
-![alt text](hhttps://i.imgur.com/OU2XV3I.png)
+![alt text](https://i.imgur.com/OU2XV3I.png)
 
 ## Front-end Technologies:
 ### [Javascript](https://www.javascript.com/)
